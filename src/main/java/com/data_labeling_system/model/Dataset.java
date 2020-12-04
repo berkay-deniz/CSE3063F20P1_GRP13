@@ -3,16 +3,32 @@ package com.data_labeling_system.model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 import java.util.List;
-
+@JsonPropertyOrder({ "dataset id", "dataset name","maximum number of labels per instance", "class labels", "instances",
+	"class label assignments","users" })
 public class Dataset implements Parsable {
+	@JsonProperty("dataset id")
     private int id;
+	
+	@JsonProperty("dataset name")
     private String name;
+    
+	@JsonProperty("maximum number of labels per instance")
     private int maxNumOfLabels;
+	
+	@JsonProperty("class labels")
     private List<Label> labels;
+	
     private List<Instance> instances;
+    
+    @JsonProperty("class label assignments")
     private List<Assignment> assignments;
+	
     private List<User> users;
 
     public Dataset(String json) {

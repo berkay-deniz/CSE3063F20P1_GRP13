@@ -20,9 +20,10 @@ public class DataLabelingSystem {
 
     public void startSystem() throws IOException {
         String configJson = this.ioManager.readInputFile("config.json");
-        String datasetJson = this.ioManager.readInputFile("input1.json");
+        String datasetJson = this.ioManager.readInputFile("input-2.json");
         dataset = new Dataset(datasetJson);
         userManager.createUsers(configJson);
+        this.dataset.setUsers(userManager.getUsers());
         this.instanceTagger.setDataset(this.dataset);
         this.instanceTagger.setUsers(this.userManager.getUsers());
         this.instanceTagger.assignLabels();
