@@ -40,7 +40,6 @@ public class IOManager {
 
         
        ObjectMapper mapper = new ObjectMapper();
-       mapper.writerWithDefaultPrettyPrinter().writeValue(System.out, dataset);
        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
        writer.writeValue(new File(outputFileName),dataset );
        logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
