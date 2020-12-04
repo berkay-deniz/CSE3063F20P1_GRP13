@@ -15,7 +15,7 @@ public class IOManager {
     public IOManager() {
         logger = Logger.getLogger(IOManager.class);
     }
-
+    
     public String readInputFile(String fileName) throws IOException {
         return new String(Files.readAllBytes(Paths.get(fileName)));
     }

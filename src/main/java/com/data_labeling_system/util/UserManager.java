@@ -1,6 +1,7 @@
 package com.data_labeling_system.util;
 
 import com.data_labeling_system.model.User;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,26 +9,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserManager {
+	private final Logger logger;
 
-    private List<User> users;
+	private List<User> users;
 
-    public void createUsers(String json) {
-        JSONObject object = new JSONObject(json);
-        JSONArray userArray = object.getJSONArray("users");
-        this.users = new ArrayList<>();
+	public UserManager() {
+		logger = Logger.getLogger(UserManager.class);
+	}
 
-        for (int i = 0; i < userArray.length(); i++) {
-            this.users.add(new User(userArray.getJSONObject(i).toString()));
-        }
+	public void createUsers(String json) {
+		JSONObject object = new JSONObject(json);
+		JSONArray userArray = object.getJSONArray("users");
+		this.users = new ArrayList<>();
 
-    }
+		for (int i = 0; i < userArray.length(); i++) {
+			User user = new User(userArray.getJSONObject(i).toString());
+			this.users.add(user);
+			logger.info("User with name '" + user.getName() + "' created successfully.");
+		}
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+	}
 
-    public List<User> getUsers() {
-        return users;
-    }
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
 
 }
