@@ -2,27 +2,22 @@ package com.data_labeling_system.model;
 
 import com.data_labeling_system.mechanism.LabelingMechanism;
 import com.data_labeling_system.mechanism.LabelingMechanismFactory;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonSetter;
-
-
-import org.json.*;
+import org.json.JSONObject;
 
 
 @JsonIgnoreProperties({"mechanism"})
-@JsonPropertyOrder({ "user id", "user name", "user type" })
+@JsonPropertyOrder({"user id", "user name", "user type"})
 public class User implements Parsable {
-	@JsonProperty("user id")
+    @JsonProperty("user id")
     private int id;
-	@JsonProperty("user name")
+    @JsonProperty("user name")
     private String name;
-	@JsonProperty("user type")
+    @JsonProperty("user type")
     private String type;
-    
+
     private LabelingMechanism mechanism;
 
     public User(String json) {
@@ -42,12 +37,12 @@ public class User implements Parsable {
     public String stringify(Parsable parsable) {
         return "";
     }
-    
+
     public int getId() {
         return id;
     }
-    
-    
+
+
     public void setId(int id) {
         this.id = id;
     }
@@ -55,7 +50,7 @@ public class User implements Parsable {
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }

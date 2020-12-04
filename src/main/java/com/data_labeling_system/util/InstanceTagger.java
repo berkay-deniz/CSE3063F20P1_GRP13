@@ -7,21 +7,19 @@ import com.data_labeling_system.model.Instance;
 import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class InstanceTagger {
-	private final Logger logger;
+    private final Logger logger;
 
     private Dataset dataset;
     private List<User> users;
 
     public InstanceTagger() {
-    	logger = Logger.getLogger(Instance.class);
+        logger = Logger.getLogger(Instance.class);
     }
-
 
     public void assignLabels() {
         ArrayList<Assignment> assignments = new ArrayList<>();
@@ -31,9 +29,9 @@ public class InstanceTagger {
                 LabelingMechanism labelingMechanism = user.getMechanism();
                 assignments.add(labelingMechanism.assign(user, dataset.getInstances().get(i),
                         dataset.getLabels(), dataset.getMaxNumOfLabels()));
-                logger.info("user id:"+user.getId()+" "+user.getName()+" tagged instance id:"+
-                        dataset.getInstances().get(i).getId()+" with class label:"+ dataset.getLabels()+
-                        "instance:"+dataset.getInstances().get(i));
+                logger.info("user id:" + user.getId() + " " + user.getName() + " tagged instance id:" +
+                        dataset.getInstances().get(i).getId() + " with class label:" + dataset.getLabels() +
+                        "instance:" + dataset.getInstances().get(i));
             }
         }
         this.dataset.setAssignments(assignments);
