@@ -1,17 +1,19 @@
 package com.data_labeling_system.model;
-import org.json.*;
+
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.google.gson.annotations.Expose;
+
 @JsonPropertyOrder({ "label id", "label text" })
 public class Label implements Parsable {
 	@JsonProperty("label id")
     private int id;
 	@JsonProperty("label text")
     private String text;
-    public Label(String json){
+
+    public Label(String json) {
         parse(json);
     }
 

@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.google.gson.annotations.Expose;
+
 
 import java.util.ArrayList;
 import java.util.List;

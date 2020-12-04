@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.google.gson.annotations.Expose;
 
-import io.gsonfire.gson.ExclusionByValueStrategy;
 @JsonIgnoreProperties({"instance", "labels","user"})
 @JsonPropertyOrder({ "instance id", "class label ids", "user id", "dateTime"})
 public class Assignment {
@@ -22,12 +20,12 @@ public class Assignment {
     private User user;
     @JsonFormat (shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
     private Date dateTime;
-    
+
     public Assignment(Instance instance, List<Label> labels, User user, Date dateTime) {
-    	this.dateTime =dateTime;
-    	this.instance =instance;
-    	this.labels = labels;
-    	this.user = user;
+        this.dateTime = dateTime;
+        this.instance = instance;
+        this.labels = labels;
+        this.user = user;
     }
     
     @JsonGetter("user id")

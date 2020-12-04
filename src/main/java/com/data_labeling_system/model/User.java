@@ -8,9 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.google.gson.annotations.Expose;
+
 
 import org.json.*;
+
 
 @JsonIgnoreProperties({"mechanism"})
 @JsonPropertyOrder({ "user id", "user name", "user type" })
