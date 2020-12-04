@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class IOManager {
-    Logger logger;
+    private final Logger logger;
 
     public IOManager() {
         logger = Logger.getLogger(IOManager.class);
