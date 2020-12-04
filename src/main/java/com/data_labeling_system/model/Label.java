@@ -1,10 +1,12 @@
 package com.data_labeling_system.model;
-import org.json.*;
+
+import org.json.JSONObject;
 
 public class Label implements Parsable {
     private int id;
     private String text;
-    public Label(String json){
+
+    public Label(String json) {
         parse(json);
     }
 

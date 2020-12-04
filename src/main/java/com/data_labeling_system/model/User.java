@@ -2,7 +2,7 @@ package com.data_labeling_system.model;
 
 import com.data_labeling_system.mechanism.LabelingMechanism;
 import com.data_labeling_system.mechanism.LabelingMechanismFactory;
-import org.json.*;
+import org.json.JSONObject;
 
 public class User implements Parsable {
     private int id;

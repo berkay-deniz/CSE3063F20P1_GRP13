@@ -8,12 +8,12 @@ public class Assignment {
     private List<Label> labels;
     private User user;
     private Date dateTime;
-    
+
     public Assignment(Instance instance, List<Label> labels, User user, Date dateTime) {
-    	this.dateTime =dateTime;
-    	this.instance =instance;
-    	this.labels = labels;
-    	this.user = user;
+        this.dateTime = dateTime;
+        this.instance = instance;
+        this.labels = labels;
+        this.user = user;
     }
 
     public Instance getInstance() {
