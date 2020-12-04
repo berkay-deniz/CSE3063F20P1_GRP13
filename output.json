@@ -2,10 +2,87 @@
  "maxNumOfLabels": 3,
  "assignments": [
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
     "id": 1
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
+    "id": 1
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
+    "id": 1
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+    "id": 2
    },
    "user": {
     "name": "RandomLabelingMechanism1",
@@ -25,14 +102,133 @@
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
-    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
-    "id": 1
+    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+    "id": 2
    },
    "user": {
     "name": "RandomLabelingMechanism2",
     "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+    "id": 2
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "mesela kamerası aldık yoktu",
+    "id": 3
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "mesela kamerası aldık yoktu",
+    "id": 3
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "mesela kamerası aldık yoktu",
+    "id": 3
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "siteniz çalışmıyor kaç gündür",
+    "id": 4
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
     "type": "RandomBot",
     "mechanism": {}
    },
@@ -42,58 +238,37 @@
    }]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
-    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
-    "id": 1
+    "instance": "siteniz çalışmıyor kaç gündür",
+    "id": 4
    },
    "user": {
-    "name": "MachineLearningLabelingMechanism",
-    "id": 3,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [{
-    "id": 1,
-    "text": "Positive"
-   }]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
-    "id": 2
-   },
-   "user": {
-    "name": "RandomLabelingMechanism1",
-    "id": 1,
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
     "type": "RandomBot",
     "mechanism": {}
    },
    "labels": [
     {
-     "id": 1,
-     "text": "Positive"
+     "id": 3,
+     "text": "Notr"
     },
     {
      "id": 2,
      "text": "Negative"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
     }
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
-    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
-    "id": 2
+    "instance": "siteniz çalışmıyor kaç gündür",
+    "id": 4
    },
    "user": {
-    "name": "RandomLabelingMechanism2",
-    "id": 2,
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
     "type": "RandomBot",
     "mechanism": {}
    },
@@ -103,178 +278,7 @@
    }]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
-    "id": 2
-   },
-   "user": {
-    "name": "MachineLearningLabelingMechanism",
-    "id": 3,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    },
-    {
-     "id": 2,
-     "text": "Negative"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "mesela kamerası aldık yoktu",
-    "id": 3
-   },
-   "user": {
-    "name": "RandomLabelingMechanism1",
-    "id": 1,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 2,
-     "text": "Negative"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "mesela kamerası aldık yoktu",
-    "id": 3
-   },
-   "user": {
-    "name": "RandomLabelingMechanism2",
-    "id": 2,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 3,
-     "text": "Notr"
-    },
-    {
-     "id": 1,
-     "text": "Positive"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "mesela kamerası aldık yoktu",
-    "id": 3
-   },
-   "user": {
-    "name": "MachineLearningLabelingMechanism",
-    "id": 3,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [{
-    "id": 3,
-    "text": "Notr"
-   }]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "siteniz çalışmıyor kaç gündür",
-    "id": 4
-   },
-   "user": {
-    "name": "RandomLabelingMechanism1",
-    "id": 1,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 2,
-     "text": "Negative"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    },
-    {
-     "id": 1,
-     "text": "Positive"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "siteniz çalışmıyor kaç gündür",
-    "id": 4
-   },
-   "user": {
-    "name": "RandomLabelingMechanism2",
-    "id": 2,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 2,
-     "text": "Negative"
-    },
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "siteniz çalışmıyor kaç gündür",
-    "id": 4
-   },
-   "user": {
-    "name": "MachineLearningLabelingMechanism",
-    "id": 3,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 3,
-     "text": "Notr"
-    },
-    {
-     "id": 1,
-     "text": "Positive"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "şimdilik memnun kaldım umarım kararım değişmez",
     "id": 5
@@ -291,17 +295,13 @@
      "text": "Negative"
     },
     {
-     "id": 3,
-     "text": "Notr"
-    },
-    {
      "id": 1,
      "text": "Positive"
     }
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "şimdilik memnun kaldım umarım kararım değişmez",
     "id": 5
@@ -312,13 +312,19 @@
     "type": "RandomBot",
     "mechanism": {}
    },
-   "labels": [{
-    "id": 1,
-    "text": "Positive"
-   }]
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "şimdilik memnun kaldım umarım kararım değişmez",
     "id": 5
@@ -329,13 +335,19 @@
     "type": "RandomBot",
     "mechanism": {}
    },
-   "labels": [{
-    "id": 3,
-    "text": "Notr"
-   }]
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
     "id": 6
@@ -346,23 +358,13 @@
     "type": "RandomBot",
     "mechanism": {}
    },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 2,
-     "text": "Negative"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
     "id": 6
@@ -389,7 +391,7 @@
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
     "id": 6
@@ -408,11 +410,15 @@
     {
      "id": 3,
      "text": "Notr"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
     }
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
     "id": 7
@@ -429,20 +435,83 @@
      "text": "Notr"
     },
     {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
      "id": 2,
      "text": "Negative"
     }
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
     "id": 7
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
+    "id": 7
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "şarjı hemen bitiriyor",
+    "id": 8
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "şarjı hemen bitiriyor",
+    "id": 8
    },
    "user": {
     "name": "RandomLabelingMechanism2",
@@ -456,10 +525,73 @@
    }]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
-    "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
-    "id": 7
+    "instance": "şarjı hemen bitiriyor",
+    "id": 8
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "in yeni kampanyasi cok basarili",
+    "id": 9
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 3,
+    "text": "Notr"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "in yeni kampanyasi cok basarili",
+    "id": 9
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
+   "instance": {
+    "instance": "in yeni kampanyasi cok basarili",
+    "id": 9
    },
    "user": {
     "name": "MachineLearningLabelingMechanism",
@@ -473,67 +605,10 @@
    }]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
-    "instance": "şarjı hemen bitiriyor",
-    "id": 8
-   },
-   "user": {
-    "name": "RandomLabelingMechanism1",
-    "id": 1,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [{
-    "id": 1,
-    "text": "Positive"
-   }]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "şarjı hemen bitiriyor",
-    "id": 8
-   },
-   "user": {
-    "name": "RandomLabelingMechanism2",
-    "id": 2,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "şarjı hemen bitiriyor",
-    "id": 8
-   },
-   "user": {
-    "name": "MachineLearningLabelingMechanism",
-    "id": 3,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [{
-    "id": 1,
-    "text": "Positive"
-   }]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "in yeni kampanyasi cok basarili",
-    "id": 9
+    "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
+    "id": 10
    },
    "user": {
     "name": "RandomLabelingMechanism1",
@@ -542,81 +617,18 @@
     "mechanism": {}
    },
    "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "in yeni kampanyasi cok basarili",
-    "id": 9
-   },
-   "user": {
-    "name": "RandomLabelingMechanism2",
-    "id": 2,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "in yeni kampanyasi cok basarili",
-    "id": 9
-   },
-   "user": {
-    "name": "MachineLearningLabelingMechanism",
-    "id": 3,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
     {
      "id": 2,
      "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
     }
    ]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
-   "instance": {
-    "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
-    "id": 10
-   },
-   "user": {
-    "name": "RandomLabelingMechanism1",
-    "id": 1,
-    "type": "RandomBot",
-    "mechanism": {}
-   },
-   "labels": [{
-    "id": 1,
-    "text": "Positive"
-   }]
-  },
-  {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
     "id": 10
@@ -633,7 +645,7 @@
    }]
   },
   {
-   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "dateTime": "Fri Dec 04 23:52:46 EET 2020",
    "instance": {
     "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
     "id": 10
@@ -644,16 +656,10 @@
     "type": "RandomBot",
     "mechanism": {}
    },
-   "labels": [
-    {
-     "id": 1,
-     "text": "Positive"
-    },
-    {
-     "id": 3,
-     "text": "Notr"
-    }
-   ]
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
   }
  ],
  "instances": [
