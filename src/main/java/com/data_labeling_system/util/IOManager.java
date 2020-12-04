@@ -7,50 +7,33 @@ import java.nio.file.Paths;
 
 import org.json.JSONObject;
 
-import com.data_labeling_system.App;
+import com.data_labeling_system.model.Dataset;
 
-public class IOManager extends App{
+public class IOManager {
 
 	public IOManager(){
-		
+
 	}
-	
+
 	public String readInputFile(String fileName) throws IOException {
 		String inputJSON = new String(Files.readAllBytes(Paths.get(fileName)));
-	
-         return inputJSON;
-	} 
-	public void printFinalDataset(String DatasetJSON, String outputFileName)
-	{
-		
+
+		return inputJSON;
+	}
+
+	public void printFinalDataset(Dataset datasetJSON, String outputFileName) {
+		System.out.println(datasetJSON);
 		JSONObject j = new JSONObject();
 
-        j.put("name","AFY");
+		String fileName = "output.json";
 
-        String fileName ="output.json";
+		try (FileWriter file = new FileWriter(fileName)) {
 
-        try(FileWriter file = new FileWriter(fileName)) {
+			file.write(j.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-            file.write(j.toString());
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-		
-		
-		/*	String name="asdasdasdasdasd";
-		JSONObject JSONObject = new JSONObject();
-		JSONObject.put(name,true);
-		
-		
-		try (FileWriter file = new FileWriter("output.json")) {
-			 
-            file.write(DatasetJSON.tojSONObject());
-            file.flush();
- 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-		System.out.println(JSONObject);*/
 	}
 }

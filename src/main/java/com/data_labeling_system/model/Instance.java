@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 public class Instance implements Parsable {
     private int id;
-    private String content;
+    private String instance;
 
     public Instance(String json) {
         parse(json);
@@ -14,7 +14,7 @@ public class Instance implements Parsable {
     public void parse(String json) {
         JSONObject object = new JSONObject(json);
         id = object.getInt("id");
-        content = object.getString("content");
+        instance = object.getString("instance");
     }
 
     public int getId() {
@@ -25,11 +25,11 @@ public class Instance implements Parsable {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public String getInstance() {
+        return instance;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setinstance(String instance) {
+        this.instance = instance;
     }
 }
