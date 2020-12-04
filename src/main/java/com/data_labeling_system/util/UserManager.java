@@ -25,7 +25,7 @@ public class UserManager {
 		for (int i = 0; i < userArray.length(); i++) {
 			User user = new User(userArray.getJSONObject(i).toString());
 			this.users.add(user);
-			logger.info("User with name '" + user.getName() + "' created successfully.");
+			logger.info("Created '" + user.getName() + "' as '" + user.getType() + "'.");
 		}
 
 	}
