@@ -13,6 +13,7 @@ public class UserManager {
 		JSONObject object = new JSONObject(json);
 		JSONArray userArray = object.getJSONArray("users");
 		this.users = new ArrayList<>();
+		
 		for (int i = 0; i < userArray.length(); i++) {
 			this.users.add(new User(userArray.getJSONObject(i).toString()));
 		}
