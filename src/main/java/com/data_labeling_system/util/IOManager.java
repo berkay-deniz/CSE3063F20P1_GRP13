@@ -11,29 +11,29 @@ import com.data_labeling_system.model.Dataset;
 
 public class IOManager {
 
-	public IOManager(){
+    public IOManager() {
 
-	}
+    }
 
-	public String readInputFile(String fileName) throws IOException {
-		String inputJSON = new String(Files.readAllBytes(Paths.get(fileName)));
+    public String readInputFile(String fileName) throws IOException {
+        String inputJSON = new String(Files.readAllBytes(Paths.get(fileName)));
 
-		return inputJSON;
-	}
+        return inputJSON;
+    }
 
-	public void printFinalDataset(Dataset datasetJSON, String outputFileName) {
-		System.out.println(datasetJSON);
-		JSONObject j = new JSONObject();
+    public void printFinalDataset(Dataset dataset, String outputFileName) {
 
-		String fileName = "output.json";
+        JSONObject j = new JSONObject(dataset);
+        System.out.println(j.toString(1));
+        String fileName = "output.json";
 
-		try (FileWriter file = new FileWriter(fileName)) {
+        try (FileWriter file = new FileWriter(fileName)) {
 
-			file.write(j.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            file.write(j.toString(1));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-	}
+    }
 }

@@ -1,0 +1,717 @@
+{
+ "maxNumOfLabels": 3,
+ "assignments": [
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
+    "id": 1
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
+    "id": 1
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 2,
+    "text": "Negative"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
+    "id": 1
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+    "id": 2
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+    "id": 2
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 2,
+    "text": "Negative"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+    "id": 2
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "mesela kamerası aldık yoktu",
+    "id": 3
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "mesela kamerası aldık yoktu",
+    "id": 3
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "mesela kamerası aldık yoktu",
+    "id": 3
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 3,
+    "text": "Notr"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "siteniz çalışmıyor kaç gündür",
+    "id": 4
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "siteniz çalışmıyor kaç gündür",
+    "id": 4
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "siteniz çalışmıyor kaç gündür",
+    "id": 4
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "şimdilik memnun kaldım umarım kararım değişmez",
+    "id": 5
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "şimdilik memnun kaldım umarım kararım değişmez",
+    "id": 5
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "şimdilik memnun kaldım umarım kararım değişmez",
+    "id": 5
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 3,
+    "text": "Notr"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
+    "id": 6
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
+    "id": 6
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
+    "id": 6
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 2,
+     "text": "Negative"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
+    "id": 7
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 3,
+     "text": "Notr"
+    },
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
+    "id": 7
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 3,
+    "text": "Notr"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
+    "id": 7
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 3,
+    "text": "Notr"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "şarjı hemen bitiriyor",
+    "id": 8
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "şarjı hemen bitiriyor",
+    "id": 8
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "şarjı hemen bitiriyor",
+    "id": 8
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "in yeni kampanyasi cok basarili",
+    "id": 9
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "in yeni kampanyasi cok basarili",
+    "id": 9
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "in yeni kampanyasi cok basarili",
+    "id": 9
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 2,
+     "text": "Negative"
+    }
+   ]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
+    "id": 10
+   },
+   "user": {
+    "name": "RandomLabelingMechanism1",
+    "id": 1,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
+    "id": 10
+   },
+   "user": {
+    "name": "RandomLabelingMechanism2",
+    "id": 2,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [{
+    "id": 1,
+    "text": "Positive"
+   }]
+  },
+  {
+   "dateTime": "Fri Dec 04 22:19:32 TRT 2020",
+   "instance": {
+    "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
+    "id": 10
+   },
+   "user": {
+    "name": "MachineLearningLabelingMechanism",
+    "id": 3,
+    "type": "RandomBot",
+    "mechanism": {}
+   },
+   "labels": [
+    {
+     "id": 1,
+     "text": "Positive"
+    },
+    {
+     "id": 3,
+     "text": "Notr"
+    }
+   ]
+  }
+ ],
+ "instances": [
+  {
+   "instance": "aldım eve gidince kutusundan çıkardım hasarlıydı",
+   "id": 1
+  },
+  {
+   "instance": "yöneticisi bizzat ilgilenerek gerekli özverili örneği göstererek güzel teşekkürler",
+   "id": 2
+  },
+  {
+   "instance": "mesela kamerası aldık yoktu",
+   "id": 3
+  },
+  {
+   "instance": "siteniz çalışmıyor kaç gündür",
+   "id": 4
+  },
+  {
+   "instance": "şimdilik memnun kaldım umarım kararım değişmez",
+   "id": 5
+  },
+  {
+   "instance": "durduğu yerde sessiz moduna geçmesi başta fazla giden bataryasının ayda kapasitesinin ciddi anlamda düşmesi dışında fiyatı düşünüldüğünde iyi",
+   "id": 6
+  },
+  {
+   "instance": "filmin büyük artısı uzun zamandır görmediğimiz oyunculuğunu döktürmesini sağlamasıydı",
+   "id": 7
+  },
+  {
+   "instance": "şarjı hemen bitiriyor",
+   "id": 8
+  },
+  {
+   "instance": "in yeni kampanyasi cok basarili",
+   "id": 9
+  },
+  {
+   "instance": "kullanışlı fiyata alınabilecek güzel düsünmeden alabilirsiniz",
+   "id": 10
+  }
+ ],
+ "name": "Sentiment Dataset",
+ "id": 1,
+ "labels": [
+  {
+   "id": 1,
+   "text": "Positive"
+  },
+  {
+   "id": 2,
+   "text": "Negative"
+  },
+  {
+   "id": 3,
+   "text": "Notr"
+  }
+ ]
+}
