@@ -14,6 +14,7 @@ public class User implements Parsable {
         this.mechanism = labelingMechanismFactory.makeLabelingMechanism(this.type);
     }
 
+    @Override
     public void parse(String json) {
         JSONObject object = new JSONObject(json);
         this.id = object.getInt("user id");
