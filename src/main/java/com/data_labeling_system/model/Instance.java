@@ -30,7 +30,7 @@ public class Instance implements Parsable {
         return instance;
     }
 
-    public void setinstance(String instance) {
+    public void setInstance(String instance) {
         this.instance = instance;
     }
 }
