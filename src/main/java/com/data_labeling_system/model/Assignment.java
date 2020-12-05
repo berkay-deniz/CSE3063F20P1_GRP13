@@ -12,12 +12,10 @@ import java.util.List;
 @JsonIgnoreProperties({"instance", "labels", "user"})
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
 public class Assignment {
-
     private Instance instance;
-
     private List<Label> labels;
-
     private User user;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
     private Date dateTime;
 
@@ -31,17 +29,16 @@ public class Assignment {
     @JsonGetter("user id")
     public int getUserId() {
         return user.getId();
-
     }
 
     @JsonGetter("instance id")
     public int getInstanceId() {
-
         return instance.getId();
     }
 
     @JsonGetter("class label ids")
     public ArrayList<Integer> getLabelIds() {
+        // Retrieve ID's of the labels from the List
         ArrayList<Integer> temp = new ArrayList<>();
 
         for (Label label : this.labels) {
@@ -50,7 +47,6 @@ public class Assignment {
 
         return temp;
     }
-
 
     public Instance getInstance() {
         return instance;

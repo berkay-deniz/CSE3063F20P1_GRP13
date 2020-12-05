@@ -3,9 +3,7 @@ package com.data_labeling_system.model;
 import org.json.JSONObject;
 
 public class Instance implements Parsable {
-
     private int id;
-
     private String instance;
 
     public Instance(String json) {
@@ -14,6 +12,7 @@ public class Instance implements Parsable {
 
     @Override
     public void parse(String json) {
+        // Parse the Instance json using org.json library
         JSONObject object = new JSONObject(json);
         id = object.getInt("id");
         instance = object.getString("instance");

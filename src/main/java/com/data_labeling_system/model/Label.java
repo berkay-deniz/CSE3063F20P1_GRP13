@@ -33,6 +33,7 @@ public class Label implements Parsable {
 
     @Override
     public void parse(String json) {
+        // Parse the Label json using org.json library
         JSONObject object = new JSONObject(json);
         this.id = object.getInt("label id");
         this.text = object.getString("label text");

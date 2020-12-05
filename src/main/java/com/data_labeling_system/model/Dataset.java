@@ -37,6 +37,7 @@ public class Dataset implements Parsable {
 
     @Override
     public void parse(String json) {
+        // Parse the Dataset json using org.json library and create Lists
         JSONObject object = new JSONObject(json);
         id = object.getInt("dataset id");
         name = object.getString("dataset name");

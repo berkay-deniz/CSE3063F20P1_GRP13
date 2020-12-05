@@ -28,6 +28,7 @@ public class User implements Parsable {
 
     @Override
     public void parse(String json) {
+        // Parse the User json using org.json library
         JSONObject object = new JSONObject(json);
         this.id = object.getInt("user id");
         this.name = object.getString("user name");
