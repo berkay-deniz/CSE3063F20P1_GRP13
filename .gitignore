@@ -87,4 +87,4 @@ nb-configuration.xml
 *.txt
 /log
 *.json
-Log4j
+*.log
