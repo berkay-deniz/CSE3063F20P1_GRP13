@@ -18,7 +18,39 @@ public class DataLabelingSystem {
 
     }
 
-    public void startSystem() throws IOException {
+    public Dataset getDataset() {
+		return dataset;
+	}
+
+	public void setDataset(Dataset dataset) {
+		this.dataset = dataset;
+	}
+
+	public IOManager getIoManager() {
+		return ioManager;
+	}
+
+	public void setIoManager(IOManager ioManager) {
+		this.ioManager = ioManager;
+	}
+
+	public UserManager getUserManager() {
+		return userManager;
+	}
+
+	public void setUserManager(UserManager userManager) {
+		this.userManager = userManager;
+	}
+
+	public InstanceTagger getInstanceTagger() {
+		return instanceTagger;
+	}
+
+	public void setInstanceTagger(InstanceTagger instanceTagger) {
+		this.instanceTagger = instanceTagger;
+	}
+
+	public void startSystem() throws IOException {
     	// Read json files and keep as string
     	String configJson = this.ioManager.readInputFile("config.json");
         String datasetJson = this.ioManager.readInputFile("input-2.json");
