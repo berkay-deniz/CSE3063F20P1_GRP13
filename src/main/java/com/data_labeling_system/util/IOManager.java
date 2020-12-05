@@ -20,7 +20,8 @@ public class IOManager {
     }
 
     public String readInputFile(String fileName) throws IOException {
-        String json = null;
+        // Read json file and return string value.
+    	String json = null;
         try {
             json = new String(Files.readAllBytes(Paths.get(fileName)));
         } catch (NoSuchFileException e) {
@@ -31,7 +32,8 @@ public class IOManager {
     }
 
     public void printFinalDataset(Dataset dataset, String outputFileName) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+    	// Write the final dataset as jsonfile.
+    	ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         writer.writeValue(new File(outputFileName), dataset);
         logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
