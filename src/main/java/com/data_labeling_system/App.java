@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class App {
     public static void main(String[] args) throws IOException {
-        //Create DataLabelingSystem object to start system.
+        // Create a DataLabelingSystem instance to start system
     	DataLabelingSystem dataLabelingSystem = new DataLabelingSystem();
         dataLabelingSystem.startSystem();
     }

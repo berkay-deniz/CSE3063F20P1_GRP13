@@ -12,18 +12,18 @@ public class UserManager {
     private final Logger logger;
 
     private List<User> users;
-    
+
     public UserManager() {
         logger = Logger.getLogger(UserManager.class);
     }
 
     public void createUsers(String json) {
-        // Create json object and keep users in jsonArray.
-    	JSONObject object = new JSONObject(json);
+        // Create json object and keep users in a json array
+        JSONObject object = new JSONObject(json);
         JSONArray userArray = object.getJSONArray("users");
-        // Create users list. 
+        // Create users list
         this.users = new ArrayList<>();
-        // Create user objects and send the values ​​we hold in jsonarray into objects
+        // Create user objects using the values we hold in json array into objects
         for (int i = 0; i < userArray.length(); i++) {
             User user = new User(userArray.getJSONObject(i).toString());
             this.users.add(user);
