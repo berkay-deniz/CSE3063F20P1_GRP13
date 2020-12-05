@@ -57,7 +57,7 @@ public class DataLabelingSystem {
 		logger.info("The system has started");
     	// Read json files and keep as string
     	String configJson = this.ioManager.readInputFile("config.json");
-        String datasetJson = this.ioManager.readInputFile("input-2.json");
+        String datasetJson = this.ioManager.readInputFile("input.json");
         // Create dataset and user objects using the json strings
         dataset = new Dataset(datasetJson);
         userManager.createUsers(configJson);
