@@ -36,8 +36,8 @@ public class InstanceTagger {
 
                     logger.info("user id:" + user.getId() + " " + user.getName() + " tagged instance id:"
                             + assignment.getInstanceId() + " with class label:" + assignment.getLabels().get(j).getId()
-                            + ":" + assignment.getLabels().get(j).getText() + "instance:"
-                            + assignment.getInstance().getInstance());
+                            + ":" + assignment.getLabels().get(j).getText() + ", instance:'"
+                            + assignment.getInstance().getInstance() + "'");
                 }
 
             }

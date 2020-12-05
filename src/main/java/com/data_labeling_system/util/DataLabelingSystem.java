@@ -4,15 +4,18 @@ import com.data_labeling_system.model.Dataset;
 
 import java.io.IOException;
 
-public class DataLabelingSystem {
+import org.apache.log4j.Logger;
 
+public class DataLabelingSystem {
+	private final Logger logger;
     private Dataset dataset;
     private IOManager ioManager;
     private UserManager userManager;
     private InstanceTagger instanceTagger;
 
     public DataLabelingSystem() {
-        this.ioManager = new IOManager();
+    	logger = Logger.getLogger(DataLabelingSystem.class);
+    	this.ioManager = new IOManager();
         this.userManager = new UserManager();
         this.instanceTagger = new InstanceTagger();
 
@@ -51,6 +54,7 @@ public class DataLabelingSystem {
 	}
 
 	public void startSystem() throws IOException {
+		logger.info("The system has started");
     	// Read json files and keep as string
     	String configJson = this.ioManager.readInputFile("config.json");
         String datasetJson = this.ioManager.readInputFile("input-2.json");
