@@ -3,73 +3,100 @@ package com.data_labeling_system.util;
 import com.data_labeling_system.model.Dataset;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
+import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class DataLabelingSystem {
-	private final Logger logger;
-    private Dataset dataset;
+    private final Logger logger;
+    private ArrayList<Dataset> datasets;
     private IOManager ioManager;
     private UserManager userManager;
     private InstanceTagger instanceTagger;
 
     public DataLabelingSystem() {
-    	logger = Logger.getLogger(DataLabelingSystem.class);
-    	this.ioManager = new IOManager();
+        logger = Logger.getLogger(DataLabelingSystem.class);
+        this.ioManager = new IOManager();
         this.userManager = new UserManager();
         this.instanceTagger = new InstanceTagger();
 
     }
 
     public Dataset getDataset() {
-		return dataset;
-	}
+        return dataset;
+    }
 
-	public void setDataset(Dataset dataset) {
-		this.dataset = dataset;
-	}
+    public void setDataset(Dataset dataset) {
+        this.dataset = dataset;
+    }
 
-	public IOManager getIoManager() {
-		return ioManager;
-	}
+    public IOManager getIoManager() {
+        return ioManager;
+    }
 
-	public void setIoManager(IOManager ioManager) {
-		this.ioManager = ioManager;
-	}
+    public void setIoManager(IOManager ioManager) {
+        this.ioManager = ioManager;
+    }
 
-	public UserManager getUserManager() {
-		return userManager;
-	}
+    public UserManager getUserManager() {
+        return userManager;
+    }
 
-	public void setUserManager(UserManager userManager) {
-		this.userManager = userManager;
-	}
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
 
-	public InstanceTagger getInstanceTagger() {
-		return instanceTagger;
-	}
+    public InstanceTagger getInstanceTagger() {
+        return instanceTagger;
+    }
 
-	public void setInstanceTagger(InstanceTagger instanceTagger) {
-		this.instanceTagger = instanceTagger;
-	}
+    public void setInstanceTagger(InstanceTagger instanceTagger) {
+        this.instanceTagger = instanceTagger;
+    }
 
-	public void startSystem() throws IOException {
-		logger.info("The system has started");
-    	// Read json files and keep as string
-    	String configJson = this.ioManager.readInputFile("config.json");
-        String datasetJson = this.ioManager.readInputFile("input.json");
-        // Create dataset and user objects using the json strings
-        dataset = new Dataset(datasetJson);
+    public void startSystem() throws IOException {
+        logger.info("The system has started");
+        // Read json files and keep as string
+        String configJson = this.ioManager.readInputFile("config.json");
+        userManager.createUsers(configJson);
+        JSONObject configObject = new JSONObject(configJson);
+        JSONArray datasetArray = configObject.getJSONArray("datasets");
+        int datasetId = configObject.getInt("currentDatasetId");
+        Dataset currentDataset = null;
+        String inputFile = null;
+        for (int i = 0; i < datasetArray.length(); i++) {
+            JSONObject datasetObject = datasetArray.getJSONObject(i);
+            int id = datasetObject.getInt("id");
+
+            if (ioManager.doesFileExist("outputs/id.json")) {
+                inputFile = "outputs/id.json";
+            } else {
+                inputFile = datasetObject.getString("filePath");
+            }
+
+            String datasetJson = this.ioManager.readInputFile(inputFile);
+            JSONArray registeredUserIds = datasetObject.getJSONArray("users");
+
+            Dataset dataset = new Dataset(datasetJson, registeredUserIds);
+            datasets.add(dataset);
+            if (id == datasetId) {
+                currentDataset = dataset;
+            }
+        }
         userManager.createUsers(configJson);
         // Assign users using the UserManager class
-        this.dataset.setUsers(userManager.getUsers());
+        currentDataset.setUsers(userManager.getUsers());
         // Assign updated objects to the instanceTagger object
-        this.instanceTagger.setDataset(this.dataset);
-        this.instanceTagger.setUsers(this.userManager.getUsers());
+        this.instanceTagger.setDataset(currentDataset);
+        ArrayList<User> activeUsers = new ArrayList<>(currentDataset.getUsers());
+        this.instanceTagger.setUsers(activeUsers);
         // Assign label to instances
         this.instanceTagger.assignLabels();
         // Take final dataset and write as json file
-        this.dataset = this.instanceTagger.getDataset();
-        this.ioManager.printFinalDataset(this.dataset, "output.json");
+        currentDataset = this.instanceTagger.getDataset();
+        this.ioManager.printFinalDataset(currentDataset, "outputs/id.json");
     }
 }
