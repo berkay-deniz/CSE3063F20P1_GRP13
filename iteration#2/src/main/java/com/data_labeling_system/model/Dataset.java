@@ -35,8 +35,9 @@ public class Dataset implements Parsable {
 
     private HashMap<User, Integer> nextInstancesToBeLabelled;
 
-    public Dataset(String json) {
+    public Dataset(String json, JSONArray registeredUserIds) {
         parse(json);
+        // write registeredUserIds into dataset.
     }
 
     @Override
