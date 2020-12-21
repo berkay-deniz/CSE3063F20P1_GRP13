@@ -8,28 +8,32 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-@JsonPropertyOrder({ "dataset id", "dataset name","maximum number of labels per instance", "class labels", "instances",
-	"class label assignments","users" })
+
+@JsonPropertyOrder({"dataset id", "dataset name", "maximum number of labels per instance", "class labels", "instances",
+        "class label assignments", "users"})
 public class Dataset implements Parsable {
-	@JsonProperty("dataset id")
+    @JsonProperty("dataset id")
     private int id;
-	
-	@JsonProperty("dataset name")
+
+    @JsonProperty("dataset name")
     private String name;
-    
-	@JsonProperty("maximum number of labels per instance")
+
+    @JsonProperty("maximum number of labels per instance")
     private int maxNumOfLabels;
-	
-	@JsonProperty("class labels")
+
+    @JsonProperty("class labels")
     private List<Label> labels;
-	
+
     private List<Instance> instances;
-    
+
     @JsonProperty("class label assignments")
     private List<Assignment> assignments;
-	
+
     private List<User> users;
+
+    private HashMap<Integer, Integer> nextInstancesToBeLabelled;
 
     public Dataset(String json) {
         parse(json);
@@ -111,4 +115,9 @@ public class Dataset implements Parsable {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public HashMap<Integer, Integer> getNextInstancesToBeLabelled() {
+        return nextInstancesToBeLabelled;
+    }
+
 }

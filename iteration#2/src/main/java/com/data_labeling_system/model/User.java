@@ -13,10 +13,13 @@ import org.json.JSONObject;
 public class User implements Parsable {
     @JsonProperty("user id")
     private int id;
+
     @JsonProperty("user name")
     private String name;
     @JsonProperty("user type")
     private String type;
+
+    private double consistencyCheckProbability;
 
     private LabelingMechanism mechanism;
 
@@ -66,4 +69,9 @@ public class User implements Parsable {
     public void setMechanism(LabelingMechanism mechanism) {
         this.mechanism = mechanism;
     }
+
+    public double getConsistencyCheckProbability() {
+        return consistencyCheckProbability;
+    }
+
 }
