@@ -76,8 +76,8 @@ public class UserStatistic {
         for (List<Label> labels : assignedLabelsForInstances.values()) {
             Map<Label, Integer> labelOccurrences = new HashMap<>();
             for (Label label : labels) {
-                Integer val = labelOccurrences.get(label);
-                labelOccurrences.put(label, val == null ? 1 : val + 1);
+                Integer occurrence = labelOccurrences.get(label);
+                labelOccurrences.put(label, occurrence == null ? 1 : occurrence + 1);
             }
 
             Map.Entry<Label, Integer> mostRecurrent = null;
@@ -97,6 +97,7 @@ public class UserStatistic {
         List<Assignment> assignments = userAssignmentsForDatasets.get(dataset);
         if (assignment == null) {
             assignments = new ArrayList<>();
+            userAssignmentsForDatasets.put(dataset, assignments);
             numOfDatasetsAssigned++;
         }
         assignments.add(assignment);
