@@ -33,7 +33,7 @@ public class Dataset implements Parsable {
 
     private List<User> users;
 
-    private HashMap<Integer, Integer> nextInstancesToBeLabelled;
+    private HashMap<User, Integer> nextInstancesToBeLabelled;
 
     public Dataset(String json) {
         parse(json);
@@ -116,7 +116,7 @@ public class Dataset implements Parsable {
         this.users = users;
     }
 
-    public HashMap<Integer, Integer> getNextInstancesToBeLabelled() {
+    public HashMap<User, Integer> getNextInstancesToBeLabelled() {
         return nextInstancesToBeLabelled;
     }
 

@@ -7,7 +7,6 @@ import com.data_labeling_system.model.Instance;
 import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InstanceTagger {
@@ -21,25 +20,41 @@ public class InstanceTagger {
     }
 
     public void assignLabels() {
-        ArrayList<Assignment> assignments = new ArrayList<>();
-        logger.info("The list of assigment was created succesfully.");
+        List<Assignment> assignments = this.dataset.getAssignments();
+        logger.info("The list of assigment was created successfully.");
 
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
-        for (int i = 0; i < dataset.getInstances().size(); i++) {
-            for (User user : users) {
-                LabelingMechanism labelingMechanism = user.getMechanism();
-                Assignment assignment = labelingMechanism.assign(user, dataset.getInstances().get(i),
+        while (!this.users.isEmpty()) {
+            for (int i = 0; i < this.users.size(); i++) {
+                User currentUser = this.users.get(i);
+                int nextInstanceToBeLabelled = this.dataset.getNextInstancesToBeLabelled().get(currentUser);
+
+                //If the user has completed all the labellings in current dataset
+                if (this.dataset.getInstances().size() <= nextInstanceToBeLabelled) {
+                    this.users.remove(i);
+                    i--;
+                    continue;
+                }
+                int randomNumber = (int) ((Math.random() * 100) + 1);
+                int currentInstanceToBeLabelled =
+                        ((randomNumber <= currentUser.getConsistencyCheckProbability() * 100)) ?
+                                (int) (Math.random() * nextInstanceToBeLabelled) : nextInstanceToBeLabelled;
+
+                LabelingMechanism labelingMechanism = currentUser.getMechanism();
+                Assignment assignment = labelingMechanism.assign(currentUser, dataset.getInstances().get(currentInstanceToBeLabelled),
                         dataset.getLabels(), dataset.getMaxNumOfLabels());
                 assignments.add(assignment);
 
                 for (int j = 0; j < assignment.getLabels().size(); j++) {
 
-                    logger.info("user id:" + user.getId() + " " + user.getName() + " tagged instance id:"
+                    logger.info("user id:" + currentUser.getId() + " " + currentUser.getName() + " tagged instance id:"
                             + assignment.getInstanceId() + " with class label:" + assignment.getLabels().get(j).getId()
                             + ":" + assignment.getLabels().get(j).getText() + ", instance:'"
                             + assignment.getInstance().getInstance() + "'");
                 }
+                this.dataset.getNextInstancesToBeLabelled().put(currentUser, ++nextInstanceToBeLabelled);
 
+                //Output and other assignments...
             }
         }
         this.dataset.setAssignments(assignments);
