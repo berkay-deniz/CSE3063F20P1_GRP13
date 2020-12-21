@@ -36,6 +36,7 @@ public class User implements Parsable {
         this.id = object.getInt("user id");
         this.name = object.getString("user name");
         this.type = object.getString("user type");
+        this.consistencyCheckProbability=object.getDouble("consistencyCheckProbability");
     }
 
     public int getId() {

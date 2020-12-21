@@ -4,6 +4,7 @@ import com.data_labeling_system.model.Dataset;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
@@ -12,7 +13,7 @@ import org.json.JSONObject;
 
 public class DataLabelingSystem {
     private final Logger logger;
-    private ArrayList<Dataset> datasets;
+    private List<Dataset> datasets;
     private IOManager ioManager;
     private UserManager userManager;
     private InstanceTagger instanceTagger;
@@ -25,12 +26,12 @@ public class DataLabelingSystem {
 
     }
 
-    public Dataset getDataset() {
-        return dataset;
+    public List<Dataset> getDataset() {
+        return datasets ;
     }
 
-    public void setDataset(Dataset dataset) {
-        this.dataset = dataset;
+    public void setDataset(List<Dataset> datasets) {
+        this.datasets=datasets;
     }
 
     public IOManager getIoManager() {
@@ -80,15 +81,26 @@ public class DataLabelingSystem {
             String datasetJson = this.ioManager.readInputFile(inputFile);
             JSONArray registeredUserIds = datasetObject.getJSONArray("users");
 
-            Dataset dataset = new Dataset(datasetJson, registeredUserIds);
+            Dataset dataset = new Dataset(datasetJson);
             datasets.add(dataset);
+            List <User> configUsers = new ArrayList<User>();
+
+
+
+            for(int j = 0 ; j<registeredUserIds.length();j++) {
+
+                configUsers.add(userManager.findUser(registeredUserIds.getInt(j)));
+            }
+            dataset.setUsers(configUsers);
+
+
             if (id == datasetId) {
                 currentDataset = dataset;
             }
         }
-        userManager.createUsers(configJson);
-        // Assign users using the UserManager class
-        currentDataset.setUsers(userManager.getUsers());
+
+
+
         // Assign updated objects to the instanceTagger object
         this.instanceTagger.setDataset(currentDataset);
         ArrayList<User> activeUsers = new ArrayList<>(currentDataset.getUsers());

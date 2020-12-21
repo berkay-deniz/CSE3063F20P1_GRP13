@@ -3,17 +3,38 @@
     {
       "user id": 1,
       "user name": "RandomLabelingMechanism1",
-      "user type": "RandomBot"
+      "user type": "RandomBot",
+      "consistencyCheckProbability": 0.1
     },
     {
       "user id": 2,
       "user name": "RandomLabelingMechanism2",
-      "user type": "RandomBot"
+      "user type": "RandomBot",
+      "consistencyCheckProbability": 0.1
     },
     {
       "user id": 3,
       "user name": "MachineLearningLabelingMechanism",
-      "user type": "RandomBot"
+      "user type": "RandomBot",
+      "consistencyCheckProbability": 0.1
     }
+  ],
+  "currentDatasetId": 1 ,
+  "datasets": [
+    {
+      "id": 1,
+      "name": "dataset1",
+      "filePath":"input1.json",
+      "users": [1,2,3]
+    },
+    {
+      "id": 2,
+      "name": "dataset2",
+      "filePath": "input2.json",
+      "users": [2,3]
+    }
+
+
+
   ]
 }
