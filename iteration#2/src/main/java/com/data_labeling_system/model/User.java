@@ -20,6 +20,8 @@ public class User implements Parsable {
     private String type;
     private UserStatistic statistic;
 
+    private double consistencyCheckProbability;
+
     private LabelingMechanism mechanism;
 
     public User(String json) {
@@ -35,6 +37,7 @@ public class User implements Parsable {
         this.id = object.getInt("user id");
         this.name = object.getString("user name");
         this.type = object.getString("user type");
+        this.consistencyCheckProbability = object.getDouble("consistencyCheckProbability");
     }
 
     public int getId() {
@@ -72,4 +75,9 @@ public class User implements Parsable {
     public UserStatistic getStatistic() {
         return statistic;
     }
+
+    public double getConsistencyCheckProbability() {
+        return consistencyCheckProbability;
+    }
+
 }

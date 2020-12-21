@@ -31,6 +31,16 @@ public class UserManager {
         }
     }
 
+    public User findUser(int userId) {
+
+        for (User user : users) {
+            if(user.getId()==userId)
+                return user;
+        }
+        return null ;
+
+    }
+
     public void setUsers(List<User> users) {
         this.users = users;
     }
