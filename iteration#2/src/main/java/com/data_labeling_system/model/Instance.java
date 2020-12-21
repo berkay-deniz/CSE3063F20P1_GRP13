@@ -1,10 +1,12 @@
 package com.data_labeling_system.model;
 
+import com.data_labeling_system.statistic.InstanceStatistic;
 import org.json.JSONObject;
 
 public class Instance implements Parsable {
     private int id;
     private String instance;
+    private InstanceStatistic statistic;
 
     public Instance(String json) {
         parse(json);
@@ -32,5 +34,9 @@ public class Instance implements Parsable {
 
     public void setInstance(String instance) {
         this.instance = instance;
+    }
+
+    public InstanceStatistic getStatistic() {
+        return statistic;
     }
 }

@@ -2,6 +2,7 @@ package com.data_labeling_system.model;
 
 import com.data_labeling_system.mechanism.LabelingMechanism;
 import com.data_labeling_system.mechanism.LabelingMechanismFactory;
+import com.data_labeling_system.statistic.UserStatistic;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -17,6 +18,7 @@ public class User implements Parsable {
     private String name;
     @JsonProperty("user type")
     private String type;
+    private UserStatistic statistic;
 
     private LabelingMechanism mechanism;
 
@@ -65,5 +67,9 @@ public class User implements Parsable {
 
     public void setMechanism(LabelingMechanism mechanism) {
         this.mechanism = mechanism;
+    }
+
+    public UserStatistic getStatistic() {
+        return statistic;
     }
 }
