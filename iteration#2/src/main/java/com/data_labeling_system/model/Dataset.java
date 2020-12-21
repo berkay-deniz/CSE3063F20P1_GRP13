@@ -53,6 +53,14 @@ public class Dataset implements Parsable {
         for (int i = 0; i < labelsJSON.length(); i++) {
             labels.add(new Label(labelsJSON.getJSONObject(i).toString()));
         }
+        if (object.has("class label assignments")) {
+            JSONArray assignmentsJSON = object.getJSONArray("class label assignments");
+            assignments = new ArrayList<>();
+            for (int i = 0; i < assignmentsJSON.length(); i++) {
+                assignments.add(new Assignment(assignmentsJSON.getJSONObject(i).toString()));
+            }
+        }
+
 
         JSONArray instancesJSON = object.getJSONArray("instances");
         instances = new ArrayList<>();

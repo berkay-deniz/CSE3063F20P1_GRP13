@@ -11,7 +11,7 @@ import java.util.List;
 
 @JsonIgnoreProperties({"instance", "labels", "user"})
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
-public class Assignment {
+public class Assignment implements Parsable {
     private Instance instance;
     private List<Label> labels;
     private User user;
@@ -24,6 +24,10 @@ public class Assignment {
         this.instance = instance;
         this.labels = labels;
         this.user = user;
+    }
+
+    public Assignment(String assignmentJSON) {
+        parse(assignmentJSON);
     }
 
     @JsonGetter("user id")
@@ -78,5 +82,10 @@ public class Assignment {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    @Override
+    public void parse(String json) {
+
     }
 }
