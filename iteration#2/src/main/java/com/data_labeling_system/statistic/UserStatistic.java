@@ -23,7 +23,53 @@ public class UserStatistic {
         datasetCompletenessPercentages = new HashMap<>();
         datasetConsistencyPercentages = new HashMap<>();
     }
-        
+
+    public void calculateMetrics() {
+        Set<Instance> uniqueInstances = new HashSet<>();
+        List<Double> timesSpentForLabeling = new ArrayList<>();
+        double totalTimeSpent = 0;
+
+        for (Map.Entry<Dataset, List<Assignment>> entry : userAssignmentsForDatasets.entrySet()) {
+            Dataset dataset = entry.getKey();
+            List<Assignment> assignments = entry.getValue();
+            Map<Instance, List<Label>> assignedLabelsForInstances = new HashMap<>();
+
+            int numOfUniqueDatasetAssignments = 0;
+            for (Assignment assignment: assignments) {
+                Instance instance = assignment.getInstance();
+
+                // To calculate unique instance assignments
+                if (!uniqueInstances.contains(instance)) {
+                    uniqueInstances.add(instance);
+                    numOfUniqueDatasetAssignments++;
+                }
+
+                // To calculate dataset consistency percentage
+                assignedLabelsForInstances.put(instance, assignment.getLabels());
+
+                // To calculate average & standard deviation of time spent in labeling
+                timesSpentForLabeling.add(assignment.getTimeSpent());
+                totalTimeSpent += assignment.getTimeSpent();
+            }
+            numOfUniqueInstanceAssignments += numOfUniqueDatasetAssignments;
+
+            // Calculate dataset completeness percentage
+            double completeness = (double) (numOfUniqueDatasetAssignments) / dataset.getInstances().size();
+            datasetCompletenessPercentages.put(dataset, completeness);
+
+            // Calculate consistency percentage
+            double consistency = calculateConsistencyPercentage(assignedLabelsForInstances);
+            datasetConsistencyPercentages.put(dataset, consistency);
+        }
+
+        avgTimeSpentInLabeling = totalTimeSpent / timesSpentForLabeling.size();
+
+        for (double timeSpent: timesSpentForLabeling) {
+            stdDevOfTimeInLabeling += Math.pow(timeSpent - avgTimeSpentInLabeling, 2);
+        }
+        stdDevOfTimeInLabeling = Math.sqrt(stdDevOfTimeInLabeling / timesSpentForLabeling.size());
+    }
+
     private double calculateConsistencyPercentage(Map<Instance, List<Label>> assignedLabelsForInstances) {
         double sumOfConsistencies = 0;
 
@@ -45,5 +91,47 @@ public class UserStatistic {
         }
 
         return sumOfConsistencies / assignedLabelsForInstances.size();
+    }
+
+    public void addAssignment(Dataset dataset, Assignment assignment) {
+        List<Assignment> assignments = userAssignmentsForDatasets.get(dataset);
+        if (assignment == null) {
+            assignments = new ArrayList<>();
+            numOfDatasetsAssigned++;
+        }
+        assignments.add(assignment);
+        numOfAssignments++;
+    }
+
+    public Map<Dataset, List<Assignment>> getUserAssignmentsForDatasets() {
+        return userAssignmentsForDatasets;
+    }
+
+    public int getNumOfDatasetsAssigned() {
+        return numOfDatasetsAssigned;
+    }
+
+    public int getNumOfAssignments() {
+        return numOfAssignments;
+    }
+
+    public int getNumOfUniqueInstanceAssignments() {
+        return numOfUniqueInstanceAssignments;
+    }
+
+    public Map<Dataset, Double> getDatasetCompletenessPercentages() {
+        return datasetCompletenessPercentages;
+    }
+
+    public Map<Dataset, Double> getDatasetConsistencyPercentages() {
+        return datasetConsistencyPercentages;
+    }
+
+    public double getAvgTimeSpentInLabeling() {
+        return avgTimeSpentInLabeling;
+    }
+
+    public double getStdDevOfTimeInLabeling() {
+        return stdDevOfTimeInLabeling;
     }
 }
