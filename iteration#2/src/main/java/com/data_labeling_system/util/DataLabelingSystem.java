@@ -2,6 +2,7 @@ package com.data_labeling_system.util;
 
 import com.data_labeling_system.model.Dataset;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +74,10 @@ public class DataLabelingSystem {
             JSONObject datasetObject = datasetArray.getJSONObject(i);
             int id = datasetObject.getInt("id");
 
-            if (ioManager.doesFileExist("outputs/id.json")) {
-                inputFile = "outputs/id.json";
+            boolean doesFileExist = new File("./outputs/dataset" + id + ".json").exists();
+
+            if (doesFileExist) {
+                inputFile = "./outputs/dataset" + id + ".json";
             } else {
                 inputFile = datasetObject.getString("filePath");
             }
@@ -86,13 +89,10 @@ public class DataLabelingSystem {
             datasets.add(dataset);
             List<User> configUsers = new ArrayList<User>();
 
-
             for (int j = 0; j < registeredUserIds.length(); j++) {
-
                 configUsers.add(userManager.findUser(registeredUserIds.getInt(j)));
             }
             dataset.setUsers(configUsers);
-
 
             if (id == datasetId) {
                 currentDataset = dataset;
