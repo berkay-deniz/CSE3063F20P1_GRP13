@@ -39,7 +39,4 @@ public class IOManager {
         logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
     }
 
-    public boolean doesFileExist(String fileName) {
-        return false;
-    }
 }

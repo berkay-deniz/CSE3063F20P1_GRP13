@@ -36,8 +36,6 @@ public class UserManager {
         for (User user : users) {
             if(user.getId()==userId)
                 return user;
-
-
         }
         return null ;
 
