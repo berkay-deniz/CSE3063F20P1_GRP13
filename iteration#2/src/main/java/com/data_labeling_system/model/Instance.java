@@ -2,9 +2,13 @@ package com.data_labeling_system.model;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Instance implements Parsable {
     private int id;
     private String instance;
+    private Label finalLabel;
 
     public Instance(String json) {
         parse(json);
@@ -32,5 +36,34 @@ public class Instance implements Parsable {
 
     public void setInstance(String instance) {
         this.instance = instance;
+    }
+
+    public void setFinalLabel(List<Assignment> assignments) {
+        int max = 0;
+        Label finalLabel = null;
+        HashMap<Label, Integer> occurrenceOfLabels = new HashMap<>();
+        for (Assignment assignment : assignments) {
+            if (assignment.getInstance().getId() == this.id) {
+                for (Label label : assignment.getLabels()) {
+                    if (!occurrenceOfLabels.containsKey(label)) {
+                        occurrenceOfLabels.put(label, 1);
+                        if (max == 0) {
+                            max = 1;
+                            finalLabel = label;
+                        }
+                    } else {
+                        int occurrence = occurrenceOfLabels.get(label);
+                        occurrence++;
+                        occurrenceOfLabels.put(label, occurrence);
+                        if (occurrence > max) {
+                            max = occurrence;
+                            finalLabel = label;
+                        }
+                    }
+                }
+
+            }
+        }
+        this.finalLabel = finalLabel;
     }
 }
