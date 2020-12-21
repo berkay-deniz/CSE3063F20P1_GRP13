@@ -87,12 +87,12 @@ public class DataLabelingSystem {
 
             Dataset dataset = new Dataset(datasetJson);
             datasets.add(dataset);
-            List<User> registeredUsers = new ArrayList<User>();
+            List<User> configUsers = new ArrayList<User>();
 
             for (int j = 0; j < registeredUserIds.length(); j++) {
-                registeredUsers.add(userManager.findUser(registeredUserIds.getInt(j)));
+                configUsers.add(userManager.findUser(registeredUserIds.getInt(j)));
             }
-            dataset.setUsers(registeredUsers);
+            dataset.setUsers(configUsers);
 
             if (id == datasetId) {
                 currentDataset = dataset;
