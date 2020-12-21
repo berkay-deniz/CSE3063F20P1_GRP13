@@ -27,11 +27,11 @@ public class DataLabelingSystem {
     }
 
     public List<Dataset> getDataset() {
-        return datasets ;
+        return datasets;
     }
 
     public void setDataset(List<Dataset> datasets) {
-        this.datasets=datasets;
+        this.datasets = datasets;
     }
 
     public IOManager getIoManager() {
@@ -62,6 +62,7 @@ public class DataLabelingSystem {
         logger.info("The system has started");
         // Read json files and keep as string
         String configJson = this.ioManager.readInputFile("config.json");
+        this.datasets = new ArrayList<Dataset>();
         userManager.createUsers(configJson);
         JSONObject configObject = new JSONObject(configJson);
         JSONArray datasetArray = configObject.getJSONArray("datasets");
@@ -83,11 +84,10 @@ public class DataLabelingSystem {
 
             Dataset dataset = new Dataset(datasetJson);
             datasets.add(dataset);
-            List <User> configUsers = new ArrayList<User>();
+            List<User> configUsers = new ArrayList<User>();
 
 
-
-            for(int j = 0 ; j<registeredUserIds.length();j++) {
+            for (int j = 0; j < registeredUserIds.length(); j++) {
 
                 configUsers.add(userManager.findUser(registeredUserIds.getInt(j)));
             }
@@ -98,7 +98,6 @@ public class DataLabelingSystem {
                 currentDataset = dataset;
             }
         }
-
 
 
         // Assign updated objects to the instanceTagger object
