@@ -42,7 +42,7 @@ public class DataLabelingSystem {
             boolean doesFileExist = new File("./outputs/output" + id + ".json").exists();
 
             if (doesFileExist) {
-                inputFile = "./outputs/dataset" + id + ".json";
+                inputFile = "./outputs/output" + id + ".json";
             } else {
                 inputFile = datasetObject.getString("filePath");
             }
