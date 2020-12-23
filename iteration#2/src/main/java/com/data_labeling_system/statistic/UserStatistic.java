@@ -8,8 +8,10 @@ import com.data_labeling_system.model.Label;
 import java.util.*;
 
 public class UserStatistic {
+    // For calculating purposes
     private final Map<Dataset, List<Assignment>> userAssignmentsForDatasets;
 
+    // Required metrics
     private int numOfDatasetsAssigned;
     private int numOfAssignments;
     private int numOfUniqueInstanceAssignments;
@@ -35,7 +37,7 @@ public class UserStatistic {
             Map<Instance, List<Label>> assignedLabelsForInstances = new HashMap<>();
 
             int numOfUniqueDatasetAssignments = 0;
-            for (Assignment assignment: assignments) {
+            for (Assignment assignment : assignments) {
                 Instance instance = assignment.getInstance();
 
                 // To calculate unique instance assignments
@@ -45,7 +47,12 @@ public class UserStatistic {
                 }
 
                 // To calculate dataset consistency percentage
-                assignedLabelsForInstances.put(instance, assignment.getLabels());
+                List<Label> assignedLabels = assignedLabelsForInstances.get(instance);
+                if (assignedLabels == null) {
+                    assignedLabels = new ArrayList<>();
+                    assignedLabelsForInstances.put(instance, assignedLabels);
+                }
+                assignedLabels.addAll(assignment.getLabels());
 
                 // To calculate average & standard deviation of time spent in labeling
                 timesSpentForLabeling.add(assignment.getTimeSpentInMillis());
@@ -64,7 +71,7 @@ public class UserStatistic {
 
         avgTimeSpentInLabeling = totalTimeSpent / timesSpentForLabeling.size();
 
-        for (double timeSpent: timesSpentForLabeling) {
+        for (double timeSpent : timesSpentForLabeling) {
             stdDevOfTimeInLabeling += Math.pow(timeSpent - avgTimeSpentInLabeling, 2);
         }
         stdDevOfTimeInLabeling = Math.sqrt(stdDevOfTimeInLabeling / timesSpentForLabeling.size());

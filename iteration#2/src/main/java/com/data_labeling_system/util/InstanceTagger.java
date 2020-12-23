@@ -62,6 +62,7 @@ public class InstanceTagger {
                 assignment.setTimeSpentInMillis(finishTime - startTime);
 
                 // Calculate updated metrics
+                currentUser.getStatistic().addAssignment(dataset, assignment);
                 currentUser.getStatistic().calculateMetrics();
                 dataset.getStatistic().calculateMetrics(dataset);
                 // TODO: Output and other assignments...

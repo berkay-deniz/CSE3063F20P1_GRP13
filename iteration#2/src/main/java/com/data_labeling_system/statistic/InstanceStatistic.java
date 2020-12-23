@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class InstanceStatistic {
+    // For calculating purposes
     private final Map<Label, Integer> labelOccurrences;
 
+    // Required metrics
     private int numOfAssignments;
     private int numOfUniqueAssignments;
     private int numOfUniqueUsers;
@@ -23,6 +25,12 @@ public class InstanceStatistic {
     public void calculateMetrics() {
         entropy = 0;
         Map.Entry<Label, Integer> mostRecurrent = null;
+
+        int totalLabelAmount = 0;
+        for (int occurrence : labelOccurrences.values()) {
+            totalLabelAmount += occurrence;
+        }
+
         for (Map.Entry<Label, Integer> entry : labelOccurrences.entrySet()) {
             Label label = entry.getKey();
             int occurrence = entry.getValue();
@@ -30,7 +38,7 @@ public class InstanceStatistic {
             if (mostRecurrent == null || occurrence > mostRecurrent.getValue())
                 mostRecurrent = entry;
 
-            double distributionPercentage = (double) occurrence / labelOccurrences.size();
+            double distributionPercentage = (double) occurrence / totalLabelAmount;
             labelDistributionPercentages.put(label, distributionPercentage);
 
             entropy -= distributionPercentage * (Math.log(distributionPercentage) / Math.log(numOfUniqueAssignments));
