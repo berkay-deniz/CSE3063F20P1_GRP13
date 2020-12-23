@@ -4,9 +4,10 @@ import com.data_labeling_system.model.Assignment;
 import com.data_labeling_system.model.Dataset;
 import com.data_labeling_system.model.Instance;
 import com.data_labeling_system.model.Label;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.*;
-
+@JsonIgnoreProperties("userAssignmentsForDatasets")
 public class UserStatistic {
     // For calculating purposes
     private final Map<Dataset, List<Assignment>> userAssignmentsForDatasets;
