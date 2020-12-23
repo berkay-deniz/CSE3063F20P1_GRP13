@@ -1,12 +1,12 @@
 package com.data_labeling_system.statistic;
 
-import com.data_labeling_system.model.Assignment;
-import com.data_labeling_system.model.Dataset;
-import com.data_labeling_system.model.Instance;
-import com.data_labeling_system.model.Label;
+import com.data_labeling_system.model.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
+
 @JsonIgnoreProperties("userAssignmentsForDatasets")
 public class UserStatistic {
     // For calculating purposes
@@ -16,7 +16,11 @@ public class UserStatistic {
     private int numOfDatasetsAssigned;
     private int numOfAssignments;
     private int numOfUniqueInstanceAssignments;
+
+    @JsonProperty("dataset completeness percentages")
     private final Map<Dataset, Double> datasetCompletenessPercentages;
+
+    @JsonProperty("dataset consistency percentages")
     private final Map<Dataset, Double> datasetConsistencyPercentages;
     private double avgTimeSpentInLabeling;
     private double stdDevOfTimeInLabeling;
@@ -110,6 +114,26 @@ public class UserStatistic {
         }
         assignments.add(assignment);
         numOfAssignments++;
+    }
+
+    @JsonGetter("dataset completeness percentages")
+    public HashMap<String, Double> getCustomDatasetCompleteness() {
+        return mapDatasetToDatasetId(datasetCompletenessPercentages);
+    }
+
+    @JsonGetter("dataset consistency percentages")
+    public HashMap<String, Double> getCustomDatasetConsistency() {
+        return mapDatasetToDatasetId(datasetConsistencyPercentages);
+    }
+
+    private HashMap<String, Double> mapDatasetToDatasetId(Map<Dataset, Double> percentages) {
+        HashMap<String, Double> customDatasetJson = new HashMap<>();
+        for (Map.Entry<Dataset, Double> entry : percentages.entrySet()) {
+            String dataset = "dataset" + entry.getKey().getId();
+            double completeness = entry.getValue();
+            customDatasetJson.put(dataset, completeness);
+        }
+        return customDatasetJson;
     }
 
     public Map<Dataset, List<Assignment>> getUserAssignmentsForDatasets() {
