@@ -28,6 +28,7 @@ public class User implements Parsable {
         LabelingMechanismFactory labelingMechanismFactory = new LabelingMechanismFactory();
         this.parse(json);
         this.mechanism = labelingMechanismFactory.makeLabelingMechanism(this.type);
+        statistic = new UserStatistic();
     }
 
     @Override

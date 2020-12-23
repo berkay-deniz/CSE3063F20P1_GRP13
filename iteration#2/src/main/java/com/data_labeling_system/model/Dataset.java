@@ -1,5 +1,6 @@
 package com.data_labeling_system.model;
 
+import com.data_labeling_system.statistic.DatasetStatistic;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -34,10 +35,11 @@ public class Dataset implements Parsable {
     private List<User> users;
 
     private HashMap<User, Integer> nextInstancesToBeLabelled;
+    private DatasetStatistic statistic;
 
     public Dataset(String json) {
         parse(json);
-
+        statistic = new DatasetStatistic();
     }
 
     @Override
@@ -129,4 +131,7 @@ public class Dataset implements Parsable {
         return nextInstancesToBeLabelled;
     }
 
+    public DatasetStatistic getStatistic() {
+        return statistic;
+    }
 }
