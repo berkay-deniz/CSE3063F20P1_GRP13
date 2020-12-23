@@ -26,7 +26,7 @@ public class UserStatistic {
 
     public void calculateMetrics() {
         Set<Instance> uniqueInstances = new HashSet<>();
-        List<Double> timesSpentForLabeling = new ArrayList<>();
+        List<Long> timesSpentForLabeling = new ArrayList<>();
         double totalTimeSpent = 0;
 
         for (Map.Entry<Dataset, List<Assignment>> entry : userAssignmentsForDatasets.entrySet()) {
@@ -48,8 +48,8 @@ public class UserStatistic {
                 assignedLabelsForInstances.put(instance, assignment.getLabels());
 
                 // To calculate average & standard deviation of time spent in labeling
-                timesSpentForLabeling.add(assignment.getTimeSpent());
-                totalTimeSpent += assignment.getTimeSpent();
+                timesSpentForLabeling.add(assignment.getTimeSpentInMillis());
+                totalTimeSpent += assignment.getTimeSpentInMillis();
             }
             numOfUniqueInstanceAssignments += numOfUniqueDatasetAssignments;
 
