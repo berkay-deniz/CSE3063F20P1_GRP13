@@ -26,6 +26,7 @@ public class InstanceTagger {
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
         while (!this.users.isEmpty()) {
             for (int i = 0; i < this.users.size(); i++) {
+                long startTime = System.currentTimeMillis();
                 User currentUser = this.users.get(i);
                 int nextInstanceToBeLabelled = this.dataset.getNextInstancesToBeLabelled().get(currentUser);
 
@@ -46,7 +47,6 @@ public class InstanceTagger {
                 assignments.add(assignment);
 
                 for (int j = 0; j < assignment.getLabels().size(); j++) {
-
                     logger.info("user id:" + currentUser.getId() + " " + currentUser.getName() + " tagged instance id:"
                             + assignment.getInstanceId() + " with class label:" + assignment.getLabels().get(j).getId()
                             + ":" + assignment.getLabels().get(j).getText() + ", instance:'"
@@ -56,8 +56,14 @@ public class InstanceTagger {
                 if (currentInstanceToBeLabelled == nextInstanceToBeLabelled)
                     this.dataset.getNextInstancesToBeLabelled().put(currentUser, ++nextInstanceToBeLabelled);
 
+                // Determine time spent in assignment
+                long finishTime = System.currentTimeMillis();
+                assignment.setTimeSpentInMillis(finishTime - startTime);
 
-                //Output and other assignments...
+                // Calculate updated metrics
+                currentUser.getStatistic().calculateMetrics();
+                dataset.getStatistic().calculateMetrics(dataset);
+                // TODO: Output and other assignments...
             }
         }
         this.dataset.setAssignments(assignments);
