@@ -4,14 +4,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties({"instance", "labels", "user"})
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
-public class Assignment implements Parsable {
+public class Assignment {
     private Instance instance;
     private List<Label> labels;
     private User user;
@@ -25,10 +30,6 @@ public class Assignment implements Parsable {
         this.instance = instance;
         this.labels = labels;
         this.user = user;
-    }
-
-    public Assignment(String assignmentJSON) {
-        parse(assignmentJSON);
     }
 
     @JsonGetter("user id")
@@ -93,8 +94,4 @@ public class Assignment implements Parsable {
         this.timeSpent = timeSpent;
     }
 
-    @Override
-    public void parse(String json) {
-
-    }
 }

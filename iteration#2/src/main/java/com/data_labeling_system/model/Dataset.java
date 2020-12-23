@@ -7,7 +7,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,8 +61,26 @@ public class Dataset implements Parsable {
             JSONArray assignmentsJSON = object.getJSONArray("class label assignments");
             assignments = new ArrayList<>();
             for (int i = 0; i < assignmentsJSON.length(); i++) {
+                JSONObject assignmentJSON = assignmentsJSON.getJSONObject(i);
+                int instanceId= assignmentJSON.getInt("instance id");
+                int userId= assignmentJSON.getInt("user id");
+                String dateTime= assignmentJSON.getString("dateTime");
+                DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
+                try {
+                    Date date = dateFormat.parse(dateTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                JSONArray labelIds = assignmentJSON.getJSONArray("class label ids");
+                labels = new ArrayList<>();
+                for (int i = 0; i < labelIds.length(); i++) {
+                    labelIds.getInt(i);
+                }
+
                 assignments.add(new Assignment(assignmentsJSON.getJSONObject(i).toString()));
             }
+
         }
 
 
@@ -128,5 +150,9 @@ public class Dataset implements Parsable {
     public HashMap<User, Integer> getNextInstancesToBeLabelled() {
         return nextInstancesToBeLabelled;
     }
+
+
+
+
 
 }
