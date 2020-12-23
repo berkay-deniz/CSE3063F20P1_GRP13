@@ -1,8 +1,10 @@
 package com.data_labeling_system.model;
 
 import com.data_labeling_system.statistic.DatasetStatistic;
+import com.data_labeling_system.util.DataLabelingSystem;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,10 +40,12 @@ public class Dataset implements Parsable {
 
     private HashMap<User, Integer> nextInstancesToBeLabelled;
     private DatasetStatistic statistic;
+    private final Logger logger;
 
     public Dataset(String json) {
         parse(json);
         statistic = new DatasetStatistic();
+        logger = Logger.getLogger(DataLabelingSystem.class);
     }
 
     @Override
@@ -63,23 +67,27 @@ public class Dataset implements Parsable {
             assignments = new ArrayList<>();
             for (int i = 0; i < assignmentsJSON.length(); i++) {
                 JSONObject assignmentJSON = assignmentsJSON.getJSONObject(i);
-                int instanceId= assignmentJSON.getInt("instance id");
-                int userId= assignmentJSON.getInt("user id");
-                String dateTime= assignmentJSON.getString("dateTime");
-                DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
+                Instance instance = (Instance) findParsable(assignmentJSON.getInt("instance id"), this.instances);
+                User user = (User) findParsable(assignmentJSON.getInt("user id"), this.users);
+                String dateString = assignmentJSON.getString("dateTime");
+                DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+                Date date = null;
                 try {
-                    Date date = dateFormat.parse(dateTime);
+                    date = dateFormat.parse(dateString);
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
 
                 JSONArray labelIds = assignmentJSON.getJSONArray("class label ids");
-                labels = new ArrayList<>();
-                for (int i = 0; i < labelIds.length(); i++) {
-                    labelIds.getInt(i);
+                List<Label> assignedLabels = new ArrayList<>();
+                for (int j = 0; j < labelIds.length(); j++) {
+                    assignedLabels.add((Label) findParsable(labelIds.getInt(j), this.labels));
                 }
 
-                assignments.add(new Assignment(assignmentsJSON.getJSONObject(i).toString()));
+                Assignment assignment = new Assignment(instance, assignedLabels, user, date);
+                assignments.add(assignment);
+                // Store assignment in UserStatistic for future metric calculations
+                user.getStatistic().addAssignment(this, assignment);
             }
 
         }
@@ -154,5 +162,17 @@ public class Dataset implements Parsable {
 
     public DatasetStatistic getStatistic() {
         return statistic;
+    }
+
+    public Parsable findParsable(int id, List<? extends Parsable> list) {
+        if (id <= list.size() && id > 0 && list.get(id - 1).getId() == id) {
+            return list.get(id - 1);
+        } else {
+            for (Parsable parsable : list) {
+                if (parsable.getId() == id)
+                    return parsable;
+            }
+        }
+        return null;
     }
 }
