@@ -27,6 +27,10 @@ public class DataLabelingSystem {
 
     public void startSystem() {
         logger.info("The system has started");
+         new File("outputs").mkdir();
+        logger.info("outputs folder has been created.");
+         new File("metrics").mkdir();
+         logger.info("metrics folder has been created.");
         // Read json files and keep as string
         String configJson = this.ioManager.readInputFile("config.json");
         userManager.createUsers(configJson);
