@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.json.JSONObject;
 
 
-@JsonIgnoreProperties({"mechanism"})
+@JsonIgnoreProperties({"mechanism","statistic"})
 @JsonPropertyOrder({"user id", "user name", "user type"})
 public class User implements Parsable {
     @JsonProperty("user id")

@@ -90,5 +90,6 @@ public class DataLabelingSystem {
         // Take final dataset and write as json file
         currentDataset = this.instanceTagger.getDataset();
         this.ioManager.printFinalDataset(currentDataset, "outputs/output" + currentDatasetId + ".json");
+        this.ioManager.printMetrics(this.datasets,this.userManager.getUsers());
     }
 }

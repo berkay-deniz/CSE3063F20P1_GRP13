@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@JsonIgnoreProperties({"instance", "labels", "user"})
+@JsonIgnoreProperties({"instance", "labels", "user","timeSpentInMillis"})
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
 public class Assignment {
     private Instance instance;

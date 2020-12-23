@@ -1,6 +1,7 @@
 package com.data_labeling_system.util;
 
 import com.data_labeling_system.model.Dataset;
+import com.data_labeling_system.model.User;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class IOManager {
     private final Logger logger;
@@ -44,6 +46,23 @@ public class IOManager {
             logger.error(e.getMessage(), e);
         }
         logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
+    }
+    public void printMetrics(List<Dataset> datasets, List<User> users) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        try {
+            for(User user : users) {
+
+                writer.writeValue(new File("metrics/user"+user.getId()+".json"),user.getStatistic());
+            }
+
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+       // logger.info("Final u printed to '" + outputFileName + "' successfully.");
+
+
     }
 
 }

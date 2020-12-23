@@ -2,8 +2,12 @@ package com.data_labeling_system.model;
 
 import com.data_labeling_system.statistic.DatasetStatistic;
 import com.data_labeling_system.util.DataLabelingSystem;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,13 +15,11 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @JsonPropertyOrder({"dataset id", "dataset name", "maximum number of labels per instance", "class labels", "instances",
         "class label assignments", "users"})
+@JsonIgnoreProperties({"statistic"})
 public class Dataset implements Parsable {
     @JsonProperty("dataset id")
     private int id;
@@ -102,7 +104,17 @@ public class Dataset implements Parsable {
         }
 
         if (object.has("next instances to be labelled")) {
-            // TODO
+            try {
+                HashMap<String, Integer> nextInstancesJson = new ObjectMapper().readValue(object.getJSONObject("next instances to be labelled").toString(), HashMap.class);
+                for (Map.Entry<String, Integer> entry : nextInstancesJson.entrySet()) {
+                    int userId = Integer.parseInt(entry.getKey());
+                    int nextInstance = entry.getValue();
+                    this.nextInstancesToBeLabelled.put((User) findParsable(userId, this.users), nextInstance);
+                }
+            } catch (JsonProcessingException e) {
+                logger.error(e.getMessage(), e);
+
+            }
         }
     }
 
@@ -136,6 +148,17 @@ public class Dataset implements Parsable {
 
     public HashMap<User, Integer> getNextInstancesToBeLabelled() {
         return nextInstancesToBeLabelled;
+    }
+
+    @JsonGetter("next instances to be labelled")
+    public HashMap<Integer, Integer> getNextInstanceIndexes() {
+        HashMap<Integer, Integer> nextInstanceIndexes = new HashMap<>();
+        for (Map.Entry<User, Integer> entry : nextInstancesToBeLabelled.entrySet()) {
+            int userId = entry.getKey().getId();
+            int nextInstances = entry.getValue();
+            nextInstanceIndexes.put(userId, nextInstances);
+        }
+        return nextInstanceIndexes;
     }
 
     public DatasetStatistic getStatistic() {

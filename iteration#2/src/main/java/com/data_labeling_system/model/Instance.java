@@ -1,11 +1,12 @@
 package com.data_labeling_system.model;
 
 import com.data_labeling_system.statistic.InstanceStatistic;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
-
+@JsonIgnoreProperties({"statistic"})
 public class Instance implements Parsable {
     private int id;
     private String instance;
