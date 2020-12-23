@@ -1,12 +1,10 @@
 package com.data_labeling_system.model;
 
 import com.data_labeling_system.statistic.DatasetStatistic;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,14 +53,17 @@ public class Dataset implements Parsable {
         for (int i = 0; i < labelsJSON.length(); i++) {
             labels.add(new Label(labelsJSON.getJSONObject(i).toString()));
         }
+
         if (object.has("class label assignments")) {
             JSONArray assignmentsJSON = object.getJSONArray("class label assignments");
             assignments = new ArrayList<>();
             for (int i = 0; i < assignmentsJSON.length(); i++) {
-                assignments.add(new Assignment(assignmentsJSON.getJSONObject(i).toString()));
+                Assignment assignment = new Assignment(assignmentsJSON.getJSONObject(i).toString());
+                assignments.add(assignment);
+                // Store assignment in UserStatistic for future metric calculations
+                assignment.getUser().getStatistic().addAssignment(this, assignment);
             }
         }
-
 
         JSONArray instancesJSON = object.getJSONArray("instances");
         instances = new ArrayList<>();
