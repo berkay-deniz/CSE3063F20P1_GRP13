@@ -1,11 +1,10 @@
 package com.data_labeling_system.model;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import com.data_labeling_system.statistic.DatasetStatistic;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -38,10 +37,11 @@ public class Dataset implements Parsable {
     private List<User> users;
 
     private HashMap<User, Integer> nextInstancesToBeLabelled;
+    private DatasetStatistic statistic;
 
     public Dataset(String json) {
         parse(json);
-
+        statistic = new DatasetStatistic();
     }
 
     @Override
@@ -57,6 +57,7 @@ public class Dataset implements Parsable {
         for (int i = 0; i < labelsJSON.length(); i++) {
             labels.add(new Label(labelsJSON.getJSONObject(i).toString()));
         }
+
         if (object.has("class label assignments")) {
             JSONArray assignmentsJSON = object.getJSONArray("class label assignments");
             assignments = new ArrayList<>();
@@ -151,8 +152,7 @@ public class Dataset implements Parsable {
         return nextInstancesToBeLabelled;
     }
 
-
-
-
-
+    public DatasetStatistic getStatistic() {
+        return statistic;
+    }
 }

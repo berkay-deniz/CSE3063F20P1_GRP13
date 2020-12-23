@@ -20,7 +20,7 @@ public class Assignment {
     private Instance instance;
     private List<Label> labels;
     private User user;
-    private double timeSpent;
+    private long timeSpentInMillis;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
     private Date dateTime;
@@ -86,12 +86,12 @@ public class Assignment {
         this.dateTime = dateTime;
     }
 
-    public double getTimeSpent() {
-        return timeSpent;
+    public long getTimeSpentInMillis() {
+        return timeSpentInMillis;
     }
 
-    public void setTimeSpent(double timeSpent) {
-        this.timeSpent = timeSpent;
+    public void setTimeSpentInMillis(long timeSpentInMillis) {
+        this.timeSpentInMillis = timeSpentInMillis;
     }
 
 }

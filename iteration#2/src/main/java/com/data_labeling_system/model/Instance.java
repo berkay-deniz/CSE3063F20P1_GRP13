@@ -14,6 +14,7 @@ public class Instance implements Parsable {
 
     public Instance(String json) {
         parse(json);
+        statistic = new InstanceStatistic();
     }
 
     @Override
