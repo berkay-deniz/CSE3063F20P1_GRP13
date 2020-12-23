@@ -9,7 +9,7 @@ import java.util.List;
 public class Instance implements Parsable {
     private int id;
     private String instance;
-    private InstanceStatistic statistic;
+    private final InstanceStatistic statistic;
     private Label finalLabel;
 
     public Instance(String json) {

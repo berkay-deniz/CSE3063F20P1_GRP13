@@ -28,7 +28,8 @@ public class InstanceTagger {
             for (int i = 0; i < this.users.size(); i++) {
                 long startTime = System.currentTimeMillis();
                 User currentUser = this.users.get(i);
-                int nextInstanceToBeLabelled = this.dataset.getNextInstancesToBeLabelled().get(currentUser);
+                Integer value = this.dataset.getNextInstancesToBeLabelled().get(currentUser);
+                int nextInstanceToBeLabelled = value == null ? 0 : value;
 
                 //If the user has completed all the labellings in current dataset
                 if (this.dataset.getInstances().size() <= nextInstanceToBeLabelled) {

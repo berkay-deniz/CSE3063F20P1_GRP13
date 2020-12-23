@@ -38,14 +38,17 @@ public class Dataset implements Parsable {
 
     private List<User> users;
 
-    private HashMap<User, Integer> nextInstancesToBeLabelled;
-    private DatasetStatistic statistic;
+    @JsonProperty("next instances to be labelled")
+    private final HashMap<User, Integer> nextInstancesToBeLabelled;
+    private final DatasetStatistic statistic;
     private final Logger logger;
 
     public Dataset(String json) {
         parse(json);
         statistic = new DatasetStatistic();
         logger = Logger.getLogger(DataLabelingSystem.class);
+        nextInstancesToBeLabelled = new HashMap<>();
+        assignments = new ArrayList<>();
     }
 
     @Override
@@ -89,6 +92,9 @@ public class Dataset implements Parsable {
                 // Store assignment in UserStatistic for future metric calculations
                 user.getStatistic().addAssignment(this, assignment);
             }
+        }
+
+        if (object.has("next instances to be labelled")) {
 
         }
 

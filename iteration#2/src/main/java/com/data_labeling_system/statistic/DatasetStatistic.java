@@ -88,10 +88,10 @@ public class DatasetStatistic {
         numOfUsers = dataset.getUsers().size();
 
         for (User user: dataset.getUsers()) {
-            double completenessPercentage = user.getStatistic().getDatasetCompletenessPercentages().get(dataset);
-            userCompletenessPercentages.put(user, completenessPercentage);
-            double consistencyPercentage = user.getStatistic().getDatasetConsistencyPercentages().get(dataset);
-            userConsistencyPercentages.put(user, consistencyPercentage);
+            Double completenessPercentage = user.getStatistic().getDatasetCompletenessPercentages().get(dataset);
+            userCompletenessPercentages.put(user, completenessPercentage == null ? 0 : completenessPercentage);
+            Double consistencyPercentage = user.getStatistic().getDatasetConsistencyPercentages().get(dataset);
+            userConsistencyPercentages.put(user, consistencyPercentage == null ? 0 : consistencyPercentage);
         }
 
         // Instance statistic calculations

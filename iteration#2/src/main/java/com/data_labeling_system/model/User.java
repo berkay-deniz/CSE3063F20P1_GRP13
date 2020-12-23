@@ -18,7 +18,7 @@ public class User implements Parsable {
     private String name;
     @JsonProperty("user type")
     private String type;
-    private UserStatistic statistic;
+    private final UserStatistic statistic;
 
     private double consistencyCheckProbability;
 

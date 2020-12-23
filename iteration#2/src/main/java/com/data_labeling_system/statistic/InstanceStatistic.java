@@ -36,8 +36,8 @@ public class InstanceStatistic {
             entropy -= distributionPercentage * (Math.log(distributionPercentage) / Math.log(numOfUniqueAssignments));
         }
 
-        assert mostRecurrent != null;
-        mostFrequentLabel = mostRecurrent.getKey();
+        if (mostRecurrent != null)
+            mostFrequentLabel = mostRecurrent.getKey();
     }
 
     public void incrementLabelOccurrence(Label label) {
