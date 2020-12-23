@@ -22,13 +22,13 @@ public class User implements Parsable {
 
     private double consistencyCheckProbability;
 
-    private LabelingMechanism mechanism;
+    private final LabelingMechanism mechanism;
 
     public User(String json) {
+        statistic = new UserStatistic();
         LabelingMechanismFactory labelingMechanismFactory = new LabelingMechanismFactory();
         this.parse(json);
         this.mechanism = labelingMechanismFactory.makeLabelingMechanism(this.type);
-        statistic = new UserStatistic();
     }
 
     @Override
@@ -45,32 +45,16 @@ public class User implements Parsable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public LabelingMechanism getMechanism() {
         return mechanism;
-    }
-
-    public void setMechanism(LabelingMechanism mechanism) {
-        this.mechanism = mechanism;
     }
 
     public UserStatistic getStatistic() {

@@ -13,8 +13,8 @@ public class Instance implements Parsable {
     private Label finalLabel;
 
     public Instance(String json) {
-        parse(json);
         statistic = new InstanceStatistic();
+        parse(json);
     }
 
     @Override
@@ -29,16 +29,8 @@ public class Instance implements Parsable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getInstance() {
         return instance;
-    }
-
-    public void setInstance(String instance) {
-        this.instance = instance;
     }
 
     public InstanceStatistic getStatistic() {
@@ -72,5 +64,9 @@ public class Instance implements Parsable {
             }
         }
         this.finalLabel = finalLabel;
+    }
+
+    public Label getFinalLabel() {
+        return finalLabel;
     }
 }

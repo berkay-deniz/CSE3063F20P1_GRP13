@@ -36,19 +36,20 @@ public class Dataset implements Parsable {
     @JsonProperty("class label assignments")
     private List<Assignment> assignments;
 
-    private List<User> users;
+    private final List<User> users;
 
     @JsonProperty("next instances to be labelled")
     private final HashMap<User, Integer> nextInstancesToBeLabelled;
     private final DatasetStatistic statistic;
     private final Logger logger;
 
-    public Dataset(String json) {
-        parse(json);
+    public Dataset(String json, List<User> users) {
         statistic = new DatasetStatistic();
         logger = Logger.getLogger(DataLabelingSystem.class);
         nextInstancesToBeLabelled = new HashMap<>();
         assignments = new ArrayList<>();
+        this.users = users;
+        parse(json);
     }
 
     @Override
@@ -63,6 +64,12 @@ public class Dataset implements Parsable {
         labels = new ArrayList<>();
         for (int i = 0; i < labelsJSON.length(); i++) {
             labels.add(new Label(labelsJSON.getJSONObject(i).toString()));
+        }
+
+        JSONArray instancesJSON = object.getJSONArray("instances");
+        instances = new ArrayList<>();
+        for (int i = 0; i < instancesJSON.length(); i++) {
+            instances.add(new Instance(instancesJSON.getJSONObject(i).toString()));
         }
 
         if (object.has("class label assignments")) {
@@ -95,14 +102,7 @@ public class Dataset implements Parsable {
         }
 
         if (object.has("next instances to be labelled")) {
-
-        }
-
-
-        JSONArray instancesJSON = object.getJSONArray("instances");
-        instances = new ArrayList<>();
-        for (int i = 0; i < instancesJSON.length(); i++) {
-            instances.add(new Instance(instancesJSON.getJSONObject(i).toString()));
+            // TODO
         }
     }
 
@@ -110,40 +110,16 @@ public class Dataset implements Parsable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getMaxNumOfLabels() {
         return maxNumOfLabels;
-    }
-
-    public void setMaxNumOfLabels(int maxNumOfLabels) {
-        this.maxNumOfLabels = maxNumOfLabels;
     }
 
     public List<Label> getLabels() {
         return labels;
     }
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
-    }
-
     public List<Instance> getInstances() {
         return instances;
-    }
-
-    public void setInstances(List<Instance> instances) {
-        this.instances = instances;
     }
 
     public List<Assignment> getAssignments() {
@@ -156,10 +132,6 @@ public class Dataset implements Parsable {
 
     public List<User> getUsers() {
         return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public HashMap<User, Integer> getNextInstancesToBeLabelled() {

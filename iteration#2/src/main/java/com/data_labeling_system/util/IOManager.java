@@ -19,7 +19,7 @@ public class IOManager {
         logger = Logger.getLogger(IOManager.class);
     }
 
-    public String readInputFile(String fileName) throws IOException {
+    public String readInputFile(String fileName) {
         // Read json file and return string value
         String json = null;
         try {
@@ -27,15 +27,22 @@ public class IOManager {
         } catch (NoSuchFileException e) {
             logger.error("Input file '" + fileName + "' not found.", e);
             System.exit(1);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            System.exit(1);
         }
         return json;
     }
 
-    public void printFinalDataset(Dataset dataset, String outputFileName) throws IOException {
+    public void printFinalDataset(Dataset dataset, String outputFileName) {
         // Write the final dataset as jsonfile
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        writer.writeValue(new File(outputFileName), dataset);
+        try {
+            writer.writeValue(new File(outputFileName), dataset);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
         logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
     }
 

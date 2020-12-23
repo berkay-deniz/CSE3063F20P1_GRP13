@@ -95,7 +95,7 @@ public class UserStatistic {
 
     public void addAssignment(Dataset dataset, Assignment assignment) {
         List<Assignment> assignments = userAssignmentsForDatasets.get(dataset);
-        if (assignment == null) {
+        if (assignments == null) {
             assignments = new ArrayList<>();
             userAssignmentsForDatasets.put(dataset, assignments);
             numOfDatasetsAssigned++;

@@ -15,9 +15,9 @@ public class RandomLabelingMechanism extends LabelingMechanism {
     @Override
     public Assignment assign(User user, Instance instance, List<Label> labels, int maxNumOfLabels) {
         // Create Arraylist to keep labels assigned to instances
-    	ArrayList<Label> assignedLabels = new ArrayList<Label>();
-    	// Create Arraylist to keep copying of labels
-        ArrayList<Label> tempLabels = new ArrayList<Label>(labels);
+        ArrayList<Label> assignedLabels = new ArrayList<>();
+        // Create Arraylist to keep copying of labels
+        ArrayList<Label> tempLabels = new ArrayList<>(labels);
         // The number of labels to be assigned is determined randomly
         int numOfLabels = (int) (Math.random() * (maxNumOfLabels) + 1);
         for (int i = 0; i < numOfLabels; i++) {
