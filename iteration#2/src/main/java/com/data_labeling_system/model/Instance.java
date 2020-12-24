@@ -4,6 +4,8 @@ import com.data_labeling_system.statistic.InstanceStatistic;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 @JsonIgnoreProperties({"statistic"})
 public class Instance implements Parsable {
     private int id;
@@ -41,7 +43,9 @@ public class Instance implements Parsable {
     }
 
     public void setFinalLabel() {
-        finalLabel = statistic.getMostFrequentLabel();
+        Map.Entry<Label, Double> mostFrequentLabelAndPercentage = statistic.getMostFrequentLabelAndPercentage();
+        if (mostFrequentLabelAndPercentage != null)
+            finalLabel = mostFrequentLabelAndPercentage.getKey();
     }
 
     public Label getFinalLabel() {

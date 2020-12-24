@@ -24,7 +24,7 @@ public class DatasetStatistic extends Statistic {
     private double completenessPercentage;
 
     @JsonProperty("class distribution based on final instance labels")
-    private final Map<Label, Double> labelDistributionPercentages;
+    private Map<Label, Double> labelDistributionPercentages;
 
     @JsonProperty("number of unique instances for each class label")
     private final Map<Label, Integer> numOfUniqueInstancesForLabels;
@@ -45,7 +45,6 @@ public class DatasetStatistic extends Statistic {
 
     @Override
     public void calculateMetrics() {
-        int totalLabelsAssigned = 0;
         Set<Instance> uniqueInstances = new HashSet<>();
         Map<Label, Set<Instance>> uniqueInstancesForLabels = new HashMap<>();
         Map<Label, Integer> labelOccurrences = new HashMap<>();
@@ -71,7 +70,6 @@ public class DatasetStatistic extends Statistic {
 
                 Integer occurrence = labelOccurrences.get(label);
                 labelOccurrences.put(label, occurrence == null ? 1 : occurrence + 1);
-                totalLabelsAssigned++;
 
                 // Instance statistic calculations
                 Set<Label> labelSet = uniqueLabelsForInstances.get(instance);
@@ -94,14 +92,6 @@ public class DatasetStatistic extends Statistic {
 
         // Calculate completeness percentage
         completenessPercentage = (double) uniqueInstances.size() / dataset.getInstances().size();
-
-        // Calculate label distribution percentages
-        for (Map.Entry<Label, Integer> entry : labelOccurrences.entrySet()) {
-            Label label = entry.getKey();
-            int occurrence = entry.getValue();
-
-            labelDistributionPercentages.put(label, (double) occurrence / totalLabelsAssigned);
-        }
 
         // Calculate number of unique instances for labels
         for (Map.Entry<Label, Set<Instance>> entry : uniqueInstancesForLabels.entrySet()) {
@@ -133,9 +123,26 @@ public class DatasetStatistic extends Statistic {
             instance.getStatistic().setNumOfUniqueUsers(userSet.size());
         }
 
+        Map<Label, Integer> finalLabelOccurrences = new HashMap<>();
+        int numOfFinalLabels = 0;
         for (Instance instance : dataset.getInstances()) {
             instance.getStatistic().calculateMetrics();
             instance.setFinalLabel();
+            // For calculating label distribution percentages
+            Label finalLabel = instance.getFinalLabel();
+            if (finalLabel != null) {
+                Integer occurrence = finalLabelOccurrences.get(finalLabel);
+                finalLabelOccurrences.put(finalLabel, occurrence == null ? 1 : occurrence + 1);
+                numOfFinalLabels++;
+            }
+        }
+
+        labelDistributionPercentages = new HashMap<>();
+        // Calculate label distribution percentages
+        for (Map.Entry<Label, Integer> entry : finalLabelOccurrences.entrySet()) {
+            Label label = entry.getKey();
+            int occurrence = entry.getValue();
+            labelDistributionPercentages.put(label, (double) occurrence / numOfFinalLabels);
         }
     }
 

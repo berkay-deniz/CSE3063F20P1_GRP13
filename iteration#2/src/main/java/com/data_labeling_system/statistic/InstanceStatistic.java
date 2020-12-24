@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @JsonPropertyOrder({"total number of label assignments", "number of unique label assignment", "number of unique users",
         "most frequent class label and its percentage", "class labels and percentages", "entropy"})
@@ -29,7 +26,7 @@ public class InstanceStatistic extends Statistic {
     private int numOfUniqueUsers;
 
     @JsonProperty("most frequent class label and its percentage")
-    private Label mostFrequentLabel;
+    private Map.Entry<Label, Double> mostFrequentLabelAndPercentage;
 
     @JsonProperty("class labels and percentages")
     private final Map<Label, Double> labelDistributionPercentages;
@@ -74,7 +71,8 @@ public class InstanceStatistic extends Statistic {
 
         if (!mostFrequentLabels.isEmpty()) {
             int random = (int) (Math.random() * mostFrequentLabels.size());
-            mostFrequentLabel = mostFrequentLabels.get(random);
+            Label mostFrequentLabel = mostFrequentLabels.get(random);
+            mostFrequentLabelAndPercentage = new AbstractMap.SimpleEntry<>(mostFrequentLabel, labelDistributionPercentages.get(mostFrequentLabel));
         }
     }
 
@@ -95,5 +93,9 @@ public class InstanceStatistic extends Statistic {
 
     public void setNumOfUniqueUsers(int numOfUniqueUsers) {
         this.numOfUniqueUsers = numOfUniqueUsers;
+    }
+
+    public Map.Entry<Label, Double> getMostFrequentLabelAndPercentage() {
+        return mostFrequentLabelAndPercentage;
     }
 }
