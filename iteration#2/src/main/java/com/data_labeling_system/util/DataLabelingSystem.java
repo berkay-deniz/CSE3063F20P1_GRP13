@@ -27,10 +27,15 @@ public class DataLabelingSystem {
 
     public void startSystem() {
         logger.info("The system has started");
-         new File("outputs").mkdir();
-        logger.info("outputs folder has been created.");
-         new File("metrics").mkdir();
-         logger.info("metrics folder has been created.");
+        // Create output folders to organize datasets and metrics
+        if (new File("outputs").mkdir())
+            logger.info("'outputs' folder has been created.");
+        else
+            logger.error("Can't create 'outputs' folder.");
+        if (new File("metrics").mkdir())
+            logger.info("'metrics' folder has been created.");
+        else
+            logger.error("Can't create 'metrics' folder.");
         // Read json files and keep as string
         String configJson = this.ioManager.readInputFile("config.json");
         userManager.createUsers(configJson);
@@ -63,6 +68,10 @@ public class DataLabelingSystem {
             Dataset dataset = new Dataset(datasetJson, registeredUsers);
             datasets.add(dataset);
 
+            for (User user : registeredUsers) {
+                user.getStatistic().addDataset(dataset);
+            }
+
             if (id == currentDatasetId) {
                 currentDataset = dataset;
             }
@@ -90,6 +99,6 @@ public class DataLabelingSystem {
         // Take final dataset and write as json file
         currentDataset = this.instanceTagger.getDataset();
         this.ioManager.printFinalDataset(currentDataset, "outputs/output" + currentDatasetId + ".json");
-        this.ioManager.printMetrics(this.datasets,this.userManager.getUsers());
+        this.ioManager.printMetrics(this.datasets, this.userManager.getUsers());
     }
 }

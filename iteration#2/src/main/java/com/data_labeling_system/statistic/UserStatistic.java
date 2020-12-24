@@ -10,6 +10,7 @@ import java.util.*;
 @JsonIgnoreProperties("userAssignmentsForDatasets")
 public class UserStatistic {
     // For calculating purposes
+    private final Set<Dataset> datasetsAssigned;
     private final Map<Dataset, List<Assignment>> userAssignmentsForDatasets;
 
     // Required metrics
@@ -29,9 +30,12 @@ public class UserStatistic {
         userAssignmentsForDatasets = new HashMap<>();
         datasetCompletenessPercentages = new HashMap<>();
         datasetConsistencyPercentages = new HashMap<>();
+        datasetsAssigned = new HashSet<>();
     }
 
     public void calculateMetrics() {
+        stdDevOfTimeInLabeling = 0;
+        numOfUniqueInstanceAssignments = 0;
         Set<Instance> uniqueInstances = new HashSet<>();
         List<Long> timesSpentForLabeling = new ArrayList<>();
         double totalTimeSpent = 0;
@@ -110,7 +114,6 @@ public class UserStatistic {
         if (assignments == null) {
             assignments = new ArrayList<>();
             userAssignmentsForDatasets.put(dataset, assignments);
-            numOfDatasetsAssigned++;
         }
         assignments.add(assignment);
         numOfAssignments++;
@@ -134,6 +137,13 @@ public class UserStatistic {
             customDatasetJson.put(dataset, completeness);
         }
         return customDatasetJson;
+    }
+
+    public void addDataset(Dataset dataset) {
+        if (!datasetsAssigned.contains(dataset)) {
+            datasetsAssigned.add(dataset);
+            numOfDatasetsAssigned++;
+        }
     }
 
     public Map<Dataset, List<Assignment>> getUserAssignmentsForDatasets() {
