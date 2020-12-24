@@ -63,8 +63,6 @@ public class IOManager {
             logger.info("'instances' folder has been created.");
         else
             logger.error("Can't create 'instances' folder.");
-
-
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
@@ -73,10 +71,10 @@ public class IOManager {
             }
             for (Dataset dataset : datasets) {
                 writer.writeValue(new File("metrics/datasets/dataset" + dataset.getId() + ".json"), dataset.getStatistic());
-
-                for(Instance instance : dataset.getInstances()) {
-
-                    writer.writeValue(new File("metrics/instances/instance"+instance.getId()+".json"),instance.getStatistic());
+                File file = new File("metrics/instances/dataset" + dataset.getId());
+                file.mkdir();
+                for (Instance instance : dataset.getInstances()) {
+                    writer.writeValue(new File(file.getPath() + "/instance" + instance.getId() + ".json"), instance.getStatistic());
                 }
             }
 
@@ -87,7 +85,6 @@ public class IOManager {
 
 
     }
-
 
 
 }
