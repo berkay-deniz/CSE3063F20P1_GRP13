@@ -69,11 +69,15 @@ public class InstanceTagger {
                 // Calculate updated metrics
                 currentUser.getStatistic().addAssignment(dataset, assignment);
                 currentUser.getStatistic().calculateMetrics();
+                logger.info("Metrics are calculated for User with UserId: " + currentUser.getId());
                 dataset.getStatistic().calculateMetrics();
+                logger.info("Metrics are calculated for dataset with DatasetId: " + dataset.getId());
 
                 // Print output dataset and metric calculations
                 ioManager.printMetrics(datasets, userManager.getUsers());
+                logger.info("Metrics are printed to metric folder.");
                 ioManager.printFinalDataset(dataset, "outputs/output" + dataset.getId() + ".json");
+                logger.info("Final dataset with DatasetId: " + dataset.getId() + " is printed to output.json.");
 
                 try {
                     TimeUnit.SECONDS.sleep(1);

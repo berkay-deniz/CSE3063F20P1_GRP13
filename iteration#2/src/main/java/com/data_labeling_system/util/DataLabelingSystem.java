@@ -40,6 +40,7 @@ public class DataLabelingSystem {
         String configJson = this.ioManager.readInputFile("config.json");
         // Create users using config.json
         userManager.createUsers(configJson);
+        logger.info("Users are created.");
         JSONObject configObject = new JSONObject(configJson);
         JSONArray datasetArray = configObject.getJSONArray("datasets");
         int currentDatasetId = configObject.getInt("currentDatasetId");
@@ -68,6 +69,7 @@ public class DataLabelingSystem {
             // Create dataset object and save them in the datasets list.
             Dataset dataset = new Dataset(datasetJson, registeredUsers);
             datasets.add(dataset);
+            logger.info("Dataset with DatasetId: " + dataset.getId() + " is created and added to Dataset list.");
 
             for (User user : registeredUsers) {
                 user.getStatistic().addDataset(dataset);
@@ -85,10 +87,13 @@ public class DataLabelingSystem {
         // Calculate metrics for User
         for (User user : this.userManager.getUsers()) {
             user.getStatistic().calculateMetrics();
+            logger.info("User statistics are calculated for user with UserId: " + user.getId());
         }
+
         // Calculate metrics for Dataset
         for (Dataset dataset : datasets) {
             dataset.getStatistic().calculateMetrics();
+            logger.info("Dataset statistics are calculated for dataset with DatasetId: " + dataset.getId());
         }
 
         // Assign updated objects to the instanceTagger object
