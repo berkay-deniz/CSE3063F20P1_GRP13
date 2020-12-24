@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class Instance implements Parsable {
     private int id;
     private String instance;
-    private final InstanceStatistic statistic;
+    private InstanceStatistic statistic;
     private Label finalLabel;
 
     public Instance(String json) {
@@ -34,6 +34,10 @@ public class Instance implements Parsable {
 
     public InstanceStatistic getStatistic() {
         return statistic;
+    }
+
+    public void resetStatistic() {
+        statistic = new InstanceStatistic();
     }
 
     public void setFinalLabel() {

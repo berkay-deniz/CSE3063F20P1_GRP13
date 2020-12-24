@@ -37,6 +37,10 @@ public class DatasetStatistic {
         Map<Instance, Set<Label>> uniqueLabelsForInstances = new HashMap<>();
         Map<Instance, Set<User>> uniqueUsersForInstances = new HashMap<>();
 
+        for (Instance instance : dataset.getInstances()) {
+            instance.resetStatistic();
+        }
+
         for (Assignment assignment : dataset.getAssignments()) {
             Instance instance = assignment.getInstance();
             uniqueInstances.add(instance);
@@ -68,11 +72,8 @@ public class DatasetStatistic {
                 }
                 userSet.add(assignment.getUser());
 
-                instance.getStatistic().incrementLabelOccurrence(label);
+                instance.getStatistic().addAssignedLabel(label);
             }
-
-            // Instance statistic calculations
-            instance.getStatistic().incrementNumOfAssignments();
         }
 
         // Calculate completeness percentage
@@ -107,7 +108,7 @@ public class DatasetStatistic {
         for (Map.Entry<Instance, Set<Label>> entry : uniqueLabelsForInstances.entrySet()) {
             Instance instance = entry.getKey();
             Set<Label> labelSet = entry.getValue();
-            instance.getStatistic().setNumOfUniqueAssignments(labelSet.size());
+            instance.getStatistic().setNumOfAssignedUniqueLabels(labelSet.size());
         }
 
         for (Map.Entry<Instance, Set<User>> entry : uniqueUsersForInstances.entrySet()) {

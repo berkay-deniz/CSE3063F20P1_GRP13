@@ -16,8 +16,8 @@ public class InstanceStatistic {
     private final Map<Label, Integer> labelOccurrences;
 
     // Required metrics
-    private int numOfAssignments;
-    private int numOfUniqueAssignments;
+    private int numOfAssignedLabels;
+    private int numOfAssignedUniqueLabels;
     private int numOfUniqueUsers;
     private Label mostFrequentLabel;
     @JsonProperty("label distribution percentages")
@@ -57,7 +57,7 @@ public class InstanceStatistic {
             double distributionPercentage = (double) occurrence / totalLabelAmount;
             labelDistributionPercentages.put(label, distributionPercentage);
 
-            entropy -= distributionPercentage * (Math.log(distributionPercentage) / Math.log(numOfUniqueAssignments));
+            entropy -= distributionPercentage * (Math.log(distributionPercentage) / Math.log(numOfAssignedUniqueLabels));
         }
 
         if (!mostFrequentLabels.isEmpty()) {
@@ -66,17 +66,14 @@ public class InstanceStatistic {
         }
     }
 
-    public void incrementLabelOccurrence(Label label) {
+    public void addAssignedLabel(Label label) {
         Integer occurrence = labelOccurrences.get(label);
         labelOccurrences.put(label, occurrence == null ? 1 : occurrence + 1);
+        numOfAssignedLabels++;
     }
 
-    public void incrementNumOfAssignments() {
-        numOfAssignments++;
-    }
-
-    public void setNumOfUniqueAssignments(int numOfUniqueAssignments) {
-        this.numOfUniqueAssignments = numOfUniqueAssignments;
+    public void setNumOfAssignedUniqueLabels(int numOfAssignedUniqueLabels) {
+        this.numOfAssignedUniqueLabels = numOfAssignedUniqueLabels;
     }
 
     @JsonGetter("label distribution percentages")
@@ -98,12 +95,12 @@ public class InstanceStatistic {
         return labelOccurrences;
     }
 
-    public int getNumOfAssignments() {
-        return numOfAssignments;
+    public int getNumOfAssignedLabels() {
+        return numOfAssignedLabels;
     }
 
-    public int getNumOfUniqueAssignments() {
-        return numOfUniqueAssignments;
+    public int getNumOfAssignedUniqueLabels() {
+        return numOfAssignedUniqueLabels;
     }
 
     public int getNumOfUniqueUsers() {
