@@ -3,29 +3,36 @@ package com.data_labeling_system.statistic;
 import com.data_labeling_system.model.*;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@JsonPropertyOrder({"completeness percentage", "class distribution based on final instance labels", "number of unique instances for each class label",
+        "number of users assigned", "users assigned and their completeness percentages", "users assigned and their consistency percentages"})
 public class DatasetStatistic extends Statistic {
     // For calculating purposes
     private final Dataset dataset;
 
     // Required metrics
+    @JsonProperty("number of users assigned")
     private int numOfUsers;
+
+    @JsonProperty("completeness percentage")
     private double completenessPercentage;
-    @JsonProperty("label distribution percentages")
+
+    @JsonProperty("class distribution based on final instance labels")
     private final Map<Label, Double> labelDistributionPercentages;
 
-    @JsonProperty("number of unique instances for labels")
+    @JsonProperty("number of unique instances for each class label")
     private final Map<Label, Integer> numOfUniqueInstancesForLabels;
 
-    @JsonProperty("user completeness percentages")
+    @JsonProperty("users assigned and their completeness percentages")
     private final Map<User, Double> userCompletenessPercentages;
 
-    @JsonProperty("user consistency percentages")
+    @JsonProperty("users assigned and their consistency percentages")
     private final Map<User, Double> userConsistencyPercentages;
 
     public DatasetStatistic(Dataset dataset) {
@@ -132,18 +139,12 @@ public class DatasetStatistic extends Statistic {
         }
     }
 
-    @JsonGetter("label distribution percentages")
+    @JsonGetter("class distribution based on final instance labels")
     private HashMap<String, String> getCustomLabelDistributionPercentages() {
-        HashMap<String, String> getCustomLabelDistributionJson = new HashMap<>();
-        for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
-            String dataset = entry.getKey().getText();
-            String completeness = "%" + (int) (entry.getValue() * 100);
-            getCustomLabelDistributionJson.put(dataset, completeness);
-        }
-        return getCustomLabelDistributionJson;
+        return getStringStringHashMap(labelDistributionPercentages);
     }
 
-    @JsonGetter("number of unique instances for labels")
+    @JsonGetter("number of unique instances for each class label")
     private HashMap<String, Integer> getCustomNumOfUniqueInstancesForLabels() {
         HashMap<String, Integer> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Integer> entry : numOfUniqueInstancesForLabels.entrySet()) {
@@ -154,47 +155,13 @@ public class DatasetStatistic extends Statistic {
         return getCustomLabelDistributionJson;
     }
 
-    @JsonProperty("user completeness percentages")
+    @JsonGetter("users assigned and their completeness percentages")
     private HashMap<String, String> getCustomUserCompleteness() {
-        return mapUserToUserId(userCompletenessPercentages);
+        return mapParsableToParsableId(userCompletenessPercentages);
     }
 
-    @JsonGetter("user consistency percentages")
+    @JsonGetter("users assigned and their consistency percentages")
     private HashMap<String, String> getCustomUserConsistency() {
-        return mapUserToUserId(userConsistencyPercentages);
-    }
-
-    private HashMap<String, String> mapUserToUserId(Map<User, Double> percentages) {
-        HashMap<String, String> customUserJson = new HashMap<>();
-        for (Map.Entry<User, Double> entry : percentages.entrySet()) {
-            String user = "user" + entry.getKey().getId();
-            String percentage = "%" + (int) (entry.getValue() * 100);
-            customUserJson.put(user, percentage);
-        }
-        return customUserJson;
-    }
-
-    public double getCompletenessPercentage() {
-        return completenessPercentage;
-    }
-
-    public Map<Label, Double> getLabelDistributionPercentages() {
-        return labelDistributionPercentages;
-    }
-
-    public Map<Label, Integer> getNumOfUniqueInstancesForLabels() {
-        return numOfUniqueInstancesForLabels;
-    }
-
-    public int getNumOfUsers() {
-        return numOfUsers;
-    }
-
-    public Map<User, Double> getUserCompletenessPercentages() {
-        return userCompletenessPercentages;
-    }
-
-    public Map<User, Double> getUserConsistencyPercentages() {
-        return userConsistencyPercentages;
+        return mapParsableToParsableId(userConsistencyPercentages);
     }
 }

@@ -4,9 +4,13 @@ import com.data_labeling_system.model.*;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.*;
 
+@JsonPropertyOrder({"number of datasets assigned", "dataset completeness percentages", "total number of instances labeled",
+        "total number of unique instances labeled", "dataset consistency percentages",
+        "average time spent in labeling (ns)", "standard deviation of time spent in labeling (ns)"})
 @JsonIgnoreProperties("userAssignmentsForDatasets")
 public class UserStatistic extends Statistic {
     // For calculating purposes
@@ -14,8 +18,13 @@ public class UserStatistic extends Statistic {
     private final Map<Dataset, List<Assignment>> userAssignmentsForDatasets;
 
     // Required metrics
+    @JsonProperty("number of datasets assigned")
     private int numOfDatasetsAssigned;
+
+    @JsonProperty("total number of instances labeled")
     private int numOfAssignments;
+
+    @JsonProperty("total number of unique instances labeled")
     private int numOfUniqueInstanceAssignments;
 
     @JsonProperty("dataset completeness percentages")
@@ -23,7 +32,11 @@ public class UserStatistic extends Statistic {
 
     @JsonProperty("dataset consistency percentages")
     private final Map<Dataset, Double> datasetConsistencyPercentages;
+
+    @JsonProperty("average time spent in labeling (ns)")
     private double avgTimeSpentInLabeling;
+
+    @JsonProperty("standard deviation of time spent in labeling (ns)")
     private double stdDevOfTimeInLabeling;
 
     public UserStatistic() {
@@ -122,22 +135,12 @@ public class UserStatistic extends Statistic {
 
     @JsonGetter("dataset completeness percentages")
     private HashMap<String, String> getCustomDatasetCompleteness() {
-        return mapDatasetToDatasetId(datasetCompletenessPercentages);
+        return mapParsableToParsableId(datasetCompletenessPercentages);
     }
 
     @JsonGetter("dataset consistency percentages")
     private HashMap<String, String> getCustomDatasetConsistency() {
-        return mapDatasetToDatasetId(datasetConsistencyPercentages);
-    }
-
-    private HashMap<String, String> mapDatasetToDatasetId(Map<Dataset, Double> percentages) {
-        HashMap<String, String> customDatasetJson = new HashMap<>();
-        for (Map.Entry<Dataset, Double> entry : percentages.entrySet()) {
-            String dataset = "dataset" + entry.getKey().getId();
-            String completeness = "%" + (int) (entry.getValue() * 100);
-            customDatasetJson.put(dataset, completeness);
-        }
-        return customDatasetJson;
+        return mapParsableToParsableId(datasetConsistencyPercentages);
     }
 
     public void addDataset(Dataset dataset) {
@@ -147,35 +150,11 @@ public class UserStatistic extends Statistic {
         }
     }
 
-    public Map<Dataset, List<Assignment>> getUserAssignmentsForDatasets() {
-        return userAssignmentsForDatasets;
-    }
-
-    public int getNumOfDatasetsAssigned() {
-        return numOfDatasetsAssigned;
-    }
-
-    public int getNumOfAssignments() {
-        return numOfAssignments;
-    }
-
-    public int getNumOfUniqueInstanceAssignments() {
-        return numOfUniqueInstanceAssignments;
-    }
-
     public Map<Dataset, Double> getDatasetCompletenessPercentages() {
         return datasetCompletenessPercentages;
     }
 
     public Map<Dataset, Double> getDatasetConsistencyPercentages() {
         return datasetConsistencyPercentages;
-    }
-
-    public double getAvgTimeSpentInLabeling() {
-        return avgTimeSpentInLabeling;
-    }
-
-    public double getStdDevOfTimeInLabeling() {
-        return stdDevOfTimeInLabeling;
     }
 }

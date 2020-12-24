@@ -4,23 +4,34 @@ import com.data_labeling_system.model.Label;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@JsonPropertyOrder({"total number of label assignments", "number of unique label assignment", "number of unique users",
+        "most frequent class label and its percentage", "class labels and percentages", "entropy"})
 @JsonIgnoreProperties({"labelOccurrences"})
 public class InstanceStatistic extends Statistic {
     // For calculating purposes
     private final Map<Label, Integer> labelOccurrences;
 
     // Required metrics
+    @JsonProperty("total number of label assignments")
     private int numOfAssignedLabels;
+
+    @JsonProperty("number of unique label assignment")
     private int numOfAssignedUniqueLabels;
+
+    @JsonProperty("number of unique users")
     private int numOfUniqueUsers;
+
+    @JsonProperty("most frequent class label and its percentage")
     private Label mostFrequentLabel;
-    @JsonProperty("label distribution percentages")
+
+    @JsonProperty("class labels and percentages")
     private final Map<Label, Double> labelDistributionPercentages;
     private double entropy;
 
@@ -77,46 +88,12 @@ public class InstanceStatistic extends Statistic {
         this.numOfAssignedUniqueLabels = numOfAssignedUniqueLabels;
     }
 
-    @JsonGetter("label distribution percentages")
+    @JsonGetter("class labels and percentages")
     private HashMap<String, String> getCustomLabelDistributionPercentages() {
-        HashMap<String, String> customLabelJson = new HashMap<>();
-        for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
-            String label = entry.getKey().getText();
-            String percentage = "%" + (int) (entry.getValue() * 100);
-            customLabelJson.put(label, percentage);
-        }
-        return customLabelJson;
+        return getStringStringHashMap(labelDistributionPercentages);
     }
 
     public void setNumOfUniqueUsers(int numOfUniqueUsers) {
         this.numOfUniqueUsers = numOfUniqueUsers;
-    }
-
-    public Map<Label, Integer> getLabelOccurrences() {
-        return labelOccurrences;
-    }
-
-    public int getNumOfAssignedLabels() {
-        return numOfAssignedLabels;
-    }
-
-    public int getNumOfAssignedUniqueLabels() {
-        return numOfAssignedUniqueLabels;
-    }
-
-    public int getNumOfUniqueUsers() {
-        return numOfUniqueUsers;
-    }
-
-    public Label getMostFrequentLabel() {
-        return mostFrequentLabel;
-    }
-
-    public Map<Label, Double> getLabelDistributionPercentages() {
-        return labelDistributionPercentages;
-    }
-
-    public double getEntropy() {
-        return entropy;
     }
 }
