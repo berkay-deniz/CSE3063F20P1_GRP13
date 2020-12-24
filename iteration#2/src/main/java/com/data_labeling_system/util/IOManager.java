@@ -47,20 +47,23 @@ public class IOManager {
         }
         logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
     }
+
     public void printMetrics(List<Dataset> datasets, List<User> users) {
 
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
-            for(User user : users) {
-
-                writer.writeValue(new File("metrics/user"+user.getId()+".json"),user.getStatistic());
+            for (User user : users) {
+                writer.writeValue(new File("metrics/user" + user.getId() + ".json"), user.getStatistic());
+            }
+            for (Dataset dataset : datasets) {
+                writer.writeValue(new File("metrics/dataset" + dataset.getId() + ".json"), dataset.getStatistic());
             }
 
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
-       // logger.info("Final u printed to '" + outputFileName + "' successfully.");
+        // logger.info("Final u printed to '" + outputFileName + "' successfully.");
 
 
     }

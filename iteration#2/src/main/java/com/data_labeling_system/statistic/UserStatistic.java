@@ -117,20 +117,20 @@ public class UserStatistic {
     }
 
     @JsonGetter("dataset completeness percentages")
-    public HashMap<String, Double> getCustomDatasetCompleteness() {
+    private HashMap<String, String> getCustomDatasetCompleteness() {
         return mapDatasetToDatasetId(datasetCompletenessPercentages);
     }
 
     @JsonGetter("dataset consistency percentages")
-    public HashMap<String, Double> getCustomDatasetConsistency() {
+    private HashMap<String, String> getCustomDatasetConsistency() {
         return mapDatasetToDatasetId(datasetConsistencyPercentages);
     }
 
-    private HashMap<String, Double> mapDatasetToDatasetId(Map<Dataset, Double> percentages) {
-        HashMap<String, Double> customDatasetJson = new HashMap<>();
+    private HashMap<String, String> mapDatasetToDatasetId(Map<Dataset, Double> percentages) {
+        HashMap<String, String> customDatasetJson = new HashMap<>();
         for (Map.Entry<Dataset, Double> entry : percentages.entrySet()) {
             String dataset = "dataset" + entry.getKey().getId();
-            double completeness = entry.getValue();
+            String completeness = "%" + (int) (entry.getValue() * 100);
             customDatasetJson.put(dataset, completeness);
         }
         return customDatasetJson;
