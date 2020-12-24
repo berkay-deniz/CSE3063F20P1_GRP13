@@ -89,16 +89,8 @@ public class InstanceTagger {
         this.dataset.setAssignments(assignments);
     }
 
-    public Dataset getDataset() {
-        return dataset;
-    }
-
     public void setDataset(Dataset dataset) {
         this.dataset = dataset;
-    }
-
-    public List<User> getUsers() {
-        return users;
     }
 
     public void setUsers(List<User> users) {

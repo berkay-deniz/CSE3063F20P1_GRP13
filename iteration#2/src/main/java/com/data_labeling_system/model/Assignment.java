@@ -13,7 +13,7 @@ import java.util.List;
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
 public class Assignment {
     private Instance instance;
-    private List<Label> labels;
+    private final List<Label> labels;
     private User user;
     private long timeSpentInNanos;
 
@@ -61,24 +61,12 @@ public class Assignment {
         return labels;
     }
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Date getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
     }
 
     public long getTimeSpentInNanos() {
