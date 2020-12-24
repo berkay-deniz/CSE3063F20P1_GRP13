@@ -72,8 +72,31 @@ public class InstanceStatistic extends Statistic {
         if (!mostFrequentLabels.isEmpty()) {
             int random = (int) (Math.random() * mostFrequentLabels.size());
             Label mostFrequentLabel = mostFrequentLabels.get(random);
-            mostFrequentLabelAndPercentage = new AbstractMap.SimpleEntry<>(mostFrequentLabel, labelDistributionPercentages.get(mostFrequentLabel));
+            mostFrequentLabelAndPercentage = new AbstractMap.SimpleEntry<>(mostFrequentLabel,
+                    labelDistributionPercentages.get(mostFrequentLabel));
         }
+    }
+
+    @JsonGetter("class labels and percentages")
+    private HashMap<String, String> getCustomLabelDistributionPercentages() {
+        return getStringStringHashMap(labelDistributionPercentages);
+    }
+
+    @JsonGetter("most frequent class label and its percentage")
+    private Map.Entry<String, String> getCustomMostFrequentLabelAndPercentage() {
+        if (mostFrequentLabelAndPercentage == null)
+            return null;
+        String label = mostFrequentLabelAndPercentage.getKey().getText();
+        double percentage = ((int) (mostFrequentLabelAndPercentage.getValue() * 10000)) / 100.0;
+        return new AbstractMap.SimpleEntry<>(label, ("%" + percentage));
+    }
+
+    public void setNumOfUniqueUsers(int numOfUniqueUsers) {
+        this.numOfUniqueUsers = numOfUniqueUsers;
+    }
+
+    public Map.Entry<Label, Double> getMostFrequentLabelAndPercentage() {
+        return mostFrequentLabelAndPercentage;
     }
 
     public void addAssignedLabel(Label label) {
@@ -84,18 +107,5 @@ public class InstanceStatistic extends Statistic {
 
     public void setNumOfAssignedUniqueLabels(int numOfAssignedUniqueLabels) {
         this.numOfAssignedUniqueLabels = numOfAssignedUniqueLabels;
-    }
-
-    @JsonGetter("class labels and percentages")
-    private HashMap<String, String> getCustomLabelDistributionPercentages() {
-        return getStringStringHashMap(labelDistributionPercentages);
-    }
-
-    public void setNumOfUniqueUsers(int numOfUniqueUsers) {
-        this.numOfUniqueUsers = numOfUniqueUsers;
-    }
-
-    public Map.Entry<Label, Double> getMostFrequentLabelAndPercentage() {
-        return mostFrequentLabelAndPercentage;
     }
 }

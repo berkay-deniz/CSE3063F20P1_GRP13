@@ -15,8 +15,8 @@ public abstract class Statistic {
         HashMap<String, String> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
             String dataset = entry.getKey().getText();
-            String completeness = "%" + (int) (entry.getValue() * 100);
-            getCustomLabelDistributionJson.put(dataset, completeness);
+            String percentage = "%" + ((int) (entry.getValue() * 10000)) / 100.0;
+            getCustomLabelDistributionJson.put(dataset, percentage);
         }
         return getCustomLabelDistributionJson;
     }
@@ -29,7 +29,7 @@ public abstract class Statistic {
                 id = "user" + entry.getKey().getId();
             else if (entry instanceof Dataset)
                 id = "dataset" + entry.getKey().getId();
-            String percentage = "%" + (int) (entry.getValue() * 100);
+            String percentage = "%" + ((int) (entry.getValue() * 10000)) / 100.0;
             customUserJson.put(id, percentage);
         }
         return customUserJson;

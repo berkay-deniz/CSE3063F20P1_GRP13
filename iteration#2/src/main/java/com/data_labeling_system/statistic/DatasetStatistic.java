@@ -171,4 +171,9 @@ public class DatasetStatistic extends Statistic {
     private HashMap<String, String> getCustomUserConsistency() {
         return mapParsableToParsableId(userConsistencyPercentages);
     }
+
+    @JsonGetter("completeness percentage")
+    private String getCustomCompletenessPercentage() {
+        return "%" + ((int) (completenessPercentage * 10000)) / 100.0;
+    }
 }
