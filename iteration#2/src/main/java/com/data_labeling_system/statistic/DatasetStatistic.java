@@ -127,7 +127,7 @@ public class DatasetStatistic {
     private HashMap<String, String> getCustomLabelDistributionPercentages() {
         HashMap<String, String> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
-            String dataset = "label" + entry.getKey().getId();
+            String dataset = entry.getKey().getText();
             String completeness = "%" + (int) (entry.getValue() * 100);
             getCustomLabelDistributionJson.put(dataset, completeness);
         }
@@ -138,7 +138,7 @@ public class DatasetStatistic {
     private HashMap<String, Integer> getCustomNumOfUniqueInstancesForLabels() {
         HashMap<String, Integer> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Integer> entry : numOfUniqueInstancesForLabels.entrySet()) {
-            String dataset = "label" + entry.getKey().getId();
+            String dataset = entry.getKey().getText();
             Integer completeness = entry.getValue();
             getCustomLabelDistributionJson.put(dataset, completeness);
         }

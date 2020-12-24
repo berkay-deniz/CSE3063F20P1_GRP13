@@ -80,7 +80,7 @@ public class InstanceStatistic {
     private HashMap<String, String> getCustomLabelDistributionPercentages() {
         HashMap<String, String> customLabelJson = new HashMap<>();
         for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
-            String label = "label" + entry.getKey().getId();
+            String label = entry.getKey().getText();
             String percentage = "%" + (int) (entry.getValue() * 100);
             customLabelJson.put(label, percentage);
         }
