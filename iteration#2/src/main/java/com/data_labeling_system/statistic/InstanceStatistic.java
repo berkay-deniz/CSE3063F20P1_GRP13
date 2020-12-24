@@ -1,10 +1,13 @@
 package com.data_labeling_system.statistic;
 
 import com.data_labeling_system.model.Label;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.HashMap;
 import java.util.Map;
-
+@JsonIgnoreProperties({"labelOccurrences"})
 public class InstanceStatistic {
     // For calculating purposes
     private final Map<Label, Integer> labelOccurrences;
@@ -14,6 +17,7 @@ public class InstanceStatistic {
     private int numOfUniqueAssignments;
     private int numOfUniqueUsers;
     private Label mostFrequentLabel;
+    @JsonProperty("label distribution percentages")
     private final Map<Label, Double> labelDistributionPercentages;
     private double entropy;
 
@@ -59,6 +63,17 @@ public class InstanceStatistic {
 
     public void setNumOfUniqueAssignments(int numOfUniqueAssignments) {
         this.numOfUniqueAssignments = numOfUniqueAssignments;
+    }
+
+    @JsonGetter("label distribution percentages")
+    private HashMap<String, String> getCustomLabelDistributionPercentages() {
+        HashMap<String, String> customLabelJson = new HashMap<>();
+        for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
+            String label = "label" + entry.getKey().getId();
+            String percentage = "%" + (int) (entry.getValue() * 100);
+            customLabelJson.put(label, percentage);
+        }
+        return customLabelJson;
     }
 
     public void setNumOfUniqueUsers(int numOfUniqueUsers) {

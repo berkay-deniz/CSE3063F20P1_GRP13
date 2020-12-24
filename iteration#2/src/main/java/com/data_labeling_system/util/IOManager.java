@@ -1,6 +1,7 @@
 package com.data_labeling_system.util;
 
 import com.data_labeling_system.model.Dataset;
+import com.data_labeling_system.model.Instance;
 import com.data_labeling_system.model.User;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,14 +51,33 @@ public class IOManager {
 
     public void printMetrics(List<Dataset> datasets, List<User> users) {
 
+        if (new File("metrics/users").mkdir())
+            logger.info("'users' folder has been created.");
+        else
+            logger.error("Can't create 'users' folder.");
+        if (new File("metrics/datasets").mkdir())
+            logger.info("'datasets' folder has been created.");
+        else
+            logger.error("Can't create 'datasets' folder.");
+        if (new File("metrics/instances").mkdir())
+            logger.info("'instances' folder has been created.");
+        else
+            logger.error("Can't create 'instances' folder.");
+
+
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
             for (User user : users) {
-                writer.writeValue(new File("metrics/user" + user.getId() + ".json"), user.getStatistic());
+                writer.writeValue(new File("metrics/users/user" + user.getId() + ".json"), user.getStatistic());
             }
             for (Dataset dataset : datasets) {
-                writer.writeValue(new File("metrics/dataset" + dataset.getId() + ".json"), dataset.getStatistic());
+                writer.writeValue(new File("metrics/datasets/dataset" + dataset.getId() + ".json"), dataset.getStatistic());
+
+                for(Instance instance : dataset.getInstances()) {
+
+                    writer.writeValue(new File("metrics/instances/instance"+instance.getId()+".json"),instance.getStatistic());
+                }
             }
 
         } catch (IOException e) {
@@ -67,5 +87,7 @@ public class IOManager {
 
 
     }
+
+
 
 }
