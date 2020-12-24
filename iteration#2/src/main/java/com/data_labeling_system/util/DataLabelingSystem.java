@@ -88,7 +88,7 @@ public class DataLabelingSystem {
         }
         // Calculate metrics for Dataset
         for (Dataset dataset : datasets) {
-            dataset.getStatistic().calculateMetrics(dataset);
+            dataset.getStatistic().calculateMetrics();
         }
 
         // Assign updated objects to the instanceTagger object

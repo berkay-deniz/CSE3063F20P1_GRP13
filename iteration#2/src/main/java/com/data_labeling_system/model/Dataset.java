@@ -46,7 +46,7 @@ public class Dataset implements Parsable {
     private final Logger logger;
 
     public Dataset(String json, List<User> users) {
-        statistic = new DatasetStatistic();
+        statistic = new DatasetStatistic(this);
         logger = Logger.getLogger(DataLabelingSystem.class);
         nextInstancesToBeLabelled = new HashMap<>();
         assignments = new ArrayList<>();

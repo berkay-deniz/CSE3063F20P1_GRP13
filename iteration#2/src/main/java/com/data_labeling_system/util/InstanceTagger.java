@@ -64,7 +64,7 @@ public class InstanceTagger {
                 // Calculate updated metrics
                 currentUser.getStatistic().addAssignment(dataset, assignment);
                 currentUser.getStatistic().calculateMetrics();
-                dataset.getStatistic().calculateMetrics(dataset);
+                dataset.getStatistic().calculateMetrics();
 
                 // Print output dataset and metric calculations
                 ioManager.printMetrics(datasets, userManager.getUsers());

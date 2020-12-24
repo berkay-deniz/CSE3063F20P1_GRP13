@@ -4,9 +4,16 @@ import com.data_labeling_system.model.*;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-public class DatasetStatistic {
+public class DatasetStatistic extends Statistic {
+    // For calculating purposes
+    private final Dataset dataset;
+
+    // Required metrics
     private int numOfUsers;
     private double completenessPercentage;
     @JsonProperty("label distribution percentages")
@@ -21,14 +28,16 @@ public class DatasetStatistic {
     @JsonProperty("user consistency percentages")
     private final Map<User, Double> userConsistencyPercentages;
 
-    public DatasetStatistic() {
+    public DatasetStatistic(Dataset dataset) {
         labelDistributionPercentages = new HashMap<>();
         numOfUniqueInstancesForLabels = new HashMap<>();
         userCompletenessPercentages = new HashMap<>();
         userConsistencyPercentages = new HashMap<>();
+        this.dataset = dataset;
     }
 
-    public void calculateMetrics(Dataset dataset) {
+    @Override
+    public void calculateMetrics() {
         int totalLabelsAssigned = 0;
         Set<Instance> uniqueInstances = new HashSet<>();
         Map<Label, Set<Instance>> uniqueInstancesForLabels = new HashMap<>();

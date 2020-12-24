@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 
 @JsonIgnoreProperties("userAssignmentsForDatasets")
-public class UserStatistic {
+public class UserStatistic extends Statistic {
     // For calculating purposes
     private final Set<Dataset> datasetsAssigned;
     private final Map<Dataset, List<Assignment>> userAssignmentsForDatasets;
@@ -33,6 +33,7 @@ public class UserStatistic {
         datasetsAssigned = new HashSet<>();
     }
 
+    @Override
     public void calculateMetrics() {
         stdDevOfTimeInLabeling = 0;
         numOfUniqueInstanceAssignments = 0;

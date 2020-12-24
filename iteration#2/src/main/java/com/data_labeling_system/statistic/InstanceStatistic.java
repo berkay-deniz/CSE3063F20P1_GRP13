@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties({"labelOccurrences"})
-public class InstanceStatistic {
+public class InstanceStatistic extends Statistic {
     // For calculating purposes
     private final Map<Label, Integer> labelOccurrences;
 
@@ -29,6 +29,7 @@ public class InstanceStatistic {
         labelDistributionPercentages = new HashMap<>();
     }
 
+    @Override
     public void calculateMetrics() {
         entropy = 0;
         List<Label> mostFrequentLabels = new ArrayList<>();
