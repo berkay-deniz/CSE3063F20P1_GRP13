@@ -38,6 +38,7 @@ public class DataLabelingSystem {
             logger.error("Can't create 'metrics' folder.");
         // Read json files and keep as string
         String configJson = this.ioManager.readInputFile("config.json");
+        // Create users using config.json
         userManager.createUsers(configJson);
         JSONObject configObject = new JSONObject(configJson);
         JSONArray datasetArray = configObject.getJSONArray("datasets");
@@ -49,7 +50,7 @@ public class DataLabelingSystem {
             int id = datasetObject.getInt("id");
 
             boolean doesFileExist = new File("./outputs/output" + id + ".json").exists();
-
+            // Check the existence of the output file and read inputFile accordingly.
             if (doesFileExist) {
                 inputFile = "./outputs/output" + id + ".json";
             } else {
@@ -60,11 +61,11 @@ public class DataLabelingSystem {
             JSONArray registeredUserIds = datasetObject.getJSONArray("users");
 
             List<User> registeredUsers = new ArrayList<>();
-
+            // Find users registered in the dataset and save them in the dataset.
             for (int j = 0; j < registeredUserIds.length(); j++) {
                 registeredUsers.add(userManager.findUser(registeredUserIds.getInt(j)));
             }
-
+            // Create dataset object and save them in the datasets list.
             Dataset dataset = new Dataset(datasetJson, registeredUsers);
             datasets.add(dataset);
 
@@ -81,11 +82,11 @@ public class DataLabelingSystem {
             logger.error("Current dataset is not defined.");
             return;
         }
-
+        // Calculate metrics for User
         for (User user : this.userManager.getUsers()) {
             user.getStatistic().calculateMetrics();
         }
-
+        // Calculate metrics for Dataset
         for (Dataset dataset : datasets) {
             dataset.getStatistic().calculateMetrics(dataset);
         }
