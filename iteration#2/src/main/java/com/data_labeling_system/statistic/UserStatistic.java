@@ -64,8 +64,8 @@ public class UserStatistic {
                 assignedLabels.addAll(assignment.getLabels());
 
                 // To calculate average & standard deviation of time spent in labeling
-                timesSpentForLabeling.add(assignment.getTimeSpentInMillis());
-                totalTimeSpent += assignment.getTimeSpentInMillis();
+                timesSpentForLabeling.add(assignment.getTimeSpentInNanos());
+                totalTimeSpent += assignment.getTimeSpentInNanos();
             }
             numOfUniqueInstanceAssignments += numOfUniqueDatasetAssignments;
 

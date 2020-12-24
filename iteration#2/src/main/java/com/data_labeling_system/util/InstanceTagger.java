@@ -26,7 +26,7 @@ public class InstanceTagger {
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
         while (!this.users.isEmpty()) {
             for (int i = 0; i < this.users.size(); i++) {
-                long startTime = System.currentTimeMillis();
+                long startTime = System.nanoTime();
                 User currentUser = this.users.get(i);
                 Integer value = this.dataset.getNextInstancesToBeLabelled().get(currentUser);
                 int nextInstanceToBeLabelled = value == null ? 0 : value;
@@ -57,8 +57,8 @@ public class InstanceTagger {
                     this.dataset.getNextInstancesToBeLabelled().put(currentUser, ++nextInstanceToBeLabelled);
 
                 // Determine time spent in assignment
-                long finishTime = System.currentTimeMillis();
-                assignment.setTimeSpentInMillis(finishTime - startTime);
+                long finishTime = System.nanoTime();
+                assignment.setTimeSpentInNanos(finishTime - startTime);
 
                 // Calculate updated metrics
                 currentUser.getStatistic().addAssignment(dataset, assignment);

@@ -4,23 +4,18 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@JsonIgnoreProperties({"instance", "labels", "user","timeSpentInMillis"})
+@JsonIgnoreProperties({"instance", "labels", "user", "timeSpentInMillis"})
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
 public class Assignment {
     private Instance instance;
     private List<Label> labels;
     private User user;
-    private long timeSpentInMillis;
+    private long timeSpentInNanos;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
     private Date dateTime;
@@ -86,12 +81,12 @@ public class Assignment {
         this.dateTime = dateTime;
     }
 
-    public long getTimeSpentInMillis() {
-        return timeSpentInMillis;
+    public long getTimeSpentInNanos() {
+        return timeSpentInNanos;
     }
 
-    public void setTimeSpentInMillis(long timeSpentInMillis) {
-        this.timeSpentInMillis = timeSpentInMillis;
+    public void setTimeSpentInNanos(long timeSpentInNanos) {
+        this.timeSpentInNanos = timeSpentInNanos;
     }
 
 }
