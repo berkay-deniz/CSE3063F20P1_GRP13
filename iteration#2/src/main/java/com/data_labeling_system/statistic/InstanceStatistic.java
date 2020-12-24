@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 @JsonIgnoreProperties({"labelOccurrences"})
 public class InstanceStatistic {
     // For calculating purposes
@@ -28,7 +31,8 @@ public class InstanceStatistic {
 
     public void calculateMetrics() {
         entropy = 0;
-        Map.Entry<Label, Integer> mostRecurrent = null;
+        List<Label> mostFrequentLabels = new ArrayList<>();
+        int maxOccurrence = 0;
 
         int totalLabelAmount = 0;
         for (int occurrence : labelOccurrences.values()) {
@@ -39,8 +43,16 @@ public class InstanceStatistic {
             Label label = entry.getKey();
             int occurrence = entry.getValue();
 
-            if (mostRecurrent == null || occurrence > mostRecurrent.getValue())
-                mostRecurrent = entry;
+            if (occurrence > maxOccurrence) {
+                mostFrequentLabels.clear();
+            }
+
+            if (mostFrequentLabels.isEmpty()) {
+                mostFrequentLabels.add(label);
+                maxOccurrence = occurrence;
+            } else if (occurrence == maxOccurrence) {
+                mostFrequentLabels.add(label);
+            }
 
             double distributionPercentage = (double) occurrence / totalLabelAmount;
             labelDistributionPercentages.put(label, distributionPercentage);
@@ -48,8 +60,10 @@ public class InstanceStatistic {
             entropy -= distributionPercentage * (Math.log(distributionPercentage) / Math.log(numOfUniqueAssignments));
         }
 
-        if (mostRecurrent != null)
-            mostFrequentLabel = mostRecurrent.getKey();
+        if (!mostFrequentLabels.isEmpty()) {
+            int random = (int) (Math.random() * mostFrequentLabels.size());
+            mostFrequentLabel = mostFrequentLabels.get(random);
+        }
     }
 
     public void incrementLabelOccurrence(Label label) {

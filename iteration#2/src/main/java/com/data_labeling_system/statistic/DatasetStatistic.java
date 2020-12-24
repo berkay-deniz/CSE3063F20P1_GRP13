@@ -118,6 +118,7 @@ public class DatasetStatistic {
 
         for (Instance instance : dataset.getInstances()) {
             instance.getStatistic().calculateMetrics();
+            instance.setFinalLabel();
         }
     }
 

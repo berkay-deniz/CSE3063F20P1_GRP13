@@ -53,7 +53,6 @@ public class InstanceTagger {
                             + ":" + assignment.getLabels().get(j).getText() + ", instance:'"
                             + assignment.getInstance().getInstance() + "'");
                 }
-                this.dataset.getInstances().get(currentInstanceToBeLabelled).setFinalLabel(assignments);
                 if (currentInstanceToBeLabelled == nextInstanceToBeLabelled)
                     this.dataset.getNextInstancesToBeLabelled().put(currentUser, ++nextInstanceToBeLabelled);
 
