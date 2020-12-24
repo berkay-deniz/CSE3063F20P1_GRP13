@@ -4,6 +4,7 @@ import com.data_labeling_system.statistic.InstanceStatistic;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 @JsonIgnoreProperties({"statistic"})
@@ -40,7 +41,7 @@ public class Instance implements Parsable {
 
     public void setFinalLabel(List<Assignment> assignments) {
         int max = 0;
-        Label finalLabel = null;
+        ArrayList<Label> finalLabels = new ArrayList<Label>();
         HashMap<Label, Integer> occurrenceOfLabels = new HashMap<>();
         for (Assignment assignment : assignments) {
             if (assignment.getInstance().getId() == this.id) {
@@ -49,22 +50,28 @@ public class Instance implements Parsable {
                         occurrenceOfLabels.put(label, 1);
                         if (max == 0) {
                             max = 1;
-                            finalLabel = label;
+                            finalLabels.add(label);
                         }
-                    } else {
+                    }
+                    else {
                         int occurrence = occurrenceOfLabels.get(label);
                         occurrence++;
                         occurrenceOfLabels.put(label, occurrence);
                         if (occurrence > max) {
                             max = occurrence;
-                            finalLabel = label;
+                            finalLabels.clear();
+                            finalLabels.add(label);
+                        }
+                        if (occurrence == max){
+                            finalLabels.add(label);
                         }
                     }
                 }
 
             }
         }
-        this.finalLabel = finalLabel;
+        int rand = (int)(Math.random() * finalLabels.size());
+        this.finalLabel = finalLabels.get(rand);
     }
 
     public Label getFinalLabel() {
