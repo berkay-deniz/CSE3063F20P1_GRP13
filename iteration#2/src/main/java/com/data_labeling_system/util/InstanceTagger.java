@@ -1,10 +1,7 @@
 package com.data_labeling_system.util;
 
 import com.data_labeling_system.mechanism.LabelingMechanism;
-import com.data_labeling_system.model.Assignment;
-import com.data_labeling_system.model.Dataset;
-import com.data_labeling_system.model.Instance;
-import com.data_labeling_system.model.User;
+import com.data_labeling_system.model.*;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -48,12 +45,20 @@ public class InstanceTagger {
                         dataset.getLabels(), dataset.getMaxNumOfLabels());
                 assignments.add(assignment);
 
-                for (int j = 0; j < assignment.getLabels().size(); j++) {
-                    logger.info("user id:" + currentUser.getId() + " " + currentUser.getName() + " tagged instance id:"
-                            + assignment.getInstanceId() + " with class label:" + assignment.getLabels().get(j).getId()
-                            + ":" + assignment.getLabels().get(j).getText() + ", instance:'"
-                            + assignment.getInstance().getInstance() + "'");
+                List<Label> labels = assignment.getLabels();
+                StringBuilder classLabels = new StringBuilder();
+                for (int j = 0; j < labels.size(); j++) {
+                    Label label = labels.get(j);
+                    String classLabel = label.getId() + ": " + label.getText();
+                    classLabels.append(classLabel);
+                    if (j < labels.size() - 1)
+                        classLabels.append(", ");
                 }
+
+                logger.info("user id: " + currentUser.getId() + " " + currentUser.getName() + " tagged instance id: " +
+                        assignment.getInstanceId() + " with class labels: [" + classLabels + "]" + ", instance: \"" +
+                        assignment.getInstance().getInstance() + "\"");
+
                 if (currentInstanceToBeLabelled == nextInstanceToBeLabelled)
                     this.dataset.getNextInstancesToBeLabelled().put(currentUser, ++nextInstanceToBeLabelled);
 
