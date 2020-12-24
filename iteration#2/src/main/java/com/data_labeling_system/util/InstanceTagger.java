@@ -8,6 +8,7 @@ import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class InstanceTagger {
     private final Logger logger;
@@ -19,7 +20,7 @@ public class InstanceTagger {
         logger = Logger.getLogger(Instance.class);
     }
 
-    public void assignLabels() {
+    public void assignLabels(IOManager ioManager, UserManager userManager, List<Dataset> datasets) {
         List<Assignment> assignments = this.dataset.getAssignments();
         logger.info("The list of assigment was created successfully.");
 
@@ -64,7 +65,16 @@ public class InstanceTagger {
                 currentUser.getStatistic().addAssignment(dataset, assignment);
                 currentUser.getStatistic().calculateMetrics();
                 dataset.getStatistic().calculateMetrics(dataset);
-                // TODO: Output and other assignments...
+
+                // Print output dataset and metric calculations
+                ioManager.printMetrics(datasets, userManager.getUsers());
+                ioManager.printFinalDataset(dataset, "outputs/output" + dataset.getId() + ".json");
+
+                try {
+                    TimeUnit.SECONDS.sleep(3);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
         this.dataset.setAssignments(assignments);

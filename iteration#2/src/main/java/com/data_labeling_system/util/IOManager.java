@@ -50,19 +50,10 @@ public class IOManager {
     }
 
     public void printMetrics(List<Dataset> datasets, List<User> users) {
+        createFolder("metrics/users");
+        createFolder("metrics/datasets");
+        createFolder("metrics/instances");
 
-        if (new File("metrics/users").mkdir())
-            logger.info("'users' folder has been created.");
-        else
-            logger.error("Can't create 'users' folder.");
-        if (new File("metrics/datasets").mkdir())
-            logger.info("'datasets' folder has been created.");
-        else
-            logger.error("Can't create 'datasets' folder.");
-        if (new File("metrics/instances").mkdir())
-            logger.info("'instances' folder has been created.");
-        else
-            logger.error("Can't create 'instances' folder.");
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
@@ -71,20 +62,22 @@ public class IOManager {
             }
             for (Dataset dataset : datasets) {
                 writer.writeValue(new File("metrics/datasets/dataset" + dataset.getId() + ".json"), dataset.getStatistic());
-                File file = new File("metrics/instances/dataset" + dataset.getId());
-                file.mkdir();
+                File instanceDatasetsMetricFolder = createFolder("metrics/instances/dataset" + dataset.getId());
                 for (Instance instance : dataset.getInstances()) {
-                    writer.writeValue(new File(file.getPath() + "/instance" + instance.getId() + ".json"), instance.getStatistic());
+                    writer.writeValue(new File(instanceDatasetsMetricFolder.getPath() + "/instance" + instance.getId() + ".json"), instance.getStatistic());
                 }
             }
 
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
-        // logger.info("Final u printed to '" + outputFileName + "' successfully.");
-
-
+        logger.info("Statistic metrics printed to the 'metrics' folder successfully.");
     }
 
-
+    private File createFolder(String folderPath) {
+        File folder = new File(folderPath);
+        if (folder.mkdir())
+            logger.info("'" + folderPath + "' folder has been created.");
+        return folder;
+    }
 }

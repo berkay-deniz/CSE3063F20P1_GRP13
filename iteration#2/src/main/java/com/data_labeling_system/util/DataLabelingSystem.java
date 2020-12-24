@@ -95,10 +95,6 @@ public class DataLabelingSystem {
         ArrayList<User> activeUsers = new ArrayList<>(currentDataset.getUsers());
         this.instanceTagger.setUsers(activeUsers);
         // Assign label to instances
-        this.instanceTagger.assignLabels();
-        // Take final dataset and write as json file
-        currentDataset = this.instanceTagger.getDataset();
-        this.ioManager.printFinalDataset(currentDataset, "outputs/output" + currentDatasetId + ".json");
-        this.ioManager.printMetrics(this.datasets, this.userManager.getUsers());
+        this.instanceTagger.assignLabels(ioManager, userManager, datasets);
     }
 }
