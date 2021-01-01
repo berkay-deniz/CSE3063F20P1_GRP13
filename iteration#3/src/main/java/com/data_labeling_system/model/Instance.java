@@ -26,6 +26,9 @@ public class Instance implements Parsable {
         instance = object.getString("instance");
     }
 
+    public void printInstance(){
+        System.out.println(this.instance);
+    }
     public int getId() {
         return id;
     }
