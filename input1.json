@@ -5,15 +5,15 @@
   "class labels": [
     {
       "label id": 1,
-      "label text": "Positive"
+      "label text": "__label__pozitif"
     },
     {
       "label id": 2,
-      "label text": "Negative"
+      "label text": "__label__negatif"
     },
     {
       "label id": 3,
-      "label text": "Notr"
+      "label text": "__label__nötr"
     }
   ],
   "instances": [

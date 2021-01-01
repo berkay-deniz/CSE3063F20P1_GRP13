@@ -124,7 +124,7 @@ public class Dataset implements Parsable {
         }
     }
 
-    public void assignLabels() {
+    public void assignLabels() throws IOException {
         logger.info("The list of assigment was created successfully.");
 
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
@@ -186,7 +186,7 @@ public class Dataset implements Parsable {
                 logger.info("Final dataset with DatasetId: " + id + " is printed to output.json.");
 
                 try {
-                    TimeUnit.SECONDS.sleep(1);
+                    TimeUnit.SECONDS.sleep(0);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

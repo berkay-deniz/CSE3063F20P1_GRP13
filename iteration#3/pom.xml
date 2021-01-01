@@ -18,6 +18,14 @@
         <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>zemberek-repo</id>
+            <name>zemberek Maven Repo on Github</name>
+            <url>https://raw.github.com/ahmetaa/maven-repo/master</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -27,6 +35,13 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.gsonfire/gson-fire -->
 
+
+
+            <dependency>
+                <groupId>zemberek-nlp</groupId>
+                <artifactId>zemberek-classification</artifactId>
+                <version>0.17.1</version>
+            </dependency>
 
         <dependency>
             <groupId>org.json</groupId>

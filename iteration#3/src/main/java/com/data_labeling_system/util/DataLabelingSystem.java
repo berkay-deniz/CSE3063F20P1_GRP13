@@ -28,7 +28,7 @@ public class DataLabelingSystem {
         users = new HashMap<>();
     }
 
-    public void startSystem() {
+    public void startSystem() throws IOException {
         logger.info("The system has started");
         // Create output folders to organize datasets and metrics
         createOutputFolders();

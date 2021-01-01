@@ -16,7 +16,14 @@ public class LabelingMechanismFactory {
             logger.info("Random labeling mechanism generated successfully.");
             // Crete Random Labeling Mechanism
             return new RandomLabelingMechanism();
-        } else {
+        }
+    	if(type.equals("MachineLearningBot")) {
+            logger.info("Machine learning mechanism generated successfully.");
+            // Crete Random Labeling Mechanism
+            return new MachineLearningMechanism();
+
+        }
+    	else {
         	// If the user type is unregistered, mechanism don't create
             logger.error("'" + type + "' is not a valid mechanism type.");
             return null;

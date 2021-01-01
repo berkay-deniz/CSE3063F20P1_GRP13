@@ -15,11 +15,11 @@
     {
       "user id": 3,
       "user name": "MachineLearningLabelingMechanism",
-      "user type": "RandomBot",
+      "user type": "MachineLearningBot",
       "consistencyCheckProbability": 0.5
     }
   ],
-  "currentDatasetId": 2 ,
+  "currentDatasetId": 1 ,
   "datasets": [
     {
       "id": 1,
