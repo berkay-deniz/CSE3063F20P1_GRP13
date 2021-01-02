@@ -2,7 +2,7 @@ package com.data_labeling_system.model;
 
 import com.data_labeling_system.mechanism.LabelingMechanism;
 import com.data_labeling_system.statistic.DatasetStatistic;
-import com.data_labeling_system.util.DataLabelingSystem;
+import com.data_labeling_system.DataLabelingSystem;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -37,25 +37,27 @@ public class Dataset implements Parsable {
     private int maxNumOfLabels;
 
     @JsonProperty("class labels")
-    private List<Label> labels;
+    private final Map<Integer, Label> labels;
 
-    private List<Instance> instances;
+    private final Map<Integer, Instance> instances;
 
     @JsonProperty("class label assignments")
-    private List<Assignment> assignments;
+    private final List<Assignment> assignments;
 
-    private final List<User> users;
+    private final Map<Integer, User> users;
 
     @JsonProperty("next instances to be labelled")
     private final HashMap<User, Integer> nextInstancesToBeLabelled;
     private final DatasetStatistic statistic;
     private final Logger logger;
 
-    public Dataset(String json, List<User> users) {
+    public Dataset(String json, Map<Integer, User> users) {
         statistic = new DatasetStatistic(this);
         logger = Logger.getLogger(DataLabelingSystem.class);
         nextInstancesToBeLabelled = new HashMap<>();
         assignments = new ArrayList<>();
+        labels = new LinkedHashMap<>();
+        instances = new LinkedHashMap<>();
         this.users = users;
         parse(json);
     }
@@ -68,26 +70,27 @@ public class Dataset implements Parsable {
         name = object.getString("dataset name");
         maxNumOfLabels = object.getInt("maximum number of labels per instance");
 
-        JSONArray labelsJSON = object.getJSONArray("class labels");
-        labels = new ArrayList<>();
-        for (int i = 0; i < labelsJSON.length(); i++) {
-            labels.add(new Label(labelsJSON.getJSONObject(i).toString()));
+        JSONArray labelArray = object.getJSONArray("class labels");
+        for (int i = 0; i < labelArray.length(); i++) {
+            JSONObject labelObject = labelArray.getJSONObject(i);
+            int labelId = labelObject.getInt("label id");
+            labels.put(labelId, new Label(labelObject.toString()));
         }
 
-        JSONArray instancesJSON = object.getJSONArray("instances");
-        instances = new ArrayList<>();
-        for (int i = 0; i < instancesJSON.length(); i++) {
-            instances.add(new Instance(instancesJSON.getJSONObject(i).toString()));
+        JSONArray instanceArray = object.getJSONArray("instances");
+        for (int i = 0; i < instanceArray.length(); i++) {
+            JSONObject instanceObject = instanceArray.getJSONObject(i);
+            int instanceId = instanceObject.getInt("id");
+            instances.put(instanceId, new Instance(instanceObject.toString()));
         }
 
         if (object.has("class label assignments")) {
-            JSONArray assignmentsJSON = object.getJSONArray("class label assignments");
-            assignments = new ArrayList<>();
-            for (int i = 0; i < assignmentsJSON.length(); i++) {
-                JSONObject assignmentJSON = assignmentsJSON.getJSONObject(i);
-                Instance instance = (Instance) findParsable(assignmentJSON.getInt("instance id"), this.instances);
-                User user = (User) findParsable(assignmentJSON.getInt("user id"), this.users);
-                String dateString = assignmentJSON.getString("dateTime");
+            JSONArray assignmentArray = object.getJSONArray("class label assignments");
+            for (int i = 0; i < assignmentArray.length(); i++) {
+                JSONObject assignmentObject = assignmentArray.getJSONObject(i);
+                Instance instance = instances.get(assignmentObject.getInt("instance id"));
+                User user = users.get(assignmentObject.getInt("user id"));
+                String dateString = assignmentObject.getString("dateTime");
                 DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
                 Date date = null;
                 try {
@@ -96,10 +99,10 @@ public class Dataset implements Parsable {
                     logger.error(e.getMessage(), e);
                 }
 
-                JSONArray labelIds = assignmentJSON.getJSONArray("class label ids");
+                JSONArray labelIds = assignmentObject.getJSONArray("class label ids");
                 List<Label> assignedLabels = new ArrayList<>();
                 for (int j = 0; j < labelIds.length(); j++) {
-                    assignedLabels.add((Label) findParsable(labelIds.getInt(j), this.labels));
+                    assignedLabels.add(labels.get(labelIds.getInt(j)));
                 }
 
                 Assignment assignment = new Assignment(instance, assignedLabels, user, date);
@@ -111,11 +114,11 @@ public class Dataset implements Parsable {
 
         if (object.has("next instances to be labelled")) {
             try {
-                HashMap<String, Integer> nextInstancesJson = new ObjectMapper().readValue(object.getJSONObject("next instances to be labelled").toString(), HashMap.class);
+                Map<String, Integer> nextInstancesJson = new ObjectMapper().readValue(object.getJSONObject("next instances to be labelled").toString(), HashMap.class);
                 for (Map.Entry<String, Integer> entry : nextInstancesJson.entrySet()) {
                     int userId = Integer.parseInt(entry.getKey());
                     int nextInstance = entry.getValue();
-                    this.nextInstancesToBeLabelled.put((User) findParsable(userId, this.users), nextInstance);
+                    this.nextInstancesToBeLabelled.put(users.get(userId), nextInstance);
                 }
             } catch (JsonProcessingException e) {
                 logger.error(e.getMessage(), e);
@@ -124,27 +127,27 @@ public class Dataset implements Parsable {
         }
     }
 
-    public void assignLabels() throws IOException {
+    public void assignLabels() {
         logger.info("The list of assigment was created successfully.");
 
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
-        while (!this.users.isEmpty()) {
-            for (int i = 0; i < this.users.size(); i++) {
+        while (!users.isEmpty()) {
+            for (Iterator<User> it = users.values().iterator(); it.hasNext(); ) {
+                User currentUser = it.next();
+
                 long startTime = System.nanoTime();
-                User currentUser = this.users.get(i);
                 Integer value = nextInstancesToBeLabelled.get(currentUser);
-                int nextInstanceToBeLabelled = value == null ? 0 : value;
+                int nextInstanceToBeLabelled = value == null ? 1 : value;
 
                 //If the user has completed all the labellings in current dataset
                 if (instances.size() <= nextInstanceToBeLabelled) {
-                    this.users.remove(i);
-                    i--;
+                    it.remove();
                     continue;
                 }
                 int randomNumber = (int) ((Math.random() * 100) + 1);
                 int currentInstanceToBeLabelled =
                         ((randomNumber <= currentUser.getConsistencyCheckProbability() * 100)) ?
-                                (int) (Math.random() * nextInstanceToBeLabelled) : nextInstanceToBeLabelled;
+                                (int) (Math.random() * (nextInstanceToBeLabelled - 1) + 1) : nextInstanceToBeLabelled;
 
                 LabelingMechanism labelingMechanism = currentUser.getMechanism();
                 Assignment assignment = labelingMechanism.assign(currentUser, instances.get(currentInstanceToBeLabelled),
@@ -176,20 +179,21 @@ public class Dataset implements Parsable {
                 currentUser.getStatistic().addAssignment(this, assignment);
                 currentUser.getStatistic().calculateMetrics();
                 logger.info("Metrics are calculated for User with UserId: " + currentUser.getId());
-                statistic.calculateMetrics();
+                calculateMetrics();
                 logger.info("Metrics are calculated for dataset with DatasetId: " + id);
 
                 // Print output dataset and metric calculations
                 // TODO: Print metrics
-                logger.info("Metrics are printed to metric folder.");
+                statistic.printMetrics("metrics/datasets/dataset" + users + ".json");
+                for (User user : users.values()) {
+                    user.printMetrics();
+                }
+                for (Instance instance : instances.values()) {
+                    instance.printMetrics(id);
+                }
+                logger.info("Statistic metrics printed to the 'metrics' folder successfully.");
                 printFinalDataset("outputs/output" + id + ".json");
                 logger.info("Final dataset with DatasetId: " + id + " is printed to output.json.");
-
-                try {
-                    TimeUnit.SECONDS.sleep(0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -210,16 +214,8 @@ public class Dataset implements Parsable {
         return id;
     }
 
-    public List<Instance> getInstances() {
+    public Map<Integer, Instance> getInstances() {
         return instances;
-    }
-
-    public List<Assignment> getAssignments() {
-        return assignments;
-    }
-
-    public List<User> getUsers() {
-        return users;
     }
 
     @JsonGetter("next instances to be labelled")
@@ -233,19 +229,7 @@ public class Dataset implements Parsable {
         return nextInstanceIndexes;
     }
 
-    public DatasetStatistic getStatistic() {
-        return statistic;
-    }
-
-    public Parsable findParsable(int id, List<? extends Parsable> list) {
-        if (id <= list.size() && id > 0 && list.get(id - 1).getId() == id) {
-            return list.get(id - 1);
-        } else {
-            for (Parsable parsable : list) {
-                if (parsable.getId() == id)
-                    return parsable;
-            }
-        }
-        return null;
+    public void calculateMetrics() {
+        statistic.calculateMetrics(this, instances, assignments, users);
     }
 }

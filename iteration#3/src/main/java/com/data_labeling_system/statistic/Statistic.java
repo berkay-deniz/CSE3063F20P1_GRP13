@@ -4,12 +4,33 @@ import com.data_labeling_system.model.Dataset;
 import com.data_labeling_system.model.Label;
 import com.data_labeling_system.model.Parsable;
 import com.data_labeling_system.model.User;
+import com.data_labeling_system.DataLabelingSystem;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Statistic {
-    public abstract void calculateMetrics();
+public class Statistic {
+    Logger logger;
+
+    public Statistic() {
+        logger = Logger.getLogger(DataLabelingSystem.class);
+    }
+
+    public void printMetrics(String fileName) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+        try {
+            writer.writeValue(new File(fileName), this);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+    };
 
     protected HashMap<String, String> getStringStringHashMap(Map<Label, Double> labelDistributionPercentages) {
         HashMap<String, String> getCustomLabelDistributionJson = new HashMap<>();

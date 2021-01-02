@@ -5,7 +5,12 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @JsonPropertyOrder({"total number of label assignments", "number of unique label assignment", "number of unique users",
@@ -37,7 +42,6 @@ public class InstanceStatistic extends Statistic {
         labelDistributionPercentages = new HashMap<>();
     }
 
-    @Override
     public void calculateMetrics() {
         entropy = 0;
         List<Label> mostFrequentLabels = new ArrayList<>();
@@ -107,5 +111,10 @@ public class InstanceStatistic extends Statistic {
 
     public void setNumOfAssignedUniqueLabels(int numOfAssignedUniqueLabels) {
         this.numOfAssignedUniqueLabels = numOfAssignedUniqueLabels;
+    }
+
+    @Override
+    public void printMetrics(String fileName) {
+        // TODO
     }
 }

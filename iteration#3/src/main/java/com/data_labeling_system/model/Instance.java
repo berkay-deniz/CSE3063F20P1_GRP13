@@ -55,7 +55,10 @@ public class Instance implements Parsable {
         return finalLabel;
     }
     public String[] divideIntoWords(){
-        String[] words = this.instance.split(" ");
-        return words;
+        return this.instance.split(" ");
+    }
+
+    public void printMetrics(int datasetId) {
+        statistic.printMetrics("metrics/instances/dataset" + datasetId + "/instance" + id + ".json");
     }
 }

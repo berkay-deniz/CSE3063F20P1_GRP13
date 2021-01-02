@@ -5,7 +5,12 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @JsonPropertyOrder({"number of datasets assigned", "dataset completeness percentages", "total number of instances labeled",
@@ -46,7 +51,6 @@ public class UserStatistic extends Statistic {
         datasetsAssigned = new HashSet<>();
     }
 
-    @Override
     public void calculateMetrics() {
         stdDevOfTimeInLabeling = 0;
         numOfUniqueInstanceAssignments = 0;

@@ -1,4 +1,4 @@
-package com.data_labeling_system.util;
+package com.data_labeling_system;
 
 import com.data_labeling_system.model.Dataset;
 import com.data_labeling_system.model.User;
@@ -11,10 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataLabelingSystem {
     private final Logger logger;
@@ -58,7 +55,7 @@ public class DataLabelingSystem {
 
         // Calculate metrics for Dataset
         for (Dataset dataset : datasets) {
-            dataset.getStatistic().calculateMetrics();
+            dataset.calculateMetrics();
             logger.info("Dataset statistics are calculated for dataset with DatasetId: " + dataset.getId());
         }
 
@@ -67,40 +64,44 @@ public class DataLabelingSystem {
     }
 
     private void createOutputFolders() {
-        if (new File("outputs").mkdir())
-            logger.info("'outputs' folder has been created.");
-        else
-            logger.error("Can't create 'outputs' folder.");
-        if (new File("metrics").mkdir())
-            logger.info("'metrics' folder has been created.");
-        else
-            logger.error("Can't create 'metrics' folder.");
+        createFolder("outputs");
+        createFolder("metrics");
+        createFolder("metrics/users");
+        createFolder("metrics/datasets");
+        createFolder("metrics/instances");
+    }
+
+    private void createFolder(String folderPath) {
+        File folder = new File(folderPath);
+        if (folder.mkdir())
+            logger.info("'" + folderPath + "' folder has been created.");
     }
 
     private void createDataset(JSONObject datasetObject, int currentDatasetId) {
-        int id = datasetObject.getInt("id");
+        int datasetId = datasetObject.getInt("id");
 
-        boolean doesFileExist = new File("./outputs/output" + id + ".json").exists();
+        boolean doesFileExist = new File("./outputs/output" + datasetId + ".json").exists();
         // Check the existence of the output file and read input file accordingly.
-        String inputFileName = doesFileExist ? "./outputs/output" + id + ".json" : datasetObject.getString("filePath");
+        String inputFileName = doesFileExist ? "./outputs/output" + datasetId + ".json" : datasetObject.getString("filePath");
         String datasetJson = readInputFile(inputFileName);
         JSONArray registeredUserIds = datasetObject.getJSONArray("users");
 
-        List<User> registeredUsers = new ArrayList<>();
+        Map<Integer, User> registeredUsers = new LinkedHashMap<>();
         // Find users registered in the dataset and save them in the dataset.
         for (int i = 0; i < registeredUserIds.length(); i++) {
-            registeredUsers.add(users.get(registeredUserIds.getInt(i)));
+            int userId = registeredUserIds.getInt(i);
+            registeredUsers.put(userId, users.get(userId));
         }
         // Create dataset object and save them in the datasets list.
         Dataset dataset = new Dataset(datasetJson, registeredUsers);
         datasets.add(dataset);
         logger.info("Dataset with DatasetId: " + dataset.getId() + " is created and added to Dataset list.");
 
-        for (User user : registeredUsers) {
+        for (User user : registeredUsers.values()) {
             user.getStatistic().addDataset(dataset);
         }
 
-        if (id == currentDatasetId) {
+        if (datasetId == currentDatasetId) {
             currentDataset = dataset;
         }
     }

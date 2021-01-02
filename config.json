@@ -4,19 +4,19 @@
       "user id": 1,
       "user name": "RandomLabelingMechanism1",
       "user type": "SimpleSearch",
-      "consistencyCheckProbability": 0.5
+      "consistencyCheckProbability": 0
     },
     {
       "user id": 2,
       "user name": "RandomLabelingMechanism2",
       "user type": "SimpleSearch",
-      "consistencyCheckProbability": 0.5
+      "consistencyCheckProbability": 0
     },
     {
       "user id": 3,
       "user name": "MachineLearningLabelingMechanism",
       "user type": "SimpleSearch",
-      "consistencyCheckProbability": 0.5
+      "consistencyCheckProbability": 0
     }
   ],
   "currentDatasetId": 1 ,

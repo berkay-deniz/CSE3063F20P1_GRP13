@@ -65,4 +65,8 @@ public class User implements Parsable {
         return consistencyCheckProbability;
     }
 
+    public void printMetrics() {
+        statistic.printMetrics("metrics/users/user" + id + ".json");
+    }
+
 }

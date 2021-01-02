@@ -8,16 +8,17 @@ import com.data_labeling_system.model.User;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 // This class randomly chooses the labels to be assigned to instances
 public class RandomLabelingMechanism extends LabelingMechanism {
 
     @Override
-    public Assignment assign(User user, Instance instance, List<Label> labels, int maxNumOfLabels) {
+    public Assignment assign(User user, Instance instance, Map<Integer, Label> labels, int maxNumOfLabels) {
         // Create Arraylist to keep labels assigned to instances
-        ArrayList<Label> assignedLabels = new ArrayList<>();
+        List<Label> assignedLabels = new ArrayList<>();
         // Create Arraylist to keep copying of labels
-        ArrayList<Label> tempLabels = new ArrayList<>(labels);
+        List<Label> tempLabels = new ArrayList<>(labels.values());
         // The number of labels to be assigned is determined randomly
         int numOfLabels = (int) (Math.random() * (maxNumOfLabels) + 1);
         for (int i = 0; i < numOfLabels; i++) {

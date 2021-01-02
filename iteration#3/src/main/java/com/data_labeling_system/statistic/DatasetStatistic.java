@@ -4,18 +4,17 @@ import com.data_labeling_system.model.*;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 @JsonPropertyOrder({"completeness percentage", "class distribution based on final instance labels", "number of unique instances for each class label",
         "number of users assigned", "users assigned and their completeness percentages", "users assigned and their consistency percentages"})
 public class DatasetStatistic extends Statistic {
-    // For calculating purposes
-    private final Dataset dataset;
-
     // Required metrics
     @JsonProperty("number of users assigned")
     private int numOfUsers;
@@ -40,11 +39,10 @@ public class DatasetStatistic extends Statistic {
         numOfUniqueInstancesForLabels = new HashMap<>();
         userCompletenessPercentages = new HashMap<>();
         userConsistencyPercentages = new HashMap<>();
-        this.dataset = dataset;
     }
 
-    @Override
-    public void calculateMetrics() {
+    public void calculateMetrics(Dataset dataset, Map<Integer, Instance> instances,
+                                 List<Assignment> assignments, Map<Integer, User> users) {
         Set<Instance> uniqueInstances = new HashSet<>();
         Map<Label, Set<Instance>> uniqueInstancesForLabels = new HashMap<>();
         Map<Label, Integer> labelOccurrences = new HashMap<>();
@@ -52,11 +50,11 @@ public class DatasetStatistic extends Statistic {
         Map<Instance, Set<Label>> uniqueLabelsForInstances = new HashMap<>();
         Map<Instance, Set<User>> uniqueUsersForInstances = new HashMap<>();
 
-        for (Instance instance : dataset.getInstances()) {
+        for (Instance instance : instances.values()) {
             instance.resetStatistic();
         }
 
-        for (Assignment assignment : dataset.getAssignments()) {
+        for (Assignment assignment : assignments) {
             Instance instance = assignment.getInstance();
             uniqueInstances.add(instance);
 
@@ -91,7 +89,7 @@ public class DatasetStatistic extends Statistic {
         }
 
         // Calculate completeness percentage
-        completenessPercentage = (double) uniqueInstances.size() / dataset.getInstances().size();
+        completenessPercentage = (double) uniqueInstances.size() / instances.size();
 
         // Calculate number of unique instances for labels
         for (Map.Entry<Label, Set<Instance>> entry : uniqueInstancesForLabels.entrySet()) {
@@ -101,9 +99,9 @@ public class DatasetStatistic extends Statistic {
             numOfUniqueInstancesForLabels.put(label, instanceSet.size());
         }
 
-        numOfUsers = dataset.getUsers().size();
+        numOfUsers = users.size();
 
-        for (User user : dataset.getUsers()) {
+        for (User user : users.values()) {
             Double completenessPercentage = user.getStatistic().getDatasetCompletenessPercentages().get(dataset);
             userCompletenessPercentages.put(user, completenessPercentage == null ? 0 : completenessPercentage);
             Double consistencyPercentage = user.getStatistic().getDatasetConsistencyPercentages().get(dataset);
@@ -125,7 +123,7 @@ public class DatasetStatistic extends Statistic {
 
         Map<Label, Integer> finalLabelOccurrences = new HashMap<>();
         int numOfFinalLabels = 0;
-        for (Instance instance : dataset.getInstances()) {
+        for (Instance instance : instances.values()) {
             instance.getStatistic().calculateMetrics();
             instance.setFinalLabel();
             // For calculating label distribution percentages
