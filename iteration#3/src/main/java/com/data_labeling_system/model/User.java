@@ -17,35 +17,20 @@ import java.util.Map;
 @JsonPropertyOrder({"user id", "user name", "user type"})
 public class User implements Parsable {
     @JsonProperty("user id")
-    private int id;
+    protected int id;
     @JsonProperty("user name")
-    private String name;
+    protected String name;
     @JsonProperty("user type")
-    private String type;
-    private final UserStatistic statistic;
+    protected String type;
+    protected UserStatistic statistic;
 
-    private double consistencyCheckProbability;
+    protected double consistencyCheckProbability;
 
-    private final LabelingMechanism mechanism;
-    private final Logger logger;
+    protected LabelingMechanism mechanism;
+    protected Logger logger;
 
-    public User(String json) {
+    public User() {
         statistic = new UserStatistic();
-        LabelingMechanismFactory labelingMechanismFactory = new LabelingMechanismFactory();
-        this.parse(json);
-        this.mechanism = labelingMechanismFactory.makeLabelingMechanism(this.type);
-        logger = Logger.getLogger(User.class);
-        logger.info("Created '" + name + "' as '" + type + "'.");
-    }
-
-    @Override
-    public void parse(String json) {
-        // Parse the User json using org.json library
-        JSONObject object = new JSONObject(json);
-        this.id = object.getInt("user id");
-        this.name = object.getString("user name");
-        this.type = object.getString("user type");
-        this.consistencyCheckProbability = object.getDouble("consistencyCheckProbability");
     }
 
     public int getId() {
@@ -55,6 +40,11 @@ public class User implements Parsable {
     public UserStatistic getStatistic() {
         return statistic;
     }
+
+    @Override
+    public void parse(String json) {
+    }
+
 
     public void printMetrics() {
         statistic.printMetrics("metrics/users/user" + id + ".json");

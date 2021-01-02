@@ -1,6 +1,8 @@
 package com.data_labeling_system;
 
+import com.data_labeling_system.model.BotUser;
 import com.data_labeling_system.model.Dataset;
+import com.data_labeling_system.model.HumanUser;
 import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -25,7 +27,7 @@ public class DataLabelingSystem {
         users = new HashMap<>();
     }
 
-    public void startSystem(){
+    public void startSystem() {
         logger.info("The system has started");
         // Create output folders to organize datasets and metrics
         createOutputFolders();
@@ -34,12 +36,27 @@ public class DataLabelingSystem {
         // Create users using config.json
         createUsers(configJson);
         logger.info("Users are created.");
+
+        Scanner scanner = new Scanner(System.in);
+        String username, password;
+        int loggedUserId;
+        do {
+            System.out.print("Username: ");
+            username = scanner.nextLine();
+            System.out.print("Password: ");
+            password = scanner.nextLine();
+            if (username.equals("")) {
+                loggedUserId = -1;
+                break;
+            }
+        } while ((loggedUserId = checkCredentials(username, password)) == 0);
+
         JSONObject configObject = new JSONObject(configJson);
         JSONArray datasetArray = configObject.getJSONArray("datasets");
         int currentDatasetId = configObject.getInt("currentDatasetId");
         for (int i = 0; i < datasetArray.length(); i++) {
             JSONObject datasetObject = datasetArray.getJSONObject(i);
-            createDataset(datasetObject, currentDatasetId);
+            createDataset(datasetObject, currentDatasetId, loggedUserId);
         }
 
         if (currentDataset == null) {
@@ -63,6 +80,16 @@ public class DataLabelingSystem {
         currentDataset.assignLabels();
     }
 
+    private int checkCredentials(String username, String password) {
+        for (User user : users.values()) {
+            if (user instanceof BotUser)
+                continue;
+            if (((HumanUser) user).checkUsernameAndPassword(username, password))
+                return user.getId();
+        }
+        return 0;
+    }
+
     private void createOutputFolders() {
         createFolder("outputs");
         createFolder("metrics");
@@ -77,21 +104,31 @@ public class DataLabelingSystem {
             logger.info("'" + folderPath + "' folder has been created.");
     }
 
-    private void createDataset(JSONObject datasetObject, int currentDatasetId) {
+    private void createDataset(JSONObject datasetObject, int currentDatasetId, int loggedInUserId) {
         int datasetId = datasetObject.getInt("id");
 
         boolean doesFileExist = new File("./outputs/output" + datasetId + ".json").exists();
         // Check the existence of the output file and read input file accordingly.
-        String inputFileName = doesFileExist ? "./outputs/output" + datasetId + ".json" : datasetObject.getString("filePath");
+        String inputFileName = doesFileExist ? "./outputs/output" + datasetId + ".json" : datasetObject.getString(
+                "filePath");
         String datasetJson = readInputFile(inputFileName);
         JSONArray registeredUserIds = datasetObject.getJSONArray("users");
 
         Map<Integer, User> registeredUsers = new LinkedHashMap<>();
+        boolean loggedInUserIsAssigned = false;
+
         // Find users registered in the dataset and save them in the dataset.
         for (int i = 0; i < registeredUserIds.length(); i++) {
             int userId = registeredUserIds.getInt(i);
             registeredUsers.put(userId, users.get(userId));
+            if (userId == loggedInUserId)
+                loggedInUserIsAssigned = true;
         }
+        if (!loggedInUserIsAssigned) {
+            logger.error("Logged in user is not assigned to dataset " + datasetId);
+            System.exit(-1);
+        }
+
         // Create dataset object and save them in the datasets list.
         Dataset dataset = new Dataset(datasetJson, registeredUsers);
         datasets.add(dataset);
@@ -113,7 +150,12 @@ public class DataLabelingSystem {
         // Create user objects using the values we hold in json array into objects
         for (int i = 0; i < userArray.length(); i++) {
             JSONObject userObject = userArray.getJSONObject(i);
-            User user = new User(userObject.toString());
+            String userType = userObject.getString("user type");
+            User user;
+            if (userType.equals("HumanUser") || userType.equals("PartialLabelingHumanUser"))
+                user = new HumanUser(userObject.toString());
+            else
+                user = new BotUser(userObject.toString());
             users.put(userObject.getInt("user id"), user);
         }
     }

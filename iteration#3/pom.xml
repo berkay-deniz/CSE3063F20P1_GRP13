@@ -35,8 +35,6 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.gsonfire/gson-fire -->
 
-
-
             <dependency>
                 <groupId>zemberek-nlp</groupId>
                 <artifactId>zemberek-classification</artifactId>

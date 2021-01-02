@@ -2,15 +2,19 @@
   "users": [
     {
       "user id": 1,
-      "user name": "RandomLabelingMechanism1",
-      "user type": "RandomBot",
-      "consistencyCheckProbability": 0
+      "user name": "EmirhanBakkal",
+      "user type": "HumanUser",
+      "consistencyCheckProbability": 0,
+      "username": "ahmetemirhan",
+      "password": "pass123"
     },
     {
       "user id": 2,
-      "user name": "RandomLabelingMechanism2",
-      "user type": "RandomBot",
-      "consistencyCheckProbability": 0
+      "user name": "YunusYildirim",
+      "user type": "HumanUser",
+      "consistencyCheckProbability": 0,
+      "username": "yunusyildirim",
+      "password": "pass123456"
     },
     {
       "user id": 3,
@@ -19,19 +23,19 @@
       "consistencyCheckProbability": 0
     }
   ],
-  "currentDatasetId": 2 ,
+  "currentDatasetId": 1,
   "datasets": [
     {
       "id": 1,
       "name": "dataset1",
       "filePath":"input1.json",
-      "users": [1,2,3]
+      "users": [1,3]
     },
     {
     "id": 2,
       "name": "dataset2",
       "filePath": "input2.json",
-      "users": [2,3]
+      "users": [3]
     }
   ]
 }
