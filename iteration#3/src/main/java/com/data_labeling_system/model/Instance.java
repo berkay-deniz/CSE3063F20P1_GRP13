@@ -58,4 +58,9 @@ public class Instance implements Parsable {
         String[] words = this.instance.split(" ");
         return words;
     }
+    public String[] divideIntoSentences(){
+        String str=this.instance;
+        String strInstance[] = str.replaceAll("\\.", " ").split("\\s+");
+        return strInstance;
+    }
 }
