@@ -54,4 +54,8 @@ public class Instance implements Parsable {
     public Label getFinalLabel() {
         return finalLabel;
     }
+    public String[] divideIntoWords(){
+        String[] words = this.instance.split(" ");
+        return words;
+    }
 }
