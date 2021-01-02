@@ -35,7 +35,7 @@ public class Instance implements Parsable {
         instance = object.getString("instance");
     }
 
-    public void printInstance() {
+    public void printInstance(){
         System.out.println(this.instance);
     }
 
@@ -43,10 +43,6 @@ public class Instance implements Parsable {
         Map.Entry<Label, Double> mostFrequentLabelAndPercentage = statistic.getMostFrequentLabelAndPercentage();
         if (mostFrequentLabelAndPercentage != null)
             finalLabel = mostFrequentLabelAndPercentage.getKey();
-    }
-
-    public String[] divideIntoWords() {
-        return this.instance.split(" ");
     }
 
     public void printMetrics(int datasetId) {
