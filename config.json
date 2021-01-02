@@ -3,19 +3,19 @@
     {
       "user id": 1,
       "user name": "RandomLabelingMechanism1",
-      "user type": "RandomBot",
+      "user type": "SimpleSearch",
       "consistencyCheckProbability": 0.5
     },
     {
       "user id": 2,
       "user name": "RandomLabelingMechanism2",
-      "user type": "RandomBot",
+      "user type": "SimpleSearch",
       "consistencyCheckProbability": 0.5
     },
     {
       "user id": 3,
       "user name": "MachineLearningLabelingMechanism",
-      "user type": "MachineLearningBot",
+      "user type": "SimpleSearch",
       "consistencyCheckProbability": 0.5
     }
   ],
