@@ -25,7 +25,8 @@ public class UserInterfaceLabelingMechanism extends LabelingMechanism{
         System.out.println("Labels that you can assign are: ");
 
         for (int i = 0; i < labels.size(); i++){
-            System.out.println(labels.get(i) + " Type " + i + "to assign this label" );
+            labels.get(i).printLabel();
+            System.out.println(" Type " + i + "to assign this label" );
         }
 
         System.out.println("You can assign at most " + maxNumOfLabels + " labels to this instance");
