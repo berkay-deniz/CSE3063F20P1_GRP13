@@ -20,6 +20,7 @@ public class SimpleSearchLabelingMechanism extends LabelingMechanism {
         for (Label label : labels.values()) {
             int frequency = label.searchLabelInInstance(words);
             if (frequency > max) {
+                max = frequency;
                 mostFrequentLabels.clear();
                 mostFrequentLabels.add(label);
             } else if (frequency == max) {
