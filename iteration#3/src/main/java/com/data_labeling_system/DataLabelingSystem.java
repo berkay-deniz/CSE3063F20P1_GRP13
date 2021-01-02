@@ -156,7 +156,7 @@ public class DataLabelingSystem {
             JSONObject userObject = userArray.getJSONObject(i);
             String userType = userObject.getString("user type");
             User user;
-            if (userType.equals("HumanUser") || userType.equals("PartialLabelingHumanUser"))
+            if (userType.equals("HumanUser") || userType.equals("SentenceLabelingHumanUser"))
                 user = new HumanUser(userObject.toString());
             else
                 user = new BotUser(userObject.toString());
