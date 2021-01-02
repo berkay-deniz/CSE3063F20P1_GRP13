@@ -26,7 +26,7 @@ public class HumanUser extends User implements Parsable {
         password = object.getString("password");
     }
 
-    public boolean checkUsernameAndPassword(String username, String password) {
+    public boolean checkCredentials(String username, String password) {
         return this.username.equals(username) && this.password.equals(password);
     }
 }

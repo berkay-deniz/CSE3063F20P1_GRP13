@@ -53,7 +53,7 @@ public abstract class LabelingMechanism {
         return assignedLabels;
     }
 
-    protected String[] getLabelsFromUser(Map<Integer, Label> labels, int maxNumOfLabels) {
+    protected String[] readLabelsFromUser(Map<Integer, Label> labels, int maxNumOfLabels) {
         // Show labels to the user
         showLabelsToUser(labels);
 
