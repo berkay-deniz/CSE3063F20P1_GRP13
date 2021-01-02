@@ -77,7 +77,7 @@ public abstract class LabelingMechanism {
         return tokens;
     }
 
-    protected Label getValidLabelFromInput(String labelIndexStr, Map<Integer, Label> labels) {
+    protected Label findValidLabelFromInput(String labelIndexStr, Map<Integer, Label> labels) {
         int labelIndex;
         try {
             labelIndex = Integer.parseInt(labelIndexStr);
