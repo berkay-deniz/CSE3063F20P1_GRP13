@@ -3,7 +3,7 @@
     {
       "user id": 1,
       "user name": "EmirhanBakkal",
-      "user type": "HumanUser",
+      "user type": "SimpleSearch",
       "consistencyCheckProbability": 0,
       "username": "ahmetemirhan",
       "password": "pass123"
@@ -23,7 +23,7 @@
       "consistencyCheckProbability": 0
     }
   ],
-  "currentDatasetId": 2,
+  "currentDatasetId": 1,
   "datasets": [
     {
       "id": 1,

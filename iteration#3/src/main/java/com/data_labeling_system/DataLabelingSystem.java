@@ -36,7 +36,6 @@ public class DataLabelingSystem {
         // Create users using config.json
         createUsers(configJson);
         logger.info("Users are created.");
-
         Scanner scanner = new Scanner(System.in);
         String username, password;
         int loggedUserId;
