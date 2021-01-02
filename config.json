@@ -3,7 +3,7 @@
     {
       "user id": 1,
       "user name": "EmirhanBakkal",
-      "user type": "SimpleSearch",
+      "user type": "SentenceLabelingHumanUser",
       "consistencyCheckProbability": 0,
       "username": "ahmetemirhan",
       "password": "pass123"
@@ -18,7 +18,7 @@
     },
     {
       "user id": 3,
-      "user name": "MachineLearningLabelingMechanism",
+      "user name": "SimpleSearch",
       "user type": "RandomBot",
       "consistencyCheckProbability": 0
     }
