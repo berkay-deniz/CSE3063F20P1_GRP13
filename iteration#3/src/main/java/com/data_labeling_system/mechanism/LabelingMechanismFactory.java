@@ -1,5 +1,6 @@
 package com.data_labeling_system.mechanism;
 
+import com.data_labeling_system.model.User;
 import org.apache.log4j.Logger;
 
 // This class is used to generate new mechanisms
@@ -12,25 +13,36 @@ public class LabelingMechanismFactory {
 
     public LabelingMechanism makeLabelingMechanism(String type) {
         // Create Mechanism according to received information from user type
-    	if (type.equals("RandomBot")) {
+        if (type.equals("RandomBot")) {
             logger.info("Random labeling mechanism generated successfully.");
-            // Crete Random Labeling Mechanism
+            // Create Random Labeling Mechanism
             return new RandomLabelingMechanism();
         }
-    	if(type.equals("MachineLearningBot")) {
+        if (type.equals("MachineLearningBot")) {
             logger.info("Machine learning mechanism generated successfully.");
-            // Crete Random Labeling Mechanism
+            // Create Machine Labeling Mechanism
             return new MachineLearningMechanism();
 
         }
-        if(type.equals("SimpleSearch")) {
+        if (type.equals("SimpleSearch")) {
             logger.info("Simple Search mechanism generated successfully.");
-            // Crete Random Labeling Mechanism
+            // Create Simple Search Labeling Mechanism
             return new SimpleSearchLabelingMechanism();
 
         }
-    	else {
-        	// If the user type is unregistered, mechanism don't create
+        if (type.equals("HumanUser")) {
+            logger.info("UserInterfaceLabelingMechanism mechanism generated successfully.");
+            // Create User Interface Labeling Mechanism
+            return new UserInterfaceLabelingMechanism();
+
+        }
+        if (type.equals("PartialLabelingHumanUser")) {
+            logger.info("Seperate sentence mechanism generated successfully.");
+            // Create Seperate sentence mechanism
+            return new SeperateSentenceMechanism();
+
+        } else {
+            // If the user type is unregistered, mechanism don't create
             logger.error("'" + type + "' is not a valid mechanism type.");
             return null;
         }
