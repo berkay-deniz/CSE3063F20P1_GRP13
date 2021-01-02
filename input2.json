@@ -1,7 +1,7 @@
 {
 "dataset id":2,
 "dataset name":"Multilabel Topic Classification Dataset",
-"maximum number of labels per instance":10,
+"maximum number of labels per instance":2,
 "class labels":[ 
 {"label id":1,"label text":"bayi"},
 {"label id":2,"label text":"numara"},
