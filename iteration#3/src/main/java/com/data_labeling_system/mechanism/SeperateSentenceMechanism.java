@@ -13,24 +13,21 @@ import java.util.*;
 public class SeperateSentenceMechanism extends LabelingMechanism {
 
     @Override
-    public Assignment assign(User user, Instance instance, List<Label> labels, int maxNumOfLabels) throws IOException {
+    public Assignment assign(User user, Instance instance, Map<Integer, Label> labels, int maxNumOfLabels) {
         // Create Arraylist to keep labels assigned to instances
         ArrayList<Label> assignedLabels = new ArrayList<>();
         String[] sentences = instance.divideIntoSentences();
         int maxLabelFrequency=0;
         ArrayList<Label> maxLabels=new ArrayList<>();
         HashMap<Label, Integer> labelFrequency = new HashMap<>();
-        for (int i = 0; i < sentences.length; i++) {
+        for (String sentence : sentences) {
             System.out.print("Sentence to be labeled: ");
-            System.out.println(sentences[i]);
+            System.out.println(sentence);
 
             // Show labels to the user
             System.out.println("Labels that you can assign are: ");
 
-            for (int j = 0; j < labels.size(); j++) {
-                labels.get(j).printLabel();
-                System.out.println(" Type " + j + "to assign this label");
-            }
+            showLabelsToUser(labels);
 
             System.out.println("You can assign at most " + maxNumOfLabels + " labels to this sentence");
             System.out.println("If you want to assign more than 1 label to this sentence put space between two labels");
@@ -47,22 +44,22 @@ public class SeperateSentenceMechanism extends LabelingMechanism {
             }
             for (String labelIndexStr : labelIndexes) {
                 int labelIndex = Integer.parseInt(labelIndexStr);
-                Label currentLabel= labels.get(labelIndex);
-                if(!labelFrequency.containsKey(currentLabel)){
-                    labelFrequency.put(currentLabel,1);
+                Label currentLabel = labels.get(labelIndex);
+                if (!labelFrequency.containsKey(currentLabel)) {
+                    labelFrequency.put(currentLabel, 1);
                     if (maxLabelFrequency == 0) {
                         maxLabelFrequency = 1;
                         maxLabels.add(currentLabel);
                     }
-                }else{
+                } else {
                     int currentFrequency = labelFrequency.get(currentLabel);
                     currentFrequency++;
-                    labelFrequency.put(currentLabel,currentFrequency);
-                    if(currentFrequency>maxLabelFrequency){
-                        maxLabelFrequency=currentFrequency;
+                    labelFrequency.put(currentLabel, currentFrequency);
+                    if (currentFrequency > maxLabelFrequency) {
+                        maxLabelFrequency = currentFrequency;
                         maxLabels.clear();
                         maxLabels.add(currentLabel);
-                    }else if(currentFrequency==maxLabelFrequency){
+                    } else if (currentFrequency == maxLabelFrequency) {
                         maxLabels.add(currentLabel);
                     }
                 }

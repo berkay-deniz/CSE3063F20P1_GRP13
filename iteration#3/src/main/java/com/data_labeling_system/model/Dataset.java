@@ -52,7 +52,7 @@ public class Dataset implements Parsable {
 
     public Dataset(String json, Map<Integer, User> users) {
         statistic = new DatasetStatistic();
-        logger = Logger.getLogger(DataLabelingSystem.class);
+        logger = Logger.getLogger(Dataset.class);
         nextInstancesToBeLabelled = new HashMap<>();
         assignments = new ArrayList<>();
         labels = new LinkedHashMap<>();

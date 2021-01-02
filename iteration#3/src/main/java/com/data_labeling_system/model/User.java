@@ -34,7 +34,7 @@ public class User implements Parsable {
         LabelingMechanismFactory labelingMechanismFactory = new LabelingMechanismFactory();
         this.parse(json);
         this.mechanism = labelingMechanismFactory.makeLabelingMechanism(this.type);
-        logger = Logger.getLogger(DataLabelingSystem.class);
+        logger = Logger.getLogger(User.class);
         logger.info("Created '" + name + "' as '" + type + "'.");
     }
 

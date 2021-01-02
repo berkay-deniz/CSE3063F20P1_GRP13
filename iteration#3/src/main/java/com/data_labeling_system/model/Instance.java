@@ -22,7 +22,7 @@ public class Instance implements Parsable {
     private final Logger logger;
 
     public Instance(String json) {
-        logger = Logger.getLogger(DataLabelingSystem.class);
+        logger = Logger.getLogger(Instance.class);
         statistic = new InstanceStatistic();
         parse(json);
     }
@@ -72,13 +72,15 @@ public class Instance implements Parsable {
     }
 
     public String[] divideIntoWords() {
-        String[] words = this.instance.split(" ");
-        return words;
+        return this.instance.split(" ");
     }
 
     public String[] divideIntoSentences() {
         String str = this.instance;
-        String strInstance[] = str.replaceAll("\\.", " ").split("\\s+");
-        return strInstance;
+        return str.replaceAll("\\.", " ").split("\\s+");
+    }
+
+    public String getInstance() {
+        return instance;
     }
 }
