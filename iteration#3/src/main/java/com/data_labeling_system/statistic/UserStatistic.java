@@ -137,12 +137,12 @@ public class UserStatistic extends Statistic {
 
     @JsonGetter("dataset completeness percentages")
     private HashMap<String, String> getCustomDatasetCompleteness() {
-        return mapParsableToParsableId(datasetCompletenessPercentages);
+        return serializeParsable(datasetCompletenessPercentages);
     }
 
     @JsonGetter("dataset consistency percentages")
     private HashMap<String, String> getCustomDatasetConsistency() {
-        return mapParsableToParsableId(datasetConsistencyPercentages);
+        return serializeParsable(datasetConsistencyPercentages);
     }
 
     public void addDataset(Dataset dataset) {

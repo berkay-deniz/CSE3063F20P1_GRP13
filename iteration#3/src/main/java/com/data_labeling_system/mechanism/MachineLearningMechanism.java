@@ -20,9 +20,9 @@ public class MachineLearningMechanism extends LabelingMechanism {
     public Assignment assign(User user, Instance instance, Map<Integer, Label> labels, int maxNumOfLabels) {
 
         // Create Arraylist to keep labels assigned to instances
-        ArrayList<Label> assignedLabels = new ArrayList<>();
+        List<Label> assignedLabels = new ArrayList<>();
         // Create Arraylist to keep copying of labels
-        ArrayList<Label> tempLabels = new ArrayList<>(labels.values());
+        List<Label> tempLabels = new ArrayList<>(labels.values());
 
         Path path = Paths.get("MachineLearningData");
         FastTextClassifier classifier;
@@ -35,16 +35,18 @@ public class MachineLearningMechanism extends LabelingMechanism {
 
         String s = instance.getInstance();
 
-        // String processed = String.join(" ", TurkishTokenizer.DEFAULT.tokenizeToStrings(s));
-        // processed = processed.toLowerCase(Turkish.LOCALE);
         List<ScoredItem<String>> res = classifier.predict(s, 1);
-        StringBuilder modifiedLabel = new StringBuilder(res.get(0).item);
-        modifiedLabel.delete(0, 9);
-        for (int i = 0; i < tempLabels.size(); i++) {
-            if (tempLabels.get(i).getText().toLowerCase().equals(modifiedLabel.toString())) {
-                assignedLabels.add(tempLabels.get(i));
-                tempLabels.remove(i);
-                break;
+        if (res.isEmpty()) {
+            assignedLabels = assignRandomly(labels, maxNumOfLabels);
+        } else {
+            StringBuilder modifiedLabel = new StringBuilder(res.get(0).item);
+            modifiedLabel.delete(0, 9);
+            for (int i = 0; i < tempLabels.size(); i++) {
+                if (tempLabels.get(i).getText().toLowerCase().equals(modifiedLabel.toString())) {
+                    assignedLabels.add(tempLabels.get(i));
+                    tempLabels.remove(i);
+                    break;
+                }
             }
         }
 
