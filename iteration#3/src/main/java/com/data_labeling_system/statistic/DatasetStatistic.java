@@ -107,12 +107,12 @@ public class DatasetStatistic extends Statistic {
     }
 
     @JsonGetter("class distribution based on final instance labels")
-    private HashMap<String, String> getCustomLabelDistributionPercentages() {
-        return serializeMap(labelDistributionPercentages);
+    private HashMap<String, String> serializeCustomLabelDistributionPercentages() {
+        return serializePercentageMap(labelDistributionPercentages);
     }
 
     @JsonGetter("number of unique instances for each class label")
-    private HashMap<String, Integer> getCustomNumOfUniqueInstancesForLabels() {
+    private HashMap<String, Integer> serializeCustomNumOfUniqueInstancesForLabels() {
         HashMap<String, Integer> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Integer> entry : numOfUniqueInstancesForLabels.entrySet()) {
             String dataset = entry.getKey().getText();
@@ -123,12 +123,12 @@ public class DatasetStatistic extends Statistic {
     }
 
     @JsonGetter("users assigned and their completeness percentages")
-    private HashMap<String, String> getCustomUserCompleteness() {
+    private HashMap<String, String> serializeCustomUserCompleteness() {
         return serializeParsable(userCompletenessPercentages);
     }
 
     @JsonGetter("users assigned and their consistency percentages")
-    private HashMap<String, String> getCustomUserConsistency() {
+    private HashMap<String, String> serializeCustomUserConsistency() {
         return serializeParsable(userConsistencyPercentages);
     }
 

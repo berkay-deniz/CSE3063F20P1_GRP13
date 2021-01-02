@@ -19,12 +19,9 @@ public class HumanUser extends User implements Parsable {
 
     @Override
     public void parse(String json) {
+        super.parse(json);
         // Parse the User json using org.json library
         JSONObject object = new JSONObject(json);
-        id = object.getInt("user id");
-        name = object.getString("user name");
-        type = object.getString("user type");
-        consistencyCheckProbability = object.getDouble("consistencyCheckProbability");
         username = object.getString("username");
         password = object.getString("password");
     }

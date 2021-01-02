@@ -60,20 +60,8 @@ public class Instance implements Parsable {
                 instance + "\"");
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public InstanceStatistic getStatistic() {
-        return statistic;
-    }
-
     public void resetStatistic() {
         statistic = new InstanceStatistic();
-    }
-
-    public Label getFinalLabel() {
-        return finalLabel;
     }
 
     public String[] divideIntoWords() {
@@ -83,6 +71,18 @@ public class Instance implements Parsable {
     public String[] divideIntoSentences() {
         String str = this.instance;
         return str.split("[.?!]");
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public InstanceStatistic getStatistic() {
+        return statistic;
+    }
+
+    public Label getFinalLabel() {
+        return finalLabel;
     }
 
     public String getInstance() {

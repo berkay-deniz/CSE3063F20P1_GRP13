@@ -135,21 +135,21 @@ public class UserStatistic extends Statistic {
         numOfAssignments++;
     }
 
-    @JsonGetter("dataset completeness percentages")
-    private HashMap<String, String> getCustomDatasetCompleteness() {
-        return serializeParsable(datasetCompletenessPercentages);
-    }
-
-    @JsonGetter("dataset consistency percentages")
-    private HashMap<String, String> getCustomDatasetConsistency() {
-        return serializeParsable(datasetConsistencyPercentages);
-    }
-
     public void addDataset(Dataset dataset) {
         if (!datasetsAssigned.contains(dataset)) {
             datasetsAssigned.add(dataset);
             numOfDatasetsAssigned++;
         }
+    }
+
+    @JsonGetter("dataset completeness percentages")
+    private HashMap<String, String> serializeCustomDatasetCompleteness() {
+        return serializeParsable(datasetCompletenessPercentages);
+    }
+
+    @JsonGetter("dataset consistency percentages")
+    private HashMap<String, String> serializeCustomDatasetConsistency() {
+        return serializeParsable(datasetConsistencyPercentages);
     }
 
     public Map<Dataset, Double> getDatasetCompletenessPercentages() {

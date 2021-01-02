@@ -1,6 +1,5 @@
 package com.data_labeling_system.model;
 
-import com.data_labeling_system.DataLabelingSystem;
 import com.data_labeling_system.statistic.DatasetStatistic;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -178,7 +177,7 @@ public class Dataset implements Parsable {
         }
     }
 
-    public void logAssignmentInfo(Assignment assignment, User user) {
+    private void logAssignmentInfo(Assignment assignment, User user) {
         List<Label> labels = assignment.getLabels();
         StringBuilder classLabels = new StringBuilder();
         for (int j = 0; j < labels.size(); j++) {
@@ -192,7 +191,7 @@ public class Dataset implements Parsable {
         user.logAssignmentInfo(assignment, classLabels.toString());
     }
 
-    public void printOutputAndMetrics() {
+    private void printOutputAndMetrics() {
         statistic.printMetrics("metrics/datasets/dataset" + id + ".json");
         for (User user : users.values()) {
             user.printMetrics();
@@ -205,7 +204,7 @@ public class Dataset implements Parsable {
         logger.info("Final dataset with DatasetId: " + id + " is printed to output.json.");
     }
 
-    public void printFinalDataset(String outputFileName) {
+    private void printFinalDataset(String outputFileName) {
         // Write the final dataset as jsonfile
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
@@ -217,6 +216,10 @@ public class Dataset implements Parsable {
         logger.info("Final dataset printed to '" + outputFileName + "' successfully.");
     }
 
+    public void calculateMetrics() {
+        statistic.calculateMetrics(this, instances, assignments, users);
+    }
+
     public int getId() {
         return id;
     }
@@ -226,7 +229,7 @@ public class Dataset implements Parsable {
     }
 
     @JsonGetter("next instances to be labelled")
-    public HashMap<Integer, Integer> getNextInstanceIndexes() {
+    public HashMap<Integer, Integer> serializeNextInstanceIndexes() {
         HashMap<Integer, Integer> nextInstanceIndexes = new HashMap<>();
         for (Map.Entry<User, Integer> entry : nextInstancesToBeLabelled.entrySet()) {
             int userId = entry.getKey().getId();
@@ -249,9 +252,5 @@ public class Dataset implements Parsable {
     @JsonGetter("users")
     public Collection<User> serializeUsers() {
         return users.values();
-    }
-
-    public void calculateMetrics() {
-        statistic.calculateMetrics(this, instances, assignments, users);
     }
 }
