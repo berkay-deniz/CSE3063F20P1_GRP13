@@ -5,10 +5,7 @@ import com.data_labeling_system.model.Instance;
 import com.data_labeling_system.model.Label;
 import com.data_labeling_system.model.User;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 public class SeparateSentenceMechanism extends LabelingMechanism {
@@ -19,37 +16,12 @@ public class SeparateSentenceMechanism extends LabelingMechanism {
         ArrayList<Label> assignedLabels = new ArrayList<>();
         String[] sentences = instance.divideIntoSentences();
         int maxLabelFrequency = 0;
-        ArrayList<Label> maxLabels = new ArrayList<>();
-        HashMap<Label, Integer> labelFrequency = new HashMap<>();
+        List<Label> maxLabels = new ArrayList<>();
+        Map<Label, Integer> labelFrequencies = new HashMap<>();
         for (String sentence : sentences) {
-            System.out.print("Sentence to be labeled: ");
-            System.out.println(sentence);
-
-            String[] tokens = getLabelsFromUser(labels, maxNumOfLabels);
-            for (String token : tokens) {
-                Label currentLabel = getValidLabelFromInput(token, labels);
-                if (currentLabel == null) break;
-
-                if (!labelFrequency.containsKey(currentLabel)) {
-                    labelFrequency.put(currentLabel, 1);
-                    if (maxLabelFrequency == 0) {
-                        maxLabelFrequency = 1;
-                        maxLabels.add(currentLabel);
-                    }
-                } else {
-                    int currentFrequency = labelFrequency.get(currentLabel);
-                    currentFrequency++;
-                    labelFrequency.put(currentLabel, currentFrequency);
-                    if (currentFrequency > maxLabelFrequency) {
-                        maxLabelFrequency = currentFrequency;
-                        maxLabels.clear();
-                        maxLabels.add(currentLabel);
-                    } else if (currentFrequency == maxLabelFrequency) {
-                        maxLabels.add(currentLabel);
-                    }
-                }
-            }
-
+            System.out.println("---------------------------------------------------------------");
+            System.out.println("Sentence to be labeled: " + sentence);
+            createMaxLabels(labels, labelFrequencies, maxNumOfLabels, maxLabelFrequency, maxLabels);
         }
         int counter = 0;
         for (Label label : maxLabels) {
@@ -60,5 +32,36 @@ public class SeparateSentenceMechanism extends LabelingMechanism {
             assignedLabels.add(label);
         }
         return new Assignment(instance, assignedLabels, user, new Date());
+    }
+
+    private void createMaxLabels(Map<Integer, Label> labels, Map<Label, Integer> labelFrequencies,
+                                 int maxNumOfLabels, int maxLabelFrequency, List<Label> maxLabels) {
+        String[] tokens = getLabelsFromUser(labels, maxNumOfLabels);
+        for (String token : tokens) {
+            Label currentLabel = getValidLabelFromInput(token, labels);
+            if (currentLabel == null) {
+                createMaxLabels(labels, labelFrequencies, maxNumOfLabels, maxLabelFrequency, maxLabels);
+                return;
+            }
+
+            if (!labelFrequencies.containsKey(currentLabel)) {
+                labelFrequencies.put(currentLabel, 1);
+                if (maxLabelFrequency == 0) {
+                    maxLabelFrequency = 1;
+                    maxLabels.add(currentLabel);
+                }
+            } else {
+                int currentFrequency = labelFrequencies.get(currentLabel);
+                currentFrequency++;
+                labelFrequencies.put(currentLabel, currentFrequency);
+                if (currentFrequency > maxLabelFrequency) {
+                    maxLabelFrequency = currentFrequency;
+                    maxLabels.clear();
+                    maxLabels.add(currentLabel);
+                } else if (currentFrequency > 0 && currentFrequency == maxLabelFrequency) {
+                    maxLabels.add(currentLabel);
+                }
+            }
+        }
     }
 }

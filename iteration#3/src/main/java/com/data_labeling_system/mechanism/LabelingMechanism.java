@@ -23,7 +23,7 @@ public abstract class LabelingMechanism {
     public abstract Assignment assign(User user, Instance instance, Map<Integer, Label> labels, int maxNumOfLabels);
 
     public void showLabelsToUser(Map<Integer, Label> labels) {
-        System.out.print("Labels that you can assign are: ");
+        System.out.print("\nLabels that you can assign are: ");
         for (Map.Entry<Integer, Label> entry : labels.entrySet()) {
             int id = entry.getKey();
             Label label = entry.getValue();
@@ -31,7 +31,7 @@ public abstract class LabelingMechanism {
             label.printLabel();
             System.out.print(", ");
         }
-        System.out.println();
+        System.out.println("\n");
     }
 
     public List<Label> assignRandomly(Map<Integer, Label> labels, int maxNumOfLabels) {
@@ -57,8 +57,9 @@ public abstract class LabelingMechanism {
         // Show labels to the user
         showLabelsToUser(labels);
 
-        System.out.println("You can assign at most " + maxNumOfLabels + " labels to this instance.");
-        System.out.println("If you want to assign more than 1 label to this instance put space between two labels.");
+        System.out.print("You can assign at most " + maxNumOfLabels + " labels to this instance." +
+                " If you want to assign more than 1 label to this instance put space between two labels." +
+                "\nEnter label IDs: ");
 
         Scanner scan = new Scanner(System.in);
         String allLabels = scan.nextLine();
@@ -67,7 +68,7 @@ public abstract class LabelingMechanism {
 
         int numOfAssignedLabels = tokens.length;
         while (numOfAssignedLabels > maxNumOfLabels) {
-            System.out.println("You entered too much labels! Enter again: ");
+            System.out.print("You entered too much labels!\nEnter label IDs: ");
             allLabels = scan.nextLine();
             tokens = allLabels.split(" ");
             numOfAssignedLabels = tokens.length;

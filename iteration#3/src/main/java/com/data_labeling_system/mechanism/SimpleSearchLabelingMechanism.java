@@ -23,7 +23,7 @@ public class SimpleSearchLabelingMechanism extends LabelingMechanism {
                 max = frequency;
                 mostFrequentLabels.clear();
                 mostFrequentLabels.add(label);
-            } else if (frequency == max) {
+            } else if (frequency > 0 && frequency == max) {
                 mostFrequentLabels.add(label);
             }
         }
@@ -34,7 +34,7 @@ public class SimpleSearchLabelingMechanism extends LabelingMechanism {
             }
             assignedLabels.add(mostFrequentLabels.get(i));
         }
-        if (assignedLabels.size() == 0) {
+        if (assignedLabels.isEmpty()) {
             assignedLabels = assignRandomly(labels, maxNumOfLabels);
         }
         return new Assignment(instance, assignedLabels, user, new Date());
