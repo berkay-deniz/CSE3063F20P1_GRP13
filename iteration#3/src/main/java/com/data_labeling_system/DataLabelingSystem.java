@@ -88,7 +88,7 @@ public class DataLabelingSystem {
         for (User user : users.values()) {
             if (user instanceof BotUser)
                 continue;
-            if (((HumanUser) user).checkUsernameAndPassword(username, password))
+            if (((HumanUser) user).checkCredentials(username, password))
                 return user.getId();
         }
         return 0;

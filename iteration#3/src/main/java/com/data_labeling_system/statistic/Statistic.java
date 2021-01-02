@@ -30,9 +30,9 @@ public class Statistic {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
-    };
+    }
 
-    protected HashMap<String, String> serializeMap(Map<Label, Double> labelDistributionPercentages) {
+    protected HashMap<String, String> serializePercentageMap(Map<Label, Double> labelDistributionPercentages) {
         HashMap<String, String> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
             String dataset = entry.getKey().getText();

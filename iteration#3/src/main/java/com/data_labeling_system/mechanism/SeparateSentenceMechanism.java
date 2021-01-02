@@ -36,9 +36,9 @@ public class SeparateSentenceMechanism extends LabelingMechanism {
 
     private void createMaxLabels(Map<Integer, Label> labels, Map<Label, Integer> labelFrequencies,
                                  int maxNumOfLabels, int maxLabelFrequency, List<Label> maxLabels) {
-        String[] tokens = getLabelsFromUser(labels, maxNumOfLabels);
+        String[] tokens = readLabelsFromUser(labels, maxNumOfLabels);
         for (String token : tokens) {
-            Label currentLabel = getValidLabelFromInput(token, labels);
+            Label currentLabel = findValidLabelFromInput(token, labels);
             if (currentLabel == null) {
                 createMaxLabels(labels, labelFrequencies, maxNumOfLabels, maxLabelFrequency, maxLabels);
                 return;

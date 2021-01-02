@@ -4,7 +4,7 @@ import com.data_labeling_system.mechanism.LabelingMechanismFactory;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-public class BotUser extends User implements Parsable{
+public class BotUser extends User implements Parsable {
 
     public BotUser(String json) {
         parse(json);
@@ -16,11 +16,6 @@ public class BotUser extends User implements Parsable{
 
     @Override
     public void parse(String json) {
-        // Parse the User json using org.json library
-        JSONObject object = new JSONObject(json);
-        this.id = object.getInt("user id");
-        this.name = object.getString("user name");
-        this.type = object.getString("user type");
-        this.consistencyCheckProbability = object.getDouble("consistencyCheckProbability");
+        super.parse(json);
     }
 }

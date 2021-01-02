@@ -76,13 +76,19 @@ public class InstanceStatistic extends Statistic {
         }
     }
 
+    public void addAssignedLabel(Label label) {
+        Integer occurrence = labelOccurrences.get(label);
+        labelOccurrences.put(label, occurrence == null ? 1 : occurrence + 1);
+        numOfAssignedLabels++;
+    }
+
     @JsonGetter("class labels and percentages")
-    private HashMap<String, String> getCustomLabelDistributionPercentages() {
-        return serializeMap(labelDistributionPercentages);
+    private HashMap<String, String> serializeCustomLabelDistributionPercentages() {
+        return serializePercentageMap(labelDistributionPercentages);
     }
 
     @JsonGetter("most frequent class label and its percentage")
-    private Map.Entry<String, String> getCustomMostFrequentLabelAndPercentage() {
+    private Map.Entry<String, String> serializeCustomMostFrequentLabelAndPercentage() {
         if (mostFrequentLabelAndPercentage == null)
             return null;
         String label = mostFrequentLabelAndPercentage.getKey().getText();
@@ -96,12 +102,6 @@ public class InstanceStatistic extends Statistic {
 
     public Map.Entry<Label, Double> getMostFrequentLabelAndPercentage() {
         return mostFrequentLabelAndPercentage;
-    }
-
-    public void addAssignedLabel(Label label) {
-        Integer occurrence = labelOccurrences.get(label);
-        labelOccurrences.put(label, occurrence == null ? 1 : occurrence + 1);
-        numOfAssignedLabels++;
     }
 
     public void setNumOfAssignedUniqueLabels(int numOfAssignedUniqueLabels) {

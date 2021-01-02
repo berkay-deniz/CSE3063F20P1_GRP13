@@ -25,12 +25,12 @@ public class UserInterfaceLabelingMechanism extends LabelingMechanism {
     }
 
     private List<Label> createAssignedLabels(Map<Integer, Label> labels, int maxNumOfLabels) {
-        String[] tokens = getLabelsFromUser(labels, maxNumOfLabels);
+        String[] tokens = readLabelsFromUser(labels, maxNumOfLabels);
         // Create Arraylist to keep labels assigned to instances
         List<Label> assignedLabels = new ArrayList<>();
 
         for (String token : tokens) {
-            Label currentLabel = getValidLabelFromInput(token, labels);
+            Label currentLabel = findValidLabelFromInput(token, labels);
             if (currentLabel == null) {
                 return createAssignedLabels(labels, maxNumOfLabels);
             }

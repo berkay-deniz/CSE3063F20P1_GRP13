@@ -25,44 +25,6 @@ public class Assignment {
         this.user = user;
     }
 
-    @JsonGetter("user id")
-    public int getUserId() {
-        return user.getId();
-    }
-
-    @JsonGetter("instance id")
-    public int getInstanceId() {
-        return instance.getId();
-    }
-
-    @JsonGetter("class label ids")
-    public ArrayList<Integer> getLabelIds() {
-        // Retrieve ID's of the labels from the List
-        ArrayList<Integer> temp = new ArrayList<>();
-
-        for (Label label : this.labels) {
-            temp.add(label.getId());
-        }
-
-        return temp;
-    }
-
-    public Instance getInstance() {
-        return instance;
-    }
-
-    public List<Label> getLabels() {
-        return labels;
-    }
-
-    public long getTimeSpentInNanos() {
-        return timeSpentInNanos;
-    }
-
-    public void setTimeSpentInNanos(long timeSpentInNanos) {
-        this.timeSpentInNanos = timeSpentInNanos;
-    }
-
     public void logAssignmentInfo(int userId, String userName, String classLabels) {
         instance.logAssignmentInfo(userId, userName, classLabels);
     }
@@ -98,5 +60,43 @@ public class Assignment {
 
             instance.getStatistic().addAssignedLabel(label);
         }
+    }
+
+    @JsonGetter("user id")
+    public int getUserId() {
+        return user.getId();
+    }
+
+    @JsonGetter("instance id")
+    public int getInstanceId() {
+        return instance.getId();
+    }
+
+    @JsonGetter("class label ids")
+    public ArrayList<Integer> serializeLabelIds() {
+        // Retrieve ID's of the labels from the List
+        ArrayList<Integer> temp = new ArrayList<>();
+
+        for (Label label : labels) {
+            temp.add(label.getId());
+        }
+
+        return temp;
+    }
+
+    public Instance getInstance() {
+        return instance;
+    }
+
+    public List<Label> getLabels() {
+        return labels;
+    }
+
+    public long getTimeSpentInNanos() {
+        return timeSpentInNanos;
+    }
+
+    public void setTimeSpentInNanos(long timeSpentInNanos) {
+        this.timeSpentInNanos = timeSpentInNanos;
     }
 }
