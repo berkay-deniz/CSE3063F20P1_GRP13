@@ -185,7 +185,7 @@ public class Dataset implements Parsable {
     }
 
     public void printOutputAndMetrics() {
-        statistic.printMetrics("metrics/datasets/dataset" + users + ".json");
+        statistic.printMetrics("metrics/datasets/dataset" + id + ".json");
         for (User user : users.values()) {
             user.printMetrics();
         }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Map;
 
 @JsonPropertyOrder({"id", "instance", "final label"})
@@ -46,7 +47,11 @@ public class Instance implements Parsable {
     }
 
     public void printMetrics(int datasetId) {
-        statistic.printMetrics("metrics/instances/dataset" + datasetId + "/instance" + id + ".json");
+        String folderPath = "metrics/instances/dataset" + datasetId;
+        File folder = new File(folderPath);
+        if (folder.mkdir())
+            logger.info("'" + folderPath + "' folder has been created.");
+        statistic.printMetrics(folderPath + "/instance" + id + ".json");
     }
 
     public void logAssignmentInfo(int userId, String userName, String classLabels) {
