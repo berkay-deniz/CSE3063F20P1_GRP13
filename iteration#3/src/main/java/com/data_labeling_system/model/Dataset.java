@@ -139,7 +139,7 @@ public class Dataset implements Parsable {
                 int nextInstanceToBeLabelled = value == null ? 1 : value;
 
                 // If the user has completed all the labellings in current dataset
-                if (instances.size() <= nextInstanceToBeLabelled) {
+                if (instances.size() < nextInstanceToBeLabelled) {
                     it.remove();
                     continue;
                 }
