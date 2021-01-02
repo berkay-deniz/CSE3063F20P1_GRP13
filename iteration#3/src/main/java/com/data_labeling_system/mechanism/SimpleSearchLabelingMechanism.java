@@ -27,7 +27,7 @@ public class SimpleSearchLabelingMechanism extends LabelingMechanism {
                 mostFrequentLabels.add(label);
             }
         }
-        ArrayList<Label> assignedLabels = new ArrayList<>();
+        List<Label> assignedLabels = new ArrayList<>();
         for (int i = 0; i < maxNumOfLabels; i++) {
             if (i >= mostFrequentLabels.size()) {
                 break;
@@ -35,20 +35,7 @@ public class SimpleSearchLabelingMechanism extends LabelingMechanism {
             assignedLabels.add(mostFrequentLabels.get(i));
         }
         if (assignedLabels.size() == 0) {
-            ArrayList<Label> tempLabels = new ArrayList<>(labels.values());
-            // The number of labels to be assigned is determined randomly
-            int numOfLabels = (int) (Math.random() * (maxNumOfLabels) + 1);
-            for (int i = 0; i < numOfLabels; i++) {
-                // Finish choosing if labels are over
-                if (tempLabels.isEmpty())
-                    break;
-                // Choose a random Label
-                int randomNumber = (int) (Math.random() * (tempLabels.size()));
-                // Add label that used from mechanism into ArrayList
-                assignedLabels.add(tempLabels.get(randomNumber));
-                // Remove the label from the list to not use it again
-                tempLabels.remove(randomNumber);
-            }
+            assignedLabels = assignRandomly(labels, maxNumOfLabels);
         }
         return new Assignment(instance, assignedLabels, user, new Date());
     }

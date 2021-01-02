@@ -5,7 +5,9 @@ import com.data_labeling_system.model.Instance;
 import com.data_labeling_system.model.Label;
 import com.data_labeling_system.model.User;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
 
 public class UserInterfaceLabelingMechanism extends LabelingMechanism {
 
@@ -18,30 +20,13 @@ public class UserInterfaceLabelingMechanism extends LabelingMechanism {
         System.out.print("Instance to be labeled: ");
         instance.printInstance();
 
-        // Show labels to the user
-        System.out.println("Labels that you can assign are: ");
-
-        showLabelsToUser(labels);
-
-        System.out.println("You can assign at most " + maxNumOfLabels + " labels to this instance");
-        System.out.println("If you want to assign more than 1 label to this instance put space between two labels");
-
-        Scanner scan = new Scanner(System.in);
-        String allLabels = scan.nextLine();
-
-        String[] tokens = allLabels.split(" ");
-
-        int numOfAssignedLabels = tokens.length;
-        while (numOfAssignedLabels > maxNumOfLabels) {
-            System.out.println("You entered too much labels! Enter again: ");
-            allLabels = scan.nextLine();
-            tokens = allLabels.split(" ");
-            numOfAssignedLabels = tokens.length;
-        }
+        String[] tokens = getLabelsFromUser(labels, maxNumOfLabels);
 
         for (String token : tokens) {
-            int labelId = Integer.parseInt(token);
-            assignedLabels.add(labels.get(labelId));
+            Label currentLabel = getValidLabelFromInput(token, labels);
+            if (currentLabel == null) break;
+
+            assignedLabels.add(currentLabel);
         }
 
         return new Assignment(instance, assignedLabels, user, new Date());

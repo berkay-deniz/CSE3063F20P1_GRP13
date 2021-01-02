@@ -82,7 +82,7 @@ public class Instance implements Parsable {
 
     public String[] divideIntoSentences() {
         String str = this.instance;
-        return str.replaceAll("\\.", " ").split("\\s+");
+        return str.split("[.?!]");
     }
 
     public String getInstance() {

@@ -32,7 +32,7 @@ public class Statistic {
         }
     };
 
-    protected HashMap<String, String> getStringStringHashMap(Map<Label, Double> labelDistributionPercentages) {
+    protected HashMap<String, String> serializeMap(Map<Label, Double> labelDistributionPercentages) {
         HashMap<String, String> getCustomLabelDistributionJson = new HashMap<>();
         for (Map.Entry<Label, Double> entry : labelDistributionPercentages.entrySet()) {
             String dataset = entry.getKey().getText();
@@ -42,14 +42,15 @@ public class Statistic {
         return getCustomLabelDistributionJson;
     }
 
-    protected HashMap<String, String> mapParsableToParsableId(Map<? extends Parsable, Double> percentages) {
+    protected HashMap<String, String> serializeParsable(Map<? extends Parsable, Double> percentages) {
         HashMap<String, String> customUserJson = new HashMap<>();
         for (Map.Entry<? extends Parsable, Double> entry : percentages.entrySet()) {
-            String id = "user" + entry.getKey().getId();
-            if (entry instanceof User)
-                id = "user" + entry.getKey().getId();
-            else if (entry instanceof Dataset)
-                id = "dataset" + entry.getKey().getId();
+            String tag = "";
+            if (entry.getKey() instanceof User)
+                tag = "user";
+            else if (entry.getKey() instanceof Dataset)
+                tag = "dataset";
+            String id = tag + entry.getKey().getId();
             String percentage = "%" + ((int) (entry.getValue() * 10000)) / 100.0;
             customUserJson.put(id, percentage);
         }
