@@ -41,7 +41,7 @@ public class MachineLearningMechanism extends LabelingMechanism {
         StringBuilder modifiedLabel = new StringBuilder(res.get(0).item);
         modifiedLabel.delete(0, 9);
         for (int i = 0; i < tempLabels.size(); i++) {
-            if (tempLabels.get(i).getText().equals(modifiedLabel.toString())) {
+            if (tempLabels.get(i).getText().toLowerCase().equals(modifiedLabel.toString())) {
                 assignedLabels.add(tempLabels.get(i));
                 tempLabels.remove(i);
                 break;
