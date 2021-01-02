@@ -1,8 +1,7 @@
 package com.data_labeling_system.model;
 
-import com.data_labeling_system.mechanism.LabelingMechanism;
-import com.data_labeling_system.statistic.DatasetStatistic;
 import com.data_labeling_system.DataLabelingSystem;
+import com.data_labeling_system.statistic.DatasetStatistic;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +20,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @JsonPropertyOrder({"dataset id", "dataset name", "maximum number of labels per instance", "class labels", "instances",
         "class label assignments", "users"})
@@ -39,6 +37,7 @@ public class Dataset implements Parsable {
     @JsonProperty("class labels")
     private final Map<Integer, Label> labels;
 
+    @JsonProperty("instances")
     private final Map<Integer, Instance> instances;
 
     @JsonProperty("class label assignments")
@@ -128,7 +127,7 @@ public class Dataset implements Parsable {
     }
 
     public void assignLabels() {
-        logger.info("The list of assigment was created successfully.");
+        logger.info("The list of assigment was created successfully. [ R.I.P. Instance Tagger :( ]");
 
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
         while (!users.isEmpty()) {
@@ -139,7 +138,7 @@ public class Dataset implements Parsable {
                 Integer value = nextInstancesToBeLabelled.get(currentUser);
                 int nextInstanceToBeLabelled = value == null ? 1 : value;
 
-                //If the user has completed all the labellings in current dataset
+                // If the user has completed all the labellings in current dataset
                 if (instances.size() <= nextInstanceToBeLabelled) {
                     it.remove();
                     continue;
@@ -150,17 +149,7 @@ public class Dataset implements Parsable {
                 Assignment assignment = currentUser.assign(instances.get(currentInstanceToBeLabelled), labels, maxNumOfLabels);
                 assignments.add(assignment);
 
-                List<Label> labels = assignment.getLabels();
-                StringBuilder classLabels = new StringBuilder();
-                for (int j = 0; j < labels.size(); j++) {
-                    Label label = labels.get(j);
-                    String classLabel = label.getId() + ": " + label.getText();
-                    classLabels.append(classLabel);
-                    if (j < labels.size() - 1)
-                        classLabels.append(", ");
-                }
-
-                currentUser.logAssignmentInfo(assignment, classLabels.toString());
+                logAssignmentInfo(assignment, currentUser);
 
                 if (currentInstanceToBeLabelled == nextInstanceToBeLabelled)
                     nextInstancesToBeLabelled.put(currentUser, ++nextInstanceToBeLabelled);
@@ -175,21 +164,37 @@ public class Dataset implements Parsable {
                 logger.info("Metrics are calculated for User with UserId: " + currentUser.getId());
                 calculateMetrics();
                 logger.info("Metrics are calculated for dataset with DatasetId: " + id);
-
                 // Print output dataset and metric calculations
-                // TODO: Print metrics
-                statistic.printMetrics("metrics/datasets/dataset" + users + ".json");
-                for (User user : users.values()) {
-                    user.printMetrics();
-                }
-                for (Instance instance : instances.values()) {
-                    instance.printMetrics(id);
-                }
-                logger.info("Statistic metrics printed to the 'metrics' folder successfully.");
-                printFinalDataset("outputs/output" + id + ".json");
-                logger.info("Final dataset with DatasetId: " + id + " is printed to output.json.");
+                printOutputAndMetrics();
             }
         }
+    }
+
+    public void logAssignmentInfo(Assignment assignment, User user) {
+        List<Label> labels = assignment.getLabels();
+        StringBuilder classLabels = new StringBuilder();
+        for (int j = 0; j < labels.size(); j++) {
+            Label label = labels.get(j);
+            String classLabel = label.getId() + ": " + label.getText();
+            classLabels.append(classLabel);
+            if (j < labels.size() - 1)
+                classLabels.append(", ");
+        }
+
+        user.logAssignmentInfo(assignment, classLabels.toString());
+    }
+
+    public void printOutputAndMetrics() {
+        statistic.printMetrics("metrics/datasets/dataset" + users + ".json");
+        for (User user : users.values()) {
+            user.printMetrics();
+        }
+        for (Instance instance : instances.values()) {
+            instance.printMetrics(id);
+        }
+        logger.info("Statistic metrics printed to the 'metrics' folder successfully.");
+        printFinalDataset("outputs/output" + id + ".json");
+        logger.info("Final dataset with DatasetId: " + id + " is printed to output.json.");
     }
 
     public void printFinalDataset(String outputFileName) {
@@ -221,6 +226,21 @@ public class Dataset implements Parsable {
             nextInstanceIndexes.put(userId, nextInstances);
         }
         return nextInstanceIndexes;
+    }
+
+    @JsonGetter("class labels")
+    public Collection<Label> serializeLabels() {
+        return labels.values();
+    }
+
+    @JsonGetter("instances")
+    public Collection<Instance> serializeInstances() {
+        return instances.values();
+    }
+
+    @JsonGetter("users")
+    public Collection<User> serializeUsers() {
+        return users.values();
     }
 
     public void calculateMetrics() {

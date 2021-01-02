@@ -3,16 +3,21 @@ package com.data_labeling_system.model;
 import com.data_labeling_system.DataLabelingSystem;
 import com.data_labeling_system.statistic.InstanceStatistic;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.util.Map;
 
+@JsonPropertyOrder({"id", "instance", "final label"})
 @JsonIgnoreProperties({"statistic"})
 public class Instance implements Parsable {
     private int id;
+    @JsonProperty("instance")
     private String instance;
     private InstanceStatistic statistic;
+    @JsonProperty("final label")
     private Label finalLabel;
     private final Logger logger;
 
