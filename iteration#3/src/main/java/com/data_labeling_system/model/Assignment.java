@@ -5,20 +5,18 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @JsonIgnoreProperties({"instance", "labels", "user", "timeSpentInMillis"})
 @JsonPropertyOrder({"instance id", "class label ids", "user id", "dateTime"})
 public class Assignment {
-    private Instance instance;
+    private final Instance instance;
     private final List<Label> labels;
-    private User user;
+    private final User user;
     private long timeSpentInNanos;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
-    private Date dateTime;
+    private final Date dateTime;
 
     public Assignment(Instance instance, List<Label> labels, User user, Date dateTime) {
         this.dateTime = dateTime;
@@ -53,20 +51,8 @@ public class Assignment {
         return instance;
     }
 
-    public void setInstance(Instance instance) {
-        this.instance = instance;
-    }
-
     public List<Label> getLabels() {
         return labels;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public long getTimeSpentInNanos() {
@@ -77,4 +63,40 @@ public class Assignment {
         this.timeSpentInNanos = timeSpentInNanos;
     }
 
+    public void logAssignmentInfo(int userId, String userName, String classLabels) {
+        instance.logAssignmentInfo(userId, userName, classLabels);
+    }
+
+    public void calculateDatasetStatistic(Set<Instance> uniqueInstances,
+                                          Map<Instance, Set<Label>> uniqueLabelsForInstances,
+                                          Map<Instance, Set<User>> uniqueUsersForInstances,
+                                          Map<Label, Set<Instance>> uniqueInstancesForLabels) {
+        uniqueInstances.add(instance);
+
+        for (Label label : labels) {
+            Set<Instance> instanceSet = uniqueInstancesForLabels.get(label);
+            if (instanceSet == null) {
+                instanceSet = new HashSet<>();
+                uniqueInstancesForLabels.put(label, instanceSet);
+            }
+            instanceSet.add(instance);
+
+            // Instance statistic calculations
+            Set<Label> labelSet = uniqueLabelsForInstances.get(instance);
+            if (labelSet == null) {
+                labelSet = new HashSet<>();
+                uniqueLabelsForInstances.put(instance, labelSet);
+            }
+            labelSet.add(label);
+
+            Set<User> userSet = uniqueUsersForInstances.get(instance);
+            if (userSet == null) {
+                userSet = new HashSet<>();
+                uniqueUsersForInstances.put(instance, userSet);
+            }
+            userSet.add(user);
+
+            instance.getStatistic().addAssignedLabel(label);
+        }
+    }
 }

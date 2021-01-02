@@ -112,9 +112,4 @@ public class InstanceStatistic extends Statistic {
     public void setNumOfAssignedUniqueLabels(int numOfAssignedUniqueLabels) {
         this.numOfAssignedUniqueLabels = numOfAssignedUniqueLabels;
     }
-
-    @Override
-    public void printMetrics(String fileName) {
-        // TODO
-    }
 }

@@ -1,16 +1,14 @@
 package com.data_labeling_system.statistic;
 
-import com.data_labeling_system.model.*;
+import com.data_labeling_system.model.Assignment;
+import com.data_labeling_system.model.Dataset;
+import com.data_labeling_system.model.Instance;
+import com.data_labeling_system.model.Label;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 @JsonPropertyOrder({"number of datasets assigned", "dataset completeness percentages", "total number of instances labeled",

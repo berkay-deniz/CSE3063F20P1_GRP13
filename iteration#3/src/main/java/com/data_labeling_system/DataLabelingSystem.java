@@ -25,7 +25,7 @@ public class DataLabelingSystem {
         users = new HashMap<>();
     }
 
-    public void startSystem() throws IOException {
+    public void startSystem(){
         logger.info("The system has started");
         // Create output folders to organize datasets and metrics
         createOutputFolders();
@@ -115,7 +115,6 @@ public class DataLabelingSystem {
             JSONObject userObject = userArray.getJSONObject(i);
             User user = new User(userObject.toString());
             users.put(userObject.getInt("user id"), user);
-            logger.info("Created '" + user.getName() + "' as '" + user.getType() + "'.");
         }
     }
 

@@ -52,7 +52,7 @@ public class Dataset implements Parsable {
     private final Logger logger;
 
     public Dataset(String json, Map<Integer, User> users) {
-        statistic = new DatasetStatistic(this);
+        statistic = new DatasetStatistic();
         logger = Logger.getLogger(DataLabelingSystem.class);
         nextInstancesToBeLabelled = new HashMap<>();
         assignments = new ArrayList<>();
@@ -144,14 +144,10 @@ public class Dataset implements Parsable {
                     it.remove();
                     continue;
                 }
-                int randomNumber = (int) ((Math.random() * 100) + 1);
-                int currentInstanceToBeLabelled =
-                        ((randomNumber <= currentUser.getConsistencyCheckProbability() * 100)) ?
-                                (int) (Math.random() * (nextInstanceToBeLabelled - 1) + 1) : nextInstanceToBeLabelled;
 
-                LabelingMechanism labelingMechanism = currentUser.getMechanism();
-                Assignment assignment = labelingMechanism.assign(currentUser, instances.get(currentInstanceToBeLabelled),
-                        labels, maxNumOfLabels);
+                int currentInstanceToBeLabelled = currentUser.chooseInstanceToBeLabelled(nextInstanceToBeLabelled);
+
+                Assignment assignment = currentUser.assign(instances.get(currentInstanceToBeLabelled), labels, maxNumOfLabels);
                 assignments.add(assignment);
 
                 List<Label> labels = assignment.getLabels();
@@ -164,9 +160,7 @@ public class Dataset implements Parsable {
                         classLabels.append(", ");
                 }
 
-                logger.info("user id: " + currentUser.getId() + " " + currentUser.getName() + " tagged instance id: " +
-                        assignment.getInstanceId() + " with class labels: [" + classLabels + "]" + ", instance: \"" +
-                        assignment.getInstance().getInstance() + "\"");
+                currentUser.logAssignmentInfo(assignment, classLabels.toString());
 
                 if (currentInstanceToBeLabelled == nextInstanceToBeLabelled)
                     nextInstancesToBeLabelled.put(currentUser, ++nextInstanceToBeLabelled);
