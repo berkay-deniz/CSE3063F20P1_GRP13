@@ -30,14 +30,19 @@ public class Label implements Parsable {
         this.id = object.getInt("label id");
         this.text = object.getString("label text");
     }
-    public int searchLabelInInstance(String[] wordsInInstance){
+
+    public int searchLabelInInstance(String[] wordsInInstance) {
         int counter = 0;
-        for(String word : wordsInInstance){
-            if(word.equals(this.text)){
-                counter ++ ;
+        for (String word : wordsInInstance) {
+            if (word.equals(this.text)) {
+                counter++;
             }
         }
         return counter;
 
+    }
+
+    public void printLabel() {
+        System.out.print(this.text);
     }
 }
