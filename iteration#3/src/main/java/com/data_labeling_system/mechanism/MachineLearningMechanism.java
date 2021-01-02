@@ -29,15 +29,14 @@ public class MachineLearningMechanism extends LabelingMechanism {
         String s = instance.getInstance();
 
 
-
-
         // String processed = String.join(" ", TurkishTokenizer.DEFAULT.tokenizeToStrings(s));
         // processed = processed.toLowerCase(Turkish.LOCALE);
         List<ScoredItem<String>> res = classifier.predict(s, 1);
+        StringBuffer modifiedLabel = new StringBuffer(res.get(0).item);
+        modifiedLabel.delete(0,9);
+        for (int i = 0; i < tempLabels.size(); i++) {
 
-        for(int i = 0 ; i<tempLabels.size();i++) {
-
-            if(tempLabels.get(i).getText().equals(res.get(0).item)) {
+            if (tempLabels.get(i).getText().equals(modifiedLabel.toString())) {
                 assignedLabels.add(tempLabels.get(i));
                 tempLabels.remove(i);
                 break;
@@ -45,7 +44,6 @@ public class MachineLearningMechanism extends LabelingMechanism {
             }
 
         }
-
 
 
         return new Assignment(instance, assignedLabels, user, new Date());
