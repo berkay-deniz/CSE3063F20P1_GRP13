@@ -24,7 +24,7 @@ public class MachineLearningMechanism extends LabelingMechanism {
         // Create Arraylist to keep copying of labels
         ArrayList<Label> tempLabels = new ArrayList<>(labels.values());
 
-        Path path = Paths.get("data");
+        Path path = Paths.get("MachineLearningData");
         FastTextClassifier classifier;
         try {
             classifier = FastTextClassifier.load(path);
