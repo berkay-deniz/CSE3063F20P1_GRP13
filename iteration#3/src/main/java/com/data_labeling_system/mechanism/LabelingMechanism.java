@@ -22,7 +22,7 @@ public abstract class LabelingMechanism {
     // For the Assignment method; user, instance, labels and instance can have the maximum number of labels are sent
     public abstract Assignment assign(User user, Instance instance, Map<Integer, Label> labels, int maxNumOfLabels);
 
-    public void showLabelsToUser(Map<Integer, Label> labels) {
+    private void showLabelsToUser(Map<Integer, Label> labels) {
         System.out.print("\nLabels that you can assign are: ");
         for (Map.Entry<Integer, Label> entry : labels.entrySet()) {
             int id = entry.getKey();
@@ -34,7 +34,7 @@ public abstract class LabelingMechanism {
         System.out.println("\n");
     }
 
-    public List<Label> assignRandomly(Map<Integer, Label> labels, int maxNumOfLabels) {
+    protected List<Label> assignRandomly(Map<Integer, Label> labels, int maxNumOfLabels) {
         List<Label> assignedLabels = new ArrayList<>();
         List<Label> tempLabels = new ArrayList<>(labels.values());
         // The number of labels to be assigned is determined randomly
@@ -53,7 +53,7 @@ public abstract class LabelingMechanism {
         return assignedLabels;
     }
 
-    public String[] getLabelsFromUser(Map<Integer, Label> labels, int maxNumOfLabels) {
+    protected String[] getLabelsFromUser(Map<Integer, Label> labels, int maxNumOfLabels) {
         // Show labels to the user
         showLabelsToUser(labels);
 
@@ -77,7 +77,7 @@ public abstract class LabelingMechanism {
         return tokens;
     }
 
-    public Label getValidLabelFromInput(String labelIndexStr, Map<Integer, Label> labels) {
+    protected Label getValidLabelFromInput(String labelIndexStr, Map<Integer, Label> labels) {
         int labelIndex;
         try {
             labelIndex = Integer.parseInt(labelIndexStr);
