@@ -40,7 +40,7 @@ public class DataLabelingSystem {
         Scanner scanner = new Scanner(System.in);
         String username, password;
         int loggedUserId;
-        do {
+        while (true) {
             System.out.print("Username: ");
             username = scanner.nextLine();
             System.out.print("Password: ");
@@ -49,7 +49,12 @@ public class DataLabelingSystem {
                 loggedUserId = -1;
                 break;
             }
-        } while ((loggedUserId = checkCredentials(username, password)) == 0);
+            if ((loggedUserId = checkCredentials(username, password)) == 0) {
+                System.out.println("Wrong username or password. Please enter the credentials again!");
+            } else {
+                break;
+            }
+        }
 
         JSONObject configObject = new JSONObject(configJson);
         JSONArray datasetArray = configObject.getJSONArray("datasets");
@@ -77,7 +82,7 @@ public class DataLabelingSystem {
         }
 
         // Assign label to instances
-        currentDataset.assignLabels();
+        currentDataset.assignLabels(users.get(loggedUserId));
     }
 
     private int checkCredentials(String username, String password) {
@@ -124,7 +129,7 @@ public class DataLabelingSystem {
             if (userId == loggedInUserId)
                 loggedInUserIsAssigned = true;
         }
-        if (!loggedInUserIsAssigned) {
+        if (currentDatasetId == datasetId && loggedInUserId != -1 && !loggedInUserIsAssigned) {
             logger.error("Logged in user is not assigned to dataset " + datasetId);
             System.exit(-1);
         }

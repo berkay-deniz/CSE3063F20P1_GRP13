@@ -23,7 +23,7 @@
       "consistencyCheckProbability": 0
     }
   ],
-  "currentDatasetId": 1,
+  "currentDatasetId": 2,
   "datasets": [
     {
       "id": 1,
@@ -35,7 +35,7 @@
     "id": 2,
       "name": "dataset2",
       "filePath": "input2.json",
-      "users": [3]
+      "users": [1,3]
     }
   ]
 }

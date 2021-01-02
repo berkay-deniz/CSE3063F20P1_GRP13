@@ -113,7 +113,8 @@ public class Dataset implements Parsable {
 
         if (object.has("next instances to be labelled")) {
             try {
-                Map<String, Integer> nextInstancesJson = new ObjectMapper().readValue(object.getJSONObject("next instances to be labelled").toString(), HashMap.class);
+                Map<String, Integer> nextInstancesJson = new ObjectMapper().readValue(object.getJSONObject("next " +
+                        "instances to be labelled").toString(), HashMap.class);
                 for (Map.Entry<String, Integer> entry : nextInstancesJson.entrySet()) {
                     int userId = Integer.parseInt(entry.getKey());
                     int nextInstance = entry.getValue();
@@ -126,14 +127,20 @@ public class Dataset implements Parsable {
         }
     }
 
-    public void assignLabels() {
-        logger.info("The list of assigment was created successfully. [ R.I.P. Instance Tagger :( ]");
-
+    public void assignLabels(User loggedUser) {
         //  Using the labeling mechanism the user has; assign user, instance and labels values into assignments
-        while (!users.isEmpty()) {
-            for (Iterator<User> it = users.values().iterator(); it.hasNext(); ) {
+        List<User> activeUsers = new ArrayList<>(users.values());
+        while (!activeUsers.isEmpty()) {
+            for (Iterator<User> it = activeUsers.iterator(); it.hasNext(); ) {
                 User currentUser = it.next();
-
+                if (loggedUser != null && currentUser instanceof BotUser) {
+                    it.remove();
+                    continue;
+                }
+                if (loggedUser == null && currentUser instanceof HumanUser) {
+                    it.remove();
+                    continue;
+                }
                 long startTime = System.nanoTime();
                 Integer value = nextInstancesToBeLabelled.get(currentUser);
                 int nextInstanceToBeLabelled = value == null ? 1 : value;
@@ -146,7 +153,8 @@ public class Dataset implements Parsable {
 
                 int currentInstanceToBeLabelled = currentUser.chooseInstanceToBeLabelled(nextInstanceToBeLabelled);
 
-                Assignment assignment = currentUser.assign(instances.get(currentInstanceToBeLabelled), labels, maxNumOfLabels);
+                Assignment assignment = currentUser.assign(instances.get(currentInstanceToBeLabelled), labels,
+                        maxNumOfLabels);
                 assignments.add(assignment);
 
                 logAssignmentInfo(assignment, currentUser);
