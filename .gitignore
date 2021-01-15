@@ -89,3 +89,6 @@ output.json
 *.log
 outputs
 metrics
+*.XLS
+*.XLSX
+*.csv
