@@ -19,4 +19,4 @@ def readStudents(studentList):
 
 
 
-readStudents("CES3063_Fall2020_rptSinifListesi.XLS")
+#readStudents("CES3063_Fall2020_rptSinifListesi.XLS")
