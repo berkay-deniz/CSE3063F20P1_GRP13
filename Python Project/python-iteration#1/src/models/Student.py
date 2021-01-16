@@ -6,6 +6,8 @@ def similar(a, b):
 
 
 class Student:
+    attendance = 0
+
     def __init__(self, id, name, email):
         self.id = id
         self.name = name
@@ -30,10 +32,3 @@ class Student:
                     if similar(name_element.lower(), student_full_name[0].lower()) > 0.95:
                         return True
             return False
-
-
-#s1 = Student(1, "KHALED AHMED MOSTAFA MOHAMED YASSEN", None)
-#print(s1.match("khaled yassen"))
-
-print(similar("Mehmed Etka Uzun", "Mehmet Etka Uzun"))
-
