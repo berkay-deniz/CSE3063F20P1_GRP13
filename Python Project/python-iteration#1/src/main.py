@@ -86,7 +86,15 @@ class ZoomPollAnalyzer:
                     student = s
 
             if student is None:
-                # print("No match: " + name)
+                max_similarity = 0.63
+                for s in self.students:
+                    similarity = s.similarity(name)
+                    if similarity > max_similarity:
+                        max_similarity = similarity
+                        student = s
+
+            if student is None:
+                print(name)
                 continue
             # else:
             # print("Listed name: " + student.name)
