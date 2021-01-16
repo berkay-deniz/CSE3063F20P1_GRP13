@@ -12,32 +12,28 @@ class Student:
         self.email = email
 
     def match(self, student_name):
-        student_fullname = student_name.split()
-        number_array = '0123456789'
-        if student_fullname[0][0] in number_array:
-            student_fullname = student_fullname[1:]
-            student_name = ''
-            for word in student_fullname:
-                student_name += word
-                student_name += ' '
-        if similar(self.name.lower(), student_name.lower()) > 0.70:
+        numbers = "0123456789"
+        temp = student_name
+        student_name = ""
+        for char in temp:
+            if char not in numbers:
+                student_name += char
+        if similar(self.name.lower(), student_name.lower()) > 0.90:
             return True
-        elif similar(self.name.lower(), student_name.lower()) > 0.55:
+        else:
             full_name = self.name.split()
             last_name = full_name[-1]
             student_full_name = student_name.split()
             student_last_name = student_full_name[-1]
             if student_last_name.lower() == last_name.lower():
                 for name_element in full_name:
-                    if similar(name_element.lower(),student_full_name[0].lower()) > 0.75:
+                    if similar(name_element.lower(), student_full_name[0].lower()) > 0.95:
                         return True
             return False
-        else:
-            return False
 
 
+#s1 = Student(1, "KHALED AHMED MOSTAFA MOHAMED YASSEN", None)
+#print(s1.match("khaled yassen"))
 
-
-
-
+print(similar("Mehmed Etka Uzun", "Mehmet Etka Uzun"))
 
