@@ -9,7 +9,7 @@ from models.AnswerKey import *
 
 class ZoomPollAnalyzer:
     matched_students = {}
-    students = []
+    students = {}
     polls = []
     total_attendance_polls = 0
     answer_key_list = []
@@ -36,7 +36,8 @@ class ZoomPollAnalyzer:
         student_df = student_df.drop(student_df.columns[0], axis=1)
         student_list = student_df.values.tolist()
         for s in student_list:
-            self.students.append(Student(*s, None))
+            # s[0]
+            self.students[s[0]] = Student(*s, None)
 
     def read_ans_key(self, file_path):
         answer_key_file = open(file_path, "r")
@@ -73,21 +74,21 @@ class ZoomPollAnalyzer:
                 student = self.matched_students[name]
             # Otherwise, look up for all students and match the name.
             else:
-                for s in self.students:
+                for s in self.students.values():
                     if s.match(name):
                         student = s
                         student.email = row[2]
 
                 if student is None:
                     max_similarity = 0.63
-                    for s in self.students:
+                    for s in self.students.values():
                         similarity = s.similarity(name)
                         if similarity > max_similarity:
                             max_similarity = similarity
                             student = s
 
             if student is None:
-                # print("Not matched: " + name)
+                print("Not matched: " + name)
                 continue
             else:
                 # Save student match to matched_students in order not to need to match the student again.
@@ -172,16 +173,11 @@ class ZoomPollAnalyzer:
             logging.error(file_type + " path given is not a directory.")
             exit(-1)
 
-    def attendance_report(self, studentList,students):
-        attendance_df = pd.read_excel(studentList,usecols='B,C')
+    def attendance_report(self, studentList, students):
+        attendance_df = pd.read_excel(studentList, usecols='B,C')
         attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
         attendance_df.insert(3, "Attendance Rate", 0)
         attendance_df.insert(4, "Attendance Percentage", 0)
-
-
-
-
-
 
         attendance_df.to_excel("attendance.xlsx")
 
@@ -197,8 +193,7 @@ class ZoomPollAnalyzer:
         #        for v in self.polls[0].student_answers[student].values():
         #            print(v)
         print()
-        self.read_poll_reports(poll_reports_path)
-        self.attendance_report("../../StudentList.xlsx")
+        # self.attendance_report("../../StudentList.xlsx")
 
 
 zoomPollAnalyzer = ZoomPollAnalyzer()
