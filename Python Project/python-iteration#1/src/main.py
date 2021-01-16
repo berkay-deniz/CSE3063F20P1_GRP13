@@ -173,24 +173,62 @@ class ZoomPollAnalyzer:
             logging.error(file_type + " path given is not a directory.")
             exit(-1)
 
-    def attendance_report(self, studentList):
-        attendance_df = pd.read_excel(studentList, usecols='B,C')
+    def attendance_report(self, student_list):
+        attendance_df = pd.read_excel(student_list, usecols='B,C')
         attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
         attendance_df.insert(3, "Attendance Rate", ' ')
         attendance_df.insert(4, "Attendance Percentage", 0)
 
         for i in range(0, len(self.students.values())):
-            attendance_df.at[i, 'Attendance Rate'] = (str(self.students[
-                                                              attendance_df.at[
-                                                                  i, 'Öğrenci No']].attendance) + ' of ' + str(
-                self.total_attendance_polls))
-            attendance_df.at[i, 'Attendance Percentage'] = (self.students[
-                                                                attendance_df.at[i, 'Öğrenci No']].attendance /
-                                                            self.total_attendance_polls) * 100
-
-
+            current_student = self.students[attendance_df.at[i, 'Öğrenci No']]
+            attendance_df.at[i, 'Attendance Rate'] = (
+                    str(current_student.attendance) + ' of ' + str(self.total_attendance_polls))
+            attendance_df.at[i, 'Attendance Percentage'] = (
+                                                                   current_student.attendance / self.total_attendance_polls) * 100
 
         attendance_df.to_excel("attendance.xlsx")
+
+    def print_poll_results(self, student_list):
+
+        for poll in self.polls:
+            poll_result_df = pd.read_excel(student_list, usecols='B,C')
+
+            question_no = 1
+            # Insert one column for each question in the poll
+            for j in range(0, len(poll.answer_key.q_and_a), 2):
+                poll_result_df.insert(question_no + 1, "Q" + str(question_no), 0)
+                question_no += 1
+
+            poll_result_df.insert(question_no + 1, "Number of Questions", question_no - 1)
+            poll_result_df.insert(question_no + 2, "Success Rate", ' ')
+            poll_result_df.insert(question_no + 3, "Success Percentage", 0)
+
+            for i in range(0, len(self.students.values())):
+                student = self.students[poll_result_df.at[i, 'Öğrenci No']]
+                for
+                attendance_df.at[i, 'Attendance Rate'] = (str(student.attendance) + ' of ' + str(
+                    self.total_attendance_polls))
+                attendance_df.at[i, 'Attendance Percentage'] = (self.students[
+                                                                    attendance_df.at[i, 'Öğrenci No']].attendance /
+                                                                self.total_attendance_polls) * 100
+
+                ans_key_index = 0
+                student_answers_index = 0
+                while True:
+                    if self.polls[i].student_answers[student_answers_index] == self.polls[i].answer_key.q_and_a[
+                        ans_key_index]:
+                        student_answers_index += 2
+                    ans_key_index += 2
+
+                    if len(row) == student_answers_index:
+                        answer_key_available = True
+                        break
+                    elif len(current_poll.answer_key.q_and_a) == ans_key_index:
+                        break
+
+            if not os.path.exists('../../poll-results'):
+                os.makedirs('../../poll-results')
+            poll_result_df.to_excel("../../poll-results/" + self.polls[i].name + ".xlsx")
 
     def start_system(self):
         self.read_students("../../CES3063_Fall2020_rptSinifListesi.XLS")
@@ -205,6 +243,7 @@ class ZoomPollAnalyzer:
         #            print(v)
         print()
         self.attendance_report("../../StudentList.xlsx")
+        self.print_poll_results("../../StudentList.xlsx")
 
 
 zoomPollAnalyzer = ZoomPollAnalyzer()
