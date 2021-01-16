@@ -172,6 +172,19 @@ class ZoomPollAnalyzer:
             logging.error(file_type + " path given is not a directory.")
             exit(-1)
 
+    def attendance_report(self, studentList,students):
+        attendance_df = pd.read_excel(studentList,usecols='B,C')
+        attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
+        attendance_df.insert(3, "Attendance Rate", 0)
+        attendance_df.insert(4, "Attendance Percentage", 0)
+
+
+
+
+
+
+        attendance_df.to_excel("attendance.xlsx")
+
     def start_system(self):
         self.read_students("../../CES3063_Fall2020_rptSinifListesi.XLS")
         ans_keys_path = input("Enter answer keys directory: ")
@@ -184,6 +197,8 @@ class ZoomPollAnalyzer:
         #        for v in self.polls[0].student_answers[student].values():
         #            print(v)
         print()
+        self.read_poll_reports(poll_reports_path)
+        self.attendance_report("../../StudentList.xlsx")
 
 
 zoomPollAnalyzer = ZoomPollAnalyzer()
