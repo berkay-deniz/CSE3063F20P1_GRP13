@@ -2,13 +2,9 @@ import re
 from models.Poll import *
 
 
-def split_double_quotes(text):
-    return re.findall(r'\"(.+?)\"', text)
-
-
 answerKeyFile = open("../../answer-keys/answer-key1.csv", "r")
 answerKeyString = answerKeyFile.read()
-splitString = split_double_quotes(answerKeyString)
+splitString = re.findall(r'\"(.+?)\"', answerKeyString)
 
 pollName = splitString[0]
 qAndA = []
