@@ -88,7 +88,7 @@ class ZoomPollAnalyzer:
                             student = s
 
             if student is None:
-                print("Not matched: " + name)
+                # print("Not matched: " + name)
                 continue
             else:
                 # Save student match to matched_students in order not to need to match the student again.
@@ -173,11 +173,22 @@ class ZoomPollAnalyzer:
             logging.error(file_type + " path given is not a directory.")
             exit(-1)
 
-    def attendance_report(self, studentList, students):
+    def attendance_report(self, studentList):
         attendance_df = pd.read_excel(studentList, usecols='B,C')
         attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
-        attendance_df.insert(3, "Attendance Rate", 0)
+        attendance_df.insert(3, "Attendance Rate", ' ')
         attendance_df.insert(4, "Attendance Percentage", 0)
+
+        for i in range(0, len(self.students.values())):
+            attendance_df.at[i, 'Attendance Rate'] = (str(self.students[
+                                                              attendance_df.at[
+                                                                  i, 'Öğrenci No']].attendance) + ' of ' + str(
+                self.total_attendance_polls))
+            attendance_df.at[i, 'Attendance Percentage'] = (self.students[
+                                                                attendance_df.at[i, 'Öğrenci No']].attendance /
+                                                            self.total_attendance_polls) * 100
+
+
 
         attendance_df.to_excel("attendance.xlsx")
 
@@ -193,7 +204,7 @@ class ZoomPollAnalyzer:
         #        for v in self.polls[0].student_answers[student].values():
         #            print(v)
         print()
-        # self.attendance_report("../../StudentList.xlsx")
+        self.attendance_report("../../StudentList.xlsx")
 
 
 zoomPollAnalyzer = ZoomPollAnalyzer()

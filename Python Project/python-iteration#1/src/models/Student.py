@@ -6,12 +6,12 @@ def similar(a, b):
 
 
 class Student:
-    attendance = 0
 
-    def __init__(self, id, name, email):
-        self.id = id
+    def __init__(self, student_id, name, email):
+        self.student_id = student_id
         self.name = name
         self.email = email
+        self.attendance = 0
 
     def match(self, student_name):
         translationTable1 = str.maketrans("ğĞıİöÖüÜşŞçÇ", "gGiIoOuUsScC")
