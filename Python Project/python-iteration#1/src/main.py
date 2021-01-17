@@ -5,6 +5,7 @@ import logging
 from models.Student import *
 from models.Poll import *
 from models.AnswerKey import *
+import matplotlib.pyplot as plotter
 
 
 class ZoomPollAnalyzer:
@@ -238,11 +239,24 @@ class ZoomPollAnalyzer:
                 poll_result_df.at[i, 'Success Rate'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
                 poll_result_df.at[i, 'Success Percentage'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
 
+            question_list = []
+
+            fig, axs = plotter.subplots(4, 3, figsize=(19.20, 10.80))
+            i = 0
+            j = 0
             for question, answer_occurrences in answers_of_questions.items():
-                print("-------------------------------------------------")
-                print("Question: " + question)
+                answer_list = []
+                occurrence_list = []
+                question_list.append(question)
                 for answer, occurrence in answer_occurrences.items():
-                    print("(" + str(occurrence) + ") " + answer)
+                    answer_list.append(answer)
+                    occurrence_list.append(occurrence)
+                axs[i, j].pie(occurrence_list, labels=answer_list, autopct='%1.1f%%', shadow=True)
+                j += 1
+                if j == 3:
+                    j = 0
+                    i += 1
+            plotter.show()
 
             if not os.path.exists('../../poll-results'):
                 os.makedirs('../../poll-results')
