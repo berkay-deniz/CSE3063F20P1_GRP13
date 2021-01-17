@@ -1,5 +1,4 @@
 import os
-import re
 import pandas as pd
 import logging
 from models.Student import *
@@ -17,12 +16,12 @@ class ZoomPollAnalyzer:
 
     # readStudents function takes name of a file which contains all students and their informations
     # then save them into students list
-    def read_students(self, student_list):
+    def read_students(self, students_file):
         pd.set_option('expand_frame_repr', False)
         pd.set_option("display.max_columns", 999)
         pd.set_option('display.max_rows', 999)
 
-        df = pd.read_excel(student_list, header=12, usecols='C,E,H')
+        df = pd.read_excel(students_file, header=12, usecols='C,E,H')
 
         df = df[(df['Öğrenci No'].notnull()) & (df['Öğrenci No'] != 'Öğrenci No')]
 
@@ -35,26 +34,13 @@ class ZoomPollAnalyzer:
 
         student_df = pd.read_excel('../../StudentList.xlsx')
         student_df = student_df.drop(student_df.columns[0], axis=1)
-        student_list = student_df.values.tolist()
-        for s in student_list:
+        students_file = student_df.values.tolist()
+        for s in students_file:
             # s[0]
             self.students[s[0]] = Student(*s, None)
 
     def read_ans_key(self, file_path):
-        answer_key_file = open(file_path, "r")
-        answer_key_string = answer_key_file.read()
-        regex = re.compile(r'\"(.+?)\"', flags=re.DOTALL)
-        split_string = regex.findall(answer_key_string)
-
-        poll_name = split_string[0]
-        q_and_a = []
-
-        for x in range(1, len(split_string) - 1, 2):
-            q_and_a.append(split_string[x])
-            q_and_a.append(split_string[x + 1])
-
-        answer_key = AnswerKey(poll_name, q_and_a)
-        self.answer_key_list.append(answer_key)
+        self.answer_key_list.append(AnswerKey(file_path))
 
     def read_poll_report(self, file_path):
         df = pd.read_csv(file_path, header=None, skiprows=[0])
@@ -83,7 +69,7 @@ class ZoomPollAnalyzer:
                 if student is None:
                     max_similarity = 0.63
                     for s in self.students.values():
-                        similarity = s.similarity(name)
+                        similarity = s.calculate_similarity(name)
                         if similarity > max_similarity:
                             max_similarity = similarity
                             student = s
@@ -177,8 +163,8 @@ class ZoomPollAnalyzer:
             logging.error(file_type + " path given is not a directory.")
             exit(-1)
 
-    def print_attendance_report(self, student_list):
-        attendance_df = pd.read_excel(student_list, usecols='B,C')
+    def print_attendance_report(self, students_file):
+        attendance_df = pd.read_excel(students_file, usecols='B,C')
         attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
         attendance_df.insert(3, "Attendance Rate", ' ')
         attendance_df.insert(4, "Attendance Percentage", 0)
@@ -264,9 +250,9 @@ class ZoomPollAnalyzer:
             poll_result_df.at[i, 'Success'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
             poll_result_df.at[i, 'Success (%)'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
 
-    def print_student_results(self, student_list, poll_dfs):
+    def print_student_results(self, students_file, poll_dfs):
         result_file = "../../StudentResults.xlsx"
-        file_name = result_file if os.path.exists(result_file) else student_list
+        file_name = result_file if os.path.exists(result_file) else students_file
         student_result_df = pd.read_excel(file_name)
         column = len(student_result_df.columns)
         for poll in self.polls:
@@ -287,10 +273,10 @@ class ZoomPollAnalyzer:
 
         student_result_df.to_excel(result_file, index=False)
 
-    def print_poll_results(self, student_list):
+    def print_poll_results(self, students_file):
         poll_dfs = {}
         for poll in self.polls:
-            poll_result_df = pd.read_excel(student_list, usecols='B, C')
+            poll_result_df = pd.read_excel(students_file, usecols='B, C')
 
             question_no = 1
             # Insert one column for each question in the poll
@@ -312,7 +298,7 @@ class ZoomPollAnalyzer:
                 os.makedirs('../../poll-results')
             poll_result_df.to_excel("../../poll-results/" + poll.name + ".xlsx")
 
-        self.print_student_results(student_list, poll_dfs)
+        self.print_student_results(students_file, poll_dfs)
 
     def start_system(self):
         self.read_students("../../CES3063_Fall2020_rptSinifListesi.XLS")
@@ -320,11 +306,7 @@ class ZoomPollAnalyzer:
         self.read_files_in_folder("answer-keys", "Answer key")
         # poll_reports_path = input("Enter poll reports directory: ")
         self.read_files_in_folder("poll-reports", "Poll report")
-        # for student in self.students:
-        #   print(student.name + ": " + str(student.attendance))
-        #   if student.name == "BERKAY DENİZ":
-        #        for v in self.polls[0].student_answers[student].values():
-        #            print(v)
+
         print()
         self.print_attendance_report("../../StudentList.xlsx")
         self.print_poll_results("../../StudentList.xlsx")

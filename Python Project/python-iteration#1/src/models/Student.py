@@ -41,7 +41,7 @@ class Student:
                         return True
             return False
 
-    def similarity(self, student_name):
+    def calculate_similarity(self, student_name):
         numbers = "0123456789"
         temp = student_name
         student_name = ""
