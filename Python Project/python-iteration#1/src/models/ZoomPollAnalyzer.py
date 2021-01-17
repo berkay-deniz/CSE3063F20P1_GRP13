@@ -174,6 +174,7 @@ class ZoomPollAnalyzer:
                                                                    current_student.attendance / self.total_attendance_polls) * 100
 
         attendance_df.to_excel("../../attendance.xlsx")
+        logging.info("Attendances of the students printed to an excel file successfully.")
 
     def make_autopct(self, values):
         def my_autopct(pct):
@@ -207,9 +208,11 @@ class ZoomPollAnalyzer:
                 label_str = label_str + "\n" + ans_labels[j] + ": " + ans_list[j]
             axs[i].set_xlabel(label_str)
             i += 1
-        if not os.path.exists('../../poll-plots'):
-            os.makedirs('../../poll-plots')
-        plotter.savefig("../../poll-plots/" + poll.name + ".pdf")
+        folder_path = "../../poll-plots"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        plotter.savefig(folder_path + "/" + poll.name + ".pdf")
+        logging.info("Plots of the poll named '" + poll.name + "' printed to a pdf file successfully.")
 
     def print_student_results(self, students_file, poll_dfs):
         result_file = "../../StudentResults.xlsx"
@@ -233,6 +236,7 @@ class ZoomPollAnalyzer:
             student_result_df[name + " Success (%)"] = df["Success (%)"]
 
         student_result_df.to_excel(result_file, index=False)
+        logging.info("Results of the students for each poll printed to an excel file successfully.")
 
     def print_poll_results(self, students_file):
         poll_dfs = {}
@@ -255,9 +259,11 @@ class ZoomPollAnalyzer:
 
             poll_dfs[poll] = poll_result_df
 
-            if not os.path.exists('../../poll-results'):
-                os.makedirs('../../poll-results')
-            poll_result_df.to_excel("../../poll-results/" + poll.name + ".xlsx")
+            folder_path = "../../poll-results"
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+            poll_result_df.to_excel(folder_path + "/" + poll.name + ".xlsx")
+            logging.info("Results of the poll named '" + poll.name + "' printed to an excel file successfully.")
 
         self.print_student_results(students_file, poll_dfs)
 
