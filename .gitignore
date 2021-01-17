@@ -90,5 +90,10 @@ output.json
 outputs
 metrics
 *.XLS
+*.xls
 *.XLSX
+*.xlsx
+*.CSV
 *.csv
+*.PDF
+*.pdf

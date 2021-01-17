@@ -153,6 +153,9 @@ class ZoomPollAnalyzer:
             if first_q_of_current_poll == attendance_str:
                 student.attendance += 1
             else:
+                # Set the date of the poll
+                if current_poll.date is None:
+                    current_poll.date = row[3][:-9]
                 for c in range(4, len(row) - 1, 2):
                     if pd.notnull(row[c]):
                         current_poll.save_student_answer(student, row[c], row[c + 1])
@@ -189,10 +192,105 @@ class ZoomPollAnalyzer:
 
         attendance_df.to_excel("attendance.xlsx")
 
-    def print_poll_results(self, student_list):
+    def make_autopct(self, values):
+        def my_autopct(pct):
+            total = sum(values)
+            val = int(round(pct * total / 100.0))
+            return '{v:d}'.format(v=val)
 
+        return my_autopct
+
+    def print_pie_charts(self, answers_of_questions, poll):
+        question_list = []
+
+        fig, axs = plotter.subplots(int(len(poll.answer_key.q_and_a) / 2), 1, figsize=(30, 100))
+        plotter.subplots_adjust(wspace=1, hspace=1)
+        i = 0
+        for question, answer_occurrences in answers_of_questions.items():
+            current_label_unicode = ord("A")
+            ans_labels = []
+            ans_list = []
+            occurrence_list = []
+            question_list.append(question)
+            for answer, occurrence in answer_occurrences.items():
+                ans_list.append(answer)
+                ans_labels.append(chr(current_label_unicode))
+                current_label_unicode += 1
+                occurrence_list.append(occurrence)
+            axs[i].pie(occurrence_list, labels=ans_labels, autopct=self.make_autopct(occurrence_list), shadow=True)
+            axs[i].title.set_text("Question: " + question)
+            label_str = ""
+            for j in range(0, len(ans_list)):
+                label_str = label_str + "\n" + ans_labels[j] + ": " + ans_list[j]
+            axs[i].set_xlabel(label_str)
+            i += 1
+        # plotter.show()
+        if not os.path.exists('../../poll-plots'):
+            os.makedirs('../../poll-plots')
+        plotter.savefig("../../poll-plots/" + poll.name + ".pdf")
+
+    def print_student_results_of_poll(self, answers_of_questions, poll_result_df, poll):
+        for i in range(0, len(self.students.values())):
+            student = self.students[poll_result_df.at[i, 'Öğrenci No']]
+            num_of_correct_ans = 0
+            ans_key_index = 0
+            while True:
+                q_and_a = poll.answer_key.q_and_a
+                question = q_and_a[ans_key_index]
+                correct_ans = q_and_a[ans_key_index + 1]
+                # If current student have not entered the current poll, continue with the next student.
+                if student not in poll.student_answers:
+                    break
+                # First time the question answered
+                if question not in answers_of_questions:
+                    answers_of_questions[question] = {}
+                # Get answers of the student
+                std_answers = poll.student_answers[student]
+                # Get answer to the current question of the student
+                std_answer = std_answers[question]
+                # First time the answer encountered
+                if std_answer not in answers_of_questions[question]:
+                    answers_of_questions[question][std_answer] = 0
+                # Increment the occurrence of the answer
+                answers_of_questions[question][std_answer] += 1
+                if question in std_answers and std_answer == correct_ans:
+                    poll_result_df.at[i, 'Q' + str(int(ans_key_index / 2) + 1)] = 1
+                    num_of_correct_ans += 1
+                ans_key_index += 2
+
+                if len(q_and_a) == ans_key_index:
+                    break
+
+            poll_result_df.at[i, 'Success'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
+            poll_result_df.at[i, 'Success (%)'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
+
+    def print_student_results(self, student_list, poll_dfs):
+        result_file = "../../StudentResults.xlsx"
+        file_name = result_file if os.path.exists(result_file) else student_list
+        student_result_df = pd.read_excel(file_name)
+        column = len(student_result_df.columns)
         for poll in self.polls:
-            poll_result_df = pd.read_excel(student_list, usecols='B,C')
+            name = poll.name
+            occurrence = 2
+            while name + " Date" in student_result_df.columns:
+                name = poll.name + " (" + str(occurrence) + ")"
+                occurrence += 1
+
+            student_result_df.insert(column, name + " Date", poll.date)
+            student_result_df.insert(column + 1, name + " Questions", 0)
+            student_result_df.insert(column + 2, name + " Success (%)", 0)
+            column += 3
+
+            df = poll_dfs[poll]
+            student_result_df[name + " Questions"] = df["Questions"]
+            student_result_df[name + " Success (%)"] = df["Success (%)"]
+
+        student_result_df.to_excel(result_file, index=False)
+
+    def print_poll_results(self, student_list):
+        poll_dfs = {}
+        for poll in self.polls:
+            poll_result_df = pd.read_excel(student_list, usecols='B, C')
 
             question_no = 1
             # Insert one column for each question in the poll
@@ -200,67 +298,21 @@ class ZoomPollAnalyzer:
                 poll_result_df.insert(question_no + 1, "Q" + str(question_no), 0)
                 question_no += 1
 
-            poll_result_df.insert(question_no + 1, "Number of Questions", question_no - 1)
-            poll_result_df.insert(question_no + 2, "Success Rate", ' ')
-            poll_result_df.insert(question_no + 3, "Success Percentage", 0)
+            poll_result_df.insert(question_no + 1, "Questions", question_no - 1)
+            poll_result_df.insert(question_no + 2, "Success", ' ')
+            poll_result_df.insert(question_no + 3, "Success (%)", 0)
 
             answers_of_questions = {}
-            for i in range(0, len(self.students.values())):
-                student = self.students[poll_result_df.at[i, 'Öğrenci No']]
-                num_of_correct_ans = 0
-                ans_key_index = 0
-                while True:
-                    q_and_a = poll.answer_key.q_and_a
-                    question = q_and_a[ans_key_index]
-                    correct_ans = q_and_a[ans_key_index + 1]
-                    # If current student have not entered the current poll, continue with the next student.
-                    if student not in poll.student_answers:
-                        break
-                    # First time the question answered
-                    if question not in answers_of_questions:
-                        answers_of_questions[question] = {}
-                    # Get answers of the student
-                    std_answers = poll.student_answers[student]
-                    # Get answer to the current question of the student
-                    std_answer = std_answers[question]
-                    # First time the answer encountered
-                    if std_answer not in answers_of_questions[question]:
-                        answers_of_questions[question][std_answer] = 0
-                    # Increment the occurrence of the answer
-                    answers_of_questions[question][std_answer] += 1
-                    if question in std_answers and std_answer == correct_ans:
-                        poll_result_df.at[i, 'Q' + str(int(ans_key_index / 2) + 1)] = 1
-                        num_of_correct_ans += 1
-                    ans_key_index += 2
+            self.print_student_results_of_poll(answers_of_questions, poll_result_df, poll)
+            self.print_pie_charts(answers_of_questions, poll)
 
-                    if len(q_and_a) == ans_key_index:
-                        break
-
-                poll_result_df.at[i, 'Success Rate'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
-                poll_result_df.at[i, 'Success Percentage'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
-
-            question_list = []
-
-            fig, axs = plotter.subplots(4, 3, figsize=(19.20, 10.80))
-            i = 0
-            j = 0
-            for question, answer_occurrences in answers_of_questions.items():
-                answer_list = []
-                occurrence_list = []
-                question_list.append(question)
-                for answer, occurrence in answer_occurrences.items():
-                    answer_list.append(answer)
-                    occurrence_list.append(occurrence)
-                axs[i, j].pie(occurrence_list, labels=answer_list, autopct='%1.1f%%', shadow=True)
-                j += 1
-                if j == 3:
-                    j = 0
-                    i += 1
-            plotter.show()
+            poll_dfs[poll] = poll_result_df
 
             if not os.path.exists('../../poll-results'):
                 os.makedirs('../../poll-results')
             poll_result_df.to_excel("../../poll-results/" + poll.name + ".xlsx")
+
+        self.print_student_results(student_list, poll_dfs)
 
     def start_system(self):
         self.read_students("../../CES3063_Fall2020_rptSinifListesi.XLS")
