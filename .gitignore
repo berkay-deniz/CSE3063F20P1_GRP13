@@ -85,7 +85,8 @@ nb-configuration.xml
 
 
 *.txt
-output.json
+*.json
+*.JSON
 *.log
 outputs
 metrics

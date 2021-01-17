@@ -1,10 +1,14 @@
-class Poll:
+import json
+import os
 
+
+class Poll:
     def __init__(self, name, answer_key):
         self.name = name
         self.answer_key = answer_key
         self.student_answers = {}
         self.date = None
+        self.anomalies = []
 
     def save_student_answer(self, student, question, answer):
         if student not in self.student_answers:
@@ -45,3 +49,27 @@ class Poll:
 
             poll_result_df.at[i, 'Success'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
             poll_result_df.at[i, 'Success (%)'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
+
+    def print_anomalies(self):
+        folder_path = "../../poll-anomalies"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        json_str = json.dumps([anomaly.to_dict() for anomaly in self.anomalies], indent=4)
+        f = open(folder_path + "/" + self.name + ".json", "w")
+        f.write(json_str)
+        f.close()
+
+    def print_absences(self, students):
+        folder_path = "../../poll-absences"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        absents = []
+        for student in students.values():
+            if student not in self.student_answers.keys():
+                absents.append(student)
+
+        json_str = json.dumps([student.to_dict() for student in absents], indent=4)
+        f = open(folder_path + "/" + self.name + ".json", "w")
+        f.write(json_str)
+        f.close()

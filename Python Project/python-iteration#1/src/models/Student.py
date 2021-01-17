@@ -13,9 +13,12 @@ class Student:
         self.email = email
         self.attendance = 0
 
+    def to_dict(self):
+        return {"student_no": self.student_id, "student_email": self.email, "student_name": self.name}
+
     def match(self, student_name):
-        translationTable1 = str.maketrans("ğĞıİöÖüÜşŞçÇ", "gGiIoOuUsScC")
-        translationTable2 = str.maketrans("IİÖÜ", "ıiöü")
+        translation_table1 = str.maketrans("ğĞıİöÖüÜşŞçÇ", "gGiIoOuUsScC")
+        translation_table2 = str.maketrans("IİÖÜ", "ıiöü")
         numbers = "0123456789"
         temp = student_name
         student_name = ""
@@ -23,8 +26,8 @@ class Student:
             if char not in numbers:
                 student_name += char
         if (similar(self.name.lower(), student_name.lower()) > 0.95) or \
-                (similar(self.name.translate(translationTable1).lower(), student_name.lower()) > 0.95) or \
-                (similar(self.name.translate(translationTable2).lower(), student_name.lower()) > 0.95):
+                (similar(self.name.translate(translation_table1).lower(), student_name.lower()) > 0.95) or \
+                (similar(self.name.translate(translation_table2).lower(), student_name.lower()) > 0.95):
             return True
         else:
             full_name = self.name.split()
@@ -32,12 +35,14 @@ class Student:
             student_full_name = student_name.split()
             student_last_name = student_full_name[-1]
             if (student_last_name.lower() == last_name.lower()) or \
-                    (student_last_name.lower() == last_name.translate(translationTable2).lower()) or \
-                    (student_last_name.lower() == last_name.translate(translationTable1).lower()):
+                    (student_last_name.lower() == last_name.translate(translation_table2).lower()) or \
+                    (student_last_name.lower() == last_name.translate(translation_table1).lower()):
                 for name_element in full_name:
                     if (similar(name_element.lower(), student_full_name[0].lower()) > 0.90) or \
-                             (similar(name_element.translate(translationTable1).lower(), student_full_name[0].lower()) > 0.90) or \
-                            (similar(name_element.translate(translationTable2).lower(), student_full_name[0].lower()) > 0.90):
+                            (similar(name_element.translate(translation_table1).lower(),
+                                     student_full_name[0].lower()) > 0.90) or \
+                            (similar(name_element.translate(translation_table2).lower(),
+                                     student_full_name[0].lower()) > 0.90):
                         return True
             return False
 
@@ -49,5 +54,3 @@ class Student:
             if char not in numbers:
                 student_name += char
         return similar(self.name.lower(), student_name.lower())
-
-
