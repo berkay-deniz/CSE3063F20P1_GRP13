@@ -173,7 +173,7 @@ class ZoomPollAnalyzer:
             logging.error(file_type + " path given is not a directory.")
             exit(-1)
 
-    def attendance_report(self, student_list):
+    def print_attendance_report(self, student_list):
         attendance_df = pd.read_excel(student_list, usecols='B,C')
         attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
         attendance_df.insert(3, "Attendance Rate", ' ')
@@ -203,46 +203,64 @@ class ZoomPollAnalyzer:
             poll_result_df.insert(question_no + 2, "Success Rate", ' ')
             poll_result_df.insert(question_no + 3, "Success Percentage", 0)
 
+            answers_of_questions = {}
             for i in range(0, len(self.students.values())):
                 student = self.students[poll_result_df.at[i, 'Öğrenci No']]
-                for
-                attendance_df.at[i, 'Attendance Rate'] = (str(student.attendance) + ' of ' + str(
-                    self.total_attendance_polls))
-                attendance_df.at[i, 'Attendance Percentage'] = (self.students[
-                                                                    attendance_df.at[i, 'Öğrenci No']].attendance /
-                                                                self.total_attendance_polls) * 100
-
+                num_of_correct_ans = 0
                 ans_key_index = 0
-                student_answers_index = 0
                 while True:
-                    if self.polls[i].student_answers[student_answers_index] == self.polls[i].answer_key.q_and_a[
-                        ans_key_index]:
-                        student_answers_index += 2
+                    q_and_a = poll.answer_key.q_and_a
+                    question = q_and_a[ans_key_index]
+                    correct_ans = q_and_a[ans_key_index + 1]
+                    # If current student have not entered the current poll, continue with the next student.
+                    if student not in poll.student_answers:
+                        break
+                    # First time the question answered
+                    if question not in answers_of_questions:
+                        answers_of_questions[question] = {}
+                    # Get answers of the student
+                    std_answers = poll.student_answers[student]
+                    # Get answer to the current question of the student
+                    std_answer = std_answers[question]
+                    # First time the answer encountered
+                    if std_answer not in answers_of_questions[question]:
+                        answers_of_questions[question][std_answer] = 0
+                    # Increment the occurrence of the answer
+                    answers_of_questions[question][std_answer] += 1
+                    if question in std_answers and std_answer == correct_ans:
+                        poll_result_df.at[i, 'Q' + str(int(ans_key_index / 2) + 1)] = 1
+                        num_of_correct_ans += 1
                     ans_key_index += 2
 
-                    if len(row) == student_answers_index:
-                        answer_key_available = True
+                    if len(q_and_a) == ans_key_index:
                         break
-                    elif len(current_poll.answer_key.q_and_a) == ans_key_index:
-                        break
+
+                poll_result_df.at[i, 'Success Rate'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
+                poll_result_df.at[i, 'Success Percentage'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
+
+            for question, answer_occurrences in answers_of_questions.items():
+                print("-------------------------------------------------")
+                print("Question: " + question)
+                for answer, occurrence in answer_occurrences.items():
+                    print("(" + str(occurrence) + ") " + answer)
 
             if not os.path.exists('../../poll-results'):
                 os.makedirs('../../poll-results')
-            poll_result_df.to_excel("../../poll-results/" + self.polls[i].name + ".xlsx")
+            poll_result_df.to_excel("../../poll-results/" + poll.name + ".xlsx")
 
     def start_system(self):
         self.read_students("../../CES3063_Fall2020_rptSinifListesi.XLS")
-        ans_keys_path = input("Enter answer keys directory: ")
-        self.read_files_in_folder(ans_keys_path, "Answer key")
-        poll_reports_path = input("Enter poll reports directory: ")
-        self.read_files_in_folder(poll_reports_path, "Poll report")
+        # ans_keys_path = input("Enter answer keys directory: ")
+        self.read_files_in_folder("answer-keys", "Answer key")
+        # poll_reports_path = input("Enter poll reports directory: ")
+        self.read_files_in_folder("poll-reports", "Poll report")
         # for student in self.students:
         #   print(student.name + ": " + str(student.attendance))
         #   if student.name == "BERKAY DENİZ":
         #        for v in self.polls[0].student_answers[student].values():
         #            print(v)
         print()
-        self.attendance_report("../../StudentList.xlsx")
+        self.print_attendance_report("../../StudentList.xlsx")
         self.print_poll_results("../../StudentList.xlsx")
 
 
