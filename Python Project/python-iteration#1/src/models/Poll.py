@@ -9,6 +9,7 @@ class Poll:
         self.student_answers = {}
         self.date = None
         self.anomalies = []
+        self.absents = []
 
     def save_student_answer(self, student, question, answer):
         if student not in self.student_answers:
@@ -64,12 +65,11 @@ class Poll:
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
 
-        absents = []
         for student in students.values():
             if student not in self.student_answers.keys():
-                absents.append(student)
+                self.absents.append(student)
 
-        json_str = json.dumps([student.to_dict() for student in absents], indent=4)
+        json_str = json.dumps([student.to_dict() for student in self.absents], indent=4)
         f = open(folder_path + "/" + self.name + ".json", "w")
         f.write(json_str)
         f.close()
