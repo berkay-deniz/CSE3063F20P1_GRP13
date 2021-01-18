@@ -66,6 +66,7 @@ class ZoomPollAnalyzer:
                     if s.match(name):
                         student = s
                         student.email = email
+                        logging.info(name + ' is matched with ' + s.name)
 
                 if student is None:
                     max_similarity = 0.63
@@ -74,6 +75,7 @@ class ZoomPollAnalyzer:
                         if similarity > max_similarity:
                             max_similarity = similarity
                             student = s
+                            logging.info(name + ' is matched with ' + s.name)
 
             # Boolean value to check if there is an answer key - poll questions match
             answer_key_available = True
@@ -184,10 +186,18 @@ class ZoomPollAnalyzer:
 
         return my_autopct
 
+    def is_answer_true(self, question, answer, poll):
+        for x in range(0, len(poll.answer_key.q_and_a), 2):
+            if question == poll.answer_key.q_and_a[x]:
+                if answer == poll.answer_key.q_and_a[x + 1]:
+                    return True
+                else:
+                    return False
+
     def print_pie_charts(self, answers_of_questions, poll):
         question_list = []
 
-        fig, axs = plotter.subplots(int(len(poll.answer_key.q_and_a) / 2), 1, figsize=(30, 100))
+        fig, axs = plotter.subplots(int(len(poll.answer_key.q_and_a) / 2), 2, figsize=(30, 100))
         plotter.subplots_adjust(wspace=1, hspace=1)
         i = 0
         for question, answer_occurrences in answers_of_questions.items():
@@ -201,12 +211,17 @@ class ZoomPollAnalyzer:
                 ans_labels.append(chr(current_label_unicode))
                 current_label_unicode += 1
                 occurrence_list.append(occurrence)
-            axs[i].pie(occurrence_list, labels=ans_labels, autopct=self.make_autopct(occurrence_list), shadow=True)
-            axs[i].title.set_text("Question: " + question)
+            axs[i, 0].pie(occurrence_list, labels=ans_labels, autopct=self.make_autopct(occurrence_list), shadow=True)
+            axs[i, 0].title.set_text("Question: " + question)
+            axs[i, 1].bar(ans_labels, occurrence_list, width=0.8,
+                          color=["#009900" if self.is_answer_true(question, answer, poll) else "#b20000" for answer in
+                                 ans_list], bottom=None, align='center', data=occurrence_list)
+            axs[i, 1].title.set_text("Question: " + question)
             label_str = ""
             for j in range(0, len(ans_list)):
                 label_str = label_str + "\n" + ans_labels[j] + ": " + ans_list[j]
-            axs[i].set_xlabel(label_str)
+            axs[i, 0].set_xlabel(label_str)
+            axs[i, 1].set_xlabel(label_str)
             i += 1
         folder_path = "../../poll-plots"
         if not os.path.exists(folder_path):
@@ -273,6 +288,12 @@ class ZoomPollAnalyzer:
             poll.print_absences(self.students)
 
     def start_system(self):
+        root_logger = logging.getLogger()
+        root_logger.setLevel(logging.INFO)
+        handler = logging.FileHandler('../../logFile.log', 'a', 'utf-8')
+        formatter = logging.Formatter('%(name)s - %(asctime)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        root_logger.addHandler(handler)
         students_file = input("Enter the student list file: ")
         self.read_students("../../" + students_file)
         ans_keys_path = input("Enter answer keys directory: ")
