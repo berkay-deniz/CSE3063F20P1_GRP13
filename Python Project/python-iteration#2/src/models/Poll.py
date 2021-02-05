@@ -3,18 +3,19 @@ import os
 
 
 class Poll:
-    def __init__(self, name, answer_key):
-        self.name = name
+    def __init__(self, answer_key):
+        self.poll_id = answer_key.poll_id
+        self.name = answer_key.name
         self.answer_key = answer_key
         self.student_answers = {}
         self.date = None
         self.anomalies = []
         self.absents = []
 
-    def save_student_answer(self, student, question, answer):
+    def save_student_answers(self, student, question, answers):
         if student not in self.student_answers:
             self.student_answers[student] = {}
-        self.student_answers[student][question] = answer
+        self.student_answers[student][question] = answers
 
     def print_student_results(self, answers_of_questions, poll_result_df, students):
         for i in range(0, len(students.values())):

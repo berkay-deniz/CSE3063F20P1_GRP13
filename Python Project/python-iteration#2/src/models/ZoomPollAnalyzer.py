@@ -9,13 +9,14 @@ from .Poll import *
 from .Student import *
 from .Question import *
 from .Answer import *
+from .Meeting import *
 
 
 class ZoomPollAnalyzer:
     matched_students = {}
     students = {}
-    polls = []
-    total_attendance_polls = 0
+    meetings = []
+    total_days = 0
     answer_key_list = []
 
     # readStudents function takes name of a file which contains all students and their informations
@@ -88,92 +89,56 @@ class ZoomPollAnalyzer:
         questions.append(Question(question_id, question_text, correct_answers))
         self.answer_key_list.append(AnswerKey(poll_id, poll_name, questions))
 
-    def read_poll_report(self, file_path):
-        df = pd.read_csv(file_path, header=None, skiprows=[0])
+    def match_student(self, name, email):
+        # If the student with the same name is matched before, get the student from matched_students.
+        if name in self.matched_students:
+            return self.matched_students[name]
 
+        # Otherwise, look up for all students and match the name.
+        student = None
+        for s in self.students.values():
+            if s.match(name):
+                student = s
+                student.email = email
+                logging.info(name + ' is matched with ' + s.name)
+
+        if student is None:
+            # TODO: get from config.json
+            max_similarity = 0.63
+            for s in self.students.values():
+                similarity = s.calculate_similarity(name)
+                if similarity > max_similarity:
+                    max_similarity = similarity
+                    student = s
+                    student.email = email
+                    logging.info(name + ' is matched with ' + s.name)
+
+        return student
+
+    def read_poll_report(self, file_path):
+        df = pd.read_csv(file_path, header=None)
+
+        meeting = None
+        meeting_id = df.iloc[3][1]
+        date = df.iloc[3][2]
+        for m in self.meetings:
+            if m.meeting_id == meeting_id:
+                meeting = m
+
+        if meeting is None:
+            logging.error("Meeting does not exist in the config file.")
+            return
+
+        attendance_checked = False
         current_poll = None
         first_q_of_current_poll = None
 
-        # TODO: If the poll does not exist in answer keys files then it is an attendance poll.
-        attendance_str = "Are you attending this lecture?"
-
-        for r in range(0, len(df) - 1):
+        for r in range(6, len(df) - 1):
             row = df.iloc[r].values
-            student = None
             name = row[1]
             email = row[2]
 
-            # If the student with the same name is matched before, get the student from matched_students.
-            if name in self.matched_students:
-                student = self.matched_students[name]
-            # Otherwise, look up for all students and match the name.
-            else:
-                for s in self.students.values():
-                    if s.match(name):
-                        student = s
-                        student.email = email
-                        logging.info(name + ' is matched with ' + s.name)
-
-                if student is None:
-                    # TODO: get from config.json
-                    max_similarity = 0.63
-                    for s in self.students.values():
-                        similarity = s.calculate_similarity(name)
-                        if similarity > max_similarity:
-                            max_similarity = similarity
-                            student = s
-                            logging.info(name + ' is matched with ' + s.name)
-
-            # Boolean value to check if there is an answer key - poll questions match
-            answer_key_available = True
-
-            # row[4] gives the first question answered by current student
-            if row[4] != first_q_of_current_poll:
-                answer_key_available = False
-                if row[4] == attendance_str:
-                    first_q_of_current_poll = attendance_str
-                    self.total_attendance_polls += 1
-                else:
-                    for answer_key in self.answer_key_list:
-                        if all(row[4:len(row) - 1:2] == answer_key.q_and_a[0:len(answer_key.q_and_a):2]):
-                            poll_occurrence = 1
-                            for poll in self.polls:
-                                # Update poll name as poll-2 if poll already exists.
-                                # or update poll name as poll-3 if poll-2 already exists.
-                                if (poll_occurrence == 1 and poll.name == answer_key.poll_name) or \
-                                        (poll.name == answer_key.poll_name + "-" + str(poll_occurrence)):
-                                    poll_occurrence += 1
-
-                            poll_name = answer_key.poll_name if poll_occurrence == 1 \
-                                else answer_key.poll_name + "-" + str(poll_occurrence)
-                            current_poll = Poll(poll_name, answer_key)
-                            self.polls.append(current_poll)
-                            first_q_of_current_poll = current_poll.answer_key.q_and_a[0]
-                            answer_key_available = True
-                            break
-
-                    if not answer_key_available:
-                        ans_key_index = 0
-                        row_index = 4
-                        # Iterate through row columns and current poll's answer keys to check if the all questions that
-                        # student answered is also in the current poll's answer key.
-                        while current_poll is not None:
-                            if row[row_index] == current_poll.answer_key.q_and_a[ans_key_index]:
-                                row_index += 2
-                            ans_key_index += 2
-
-                            # If the loop reaches to end of the row columns, this means every question student answered
-                            # is also in the answer key, so we understand that the same poll is being processed.
-                            if len(row) == row_index:
-                                answer_key_available = True
-                                break
-                            # If the loop reaches to end of the answer key, the questions in the answer key don't match
-                            # with the questions in the current row, so we understand that a new poll has arrived.
-                            elif len(current_poll.answer_key.q_and_a) == ans_key_index:
-                                break
-
-            if not answer_key_available:
-                continue
+            student = self.match_student(name, email)
 
             if student is None:
                 current_poll.anomalies.append(Anomaly(name, email))
@@ -182,17 +147,72 @@ class ZoomPollAnalyzer:
                 # Save student match to matched_students in order not to need to match the student again.
                 self.matched_students[name] = student
 
-            if first_q_of_current_poll == attendance_str:
+            # Boolean value to check if there is an answer key - poll questions match
+            answer_key_available = True
+
+            # row[4] gives the first question answered by current student
+            if row[4] != first_q_of_current_poll:
+                answer_key_available = False
+
+                for answer_key in self.answer_key_list:
+                    if all(row[4:len(row) - 1:2] == answer_key.questions[0:len(answer_key.questions):1].text):
+                        current_poll = Poll(answer_key)
+                        meeting.polls.append(current_poll)
+                        first_q_of_current_poll = current_poll.answer_key.questions[0].text
+                        answer_key_available = True
+                        break
+
+                    if not answer_key_available:
+                        ans_key_index = 0
+                        row_index = 4
+                        # Iterate through row columns and current poll's answer keys to check if the all questions that
+                        # student answered is also in the current poll's answer key.
+                        while current_poll is not None:
+                            if row[row_index] == current_poll.answer_key.questions[ans_key_index].text:
+                                row_index += 2
+                            ans_key_index += 1
+
+                            # If the loop reaches to end of the row columns, this means every question student answered
+                            # is also in the answer key, so we understand that the same poll is being processed.
+                            if len(row) == row_index:
+                                answer_key_available = True
+                                break
+                            # If the loop reaches to end of the answer key, the questions in the answer key don't match
+                            # with the questions in the current row, so we understand that a new poll has arrived.
+                            elif len(current_poll.answer_key.questions) == ans_key_index:
+                                break
+
+            if not answer_key_available:
+                # This means that it is an attendance poll
+                self.total_days += 1
                 student.attendance += 1
-            else:
-                # TODO: get date from the meeting object NOT here
-                # Set the date of the poll
-                if current_poll.date is None:
-                    current_poll.date = row[3][:-9]
-                for c in range(4, len(row) - 1, 2):
-                    if pd.notnull(row[c]):
-                        # TODO: split by semicolon
-                        current_poll.save_student_answer(student, row[c], row[c + 1])
+                attendance_checked = True
+                continue
+
+            # Set the date of the poll
+            current_poll.date = date
+            for c in range(4, len(row) - 1, 2):
+                if pd.notnull(row[c]):
+                    answers = Answer(None, row[c + 1].split(";"))
+                    current_poll.save_student_answers(student, row[c], answers)
+
+        # Count any poll as an attendance poll if there is no attendance poll in the meeting.
+        if not attendance_checked:
+            checked_students = set()
+            for r in range(6, len(df) - 1):
+                row = df.iloc[r].values
+                name = row[1]
+                email = row[2]
+
+                student = self.match_student(name, email)
+
+                if student is None:
+                    continue
+
+                if student not in checked_students:
+                    self.total_days += 1
+                    student.attendance += 1
+                    checked_students.add(student)
 
     def read_files_in_folder(self, folder_path, file_type):
         folder_path = "../../" + folder_path
@@ -213,16 +233,16 @@ class ZoomPollAnalyzer:
 
     def print_attendance_report(self, students_file):
         attendance_df = pd.read_excel(students_file, usecols='B,C')
-        attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
+        attendance_df.insert(2, "Number Of Attendance Polls", self.total_days)
         attendance_df.insert(3, "Attendance Rate", ' ')
         attendance_df.insert(4, "Attendance Percentage", 0)
 
         for i in range(0, len(self.students.values())):
             current_student = self.students[attendance_df.at[i, 'Öğrenci No']]
             attendance_df.at[i, 'Attendance Rate'] = (
-                    str(current_student.attendance) + ' of ' + str(self.total_attendance_polls))
+                    str(current_student.attendance) + ' of ' + str(self.total_days))
             attendance_df.at[i, 'Attendance Percentage'] = (
-                                                                   current_student.attendance / self.total_attendance_polls) * 100
+                                                                   current_student.attendance / self.total_days) * 100
 
         attendance_df.to_excel("../../attendance.xlsx")
         logging.info("Attendances of the students printed to an excel file successfully.")
@@ -337,6 +357,7 @@ class ZoomPollAnalyzer:
             poll.print_absences(self.students)
 
     def start_system(self):
+        # TODO: Put file name strings & etc. to config
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.INFO)
         handler = logging.FileHandler('../../logFile.log', 'a', 'utf-8')
@@ -348,6 +369,9 @@ class ZoomPollAnalyzer:
         self.read_students("../../" + students_file)
         ans_keys_path = input("Enter answer keys directory: ")
         self.read_files_in_folder(ans_keys_path, "Answer key")
+
+        self.meetings.append(Meeting("945 0207 3867", "CSE3063 OOSD Weekly Session 1 - Monday"))
+        self.meetings.append(Meeting("970 5665 5049", "CSE3063 OOSD Weekly Session 2 - Tuesday"))
         poll_reports_path = input("Enter poll reports directory: ")
         self.read_files_in_folder(poll_reports_path, "Poll report")
         self.print_attendance_report("../../StudentList.xlsx")
