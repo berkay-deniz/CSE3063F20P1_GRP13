@@ -32,6 +32,7 @@ class ZoomPollAnalyzer:
         del df['Adı']
         del df['Soyadı']
 
+        # TODO: get from config.json
         df.to_excel('../../StudentList.xlsx')
 
         student_df = pd.read_excel('../../StudentList.xlsx')
@@ -41,6 +42,7 @@ class ZoomPollAnalyzer:
             self.students[s[0]] = Student(*s, None)
 
     def read_ans_key(self, file_path):
+        # TODO: get from config.json
         self.answer_key_list.append(AnswerKey(file_path))
 
     def read_poll_report(self, file_path):
@@ -49,6 +51,7 @@ class ZoomPollAnalyzer:
         current_poll = None
         first_q_of_current_poll = None
 
+        # TODO: If the poll does not exist in answer keys files then it is an attendance poll.
         attendance_str = "Are you attending this lecture?"
 
         for r in range(0, len(df) - 1):
@@ -69,6 +72,7 @@ class ZoomPollAnalyzer:
                         logging.info(name + ' is matched with ' + s.name)
 
                 if student is None:
+                    # TODO: get from config.json
                     max_similarity = 0.63
                     for s in self.students.values():
                         similarity = s.calculate_similarity(name)
@@ -138,11 +142,13 @@ class ZoomPollAnalyzer:
             if first_q_of_current_poll == attendance_str:
                 student.attendance += 1
             else:
+                # TODO: get date from the meeting object NOT here
                 # Set the date of the poll
                 if current_poll.date is None:
                     current_poll.date = row[3][:-9]
                 for c in range(4, len(row) - 1, 2):
                     if pd.notnull(row[c]):
+                        # TODO: split by semicolon
                         current_poll.save_student_answer(student, row[c], row[c + 1])
 
     def read_files_in_folder(self, folder_path, file_type):
@@ -294,6 +300,7 @@ class ZoomPollAnalyzer:
         formatter = logging.Formatter('%(name)s - %(asctime)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         root_logger.addHandler(handler)
+
         students_file = input("Enter the student list file: ")
         self.read_students("../../" + students_file)
         ans_keys_path = input("Enter answer keys directory: ")

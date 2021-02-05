@@ -3,6 +3,7 @@ import re
 
 class AnswerKey:
     def __init__(self, file_path):
+        # TODO: integrate to the changed format
         answer_key_file = open(file_path, "r")
         answer_key_string = answer_key_file.read()
         regex = re.compile(r'\"(.+?)\"', flags=re.DOTALL)
