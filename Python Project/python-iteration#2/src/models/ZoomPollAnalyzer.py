@@ -43,7 +43,22 @@ class ZoomPollAnalyzer:
 
     def read_ans_key(self, file_path):
         # TODO: get from config.json
-        self.answer_key_list.append(AnswerKey(file_path))
+
+        file = open(file_path, 'r')
+        lines = file.readlines()[2:]
+        counter = 0
+        poll_id = 0
+        poll_name = ''
+        questions = []
+        for line in lines:
+            line = line.strip()
+            if line[0: 4] == 'Poll':
+                if counter != 0:
+                    self.answer_key_list.append(AnswerKey(poll_id, poll_name, questions))
+                poll_id = 0
+                poll_name = ''
+                questions = []
+            counter += 1
 
     def read_poll_report(self, file_path):
         df = pd.read_csv(file_path, header=None, skiprows=[0])
