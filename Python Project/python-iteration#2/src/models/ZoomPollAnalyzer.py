@@ -15,7 +15,7 @@ class ZoomPollAnalyzer:
     matched_students = {}
     students = {}
     meetings = []
-    total_attendance_polls = 0
+    total_days = 0
     answer_key_list = []
 
     # readStudents function takes name of a file which contains all students and their informations
@@ -157,9 +157,9 @@ class ZoomPollAnalyzer:
 
             if not answer_key_available:
                 # This means that it is an attendance poll
-                self.total_attendance_polls += 1
-                attendance_checked = True
+                self.total_days += 1
                 student.attendance += 1
+                attendance_checked = True
                 continue
 
             # Set the date of the poll
@@ -171,7 +171,7 @@ class ZoomPollAnalyzer:
 
         # Count any poll as an attendance poll if there is no attendance poll in the meeting.
         if not attendance_checked:
-            student_attendances_checked = set()
+            checked_students = set()
             for r in range(6, len(df) - 1):
                 row = df.iloc[r].values
                 name = row[1]
@@ -182,9 +182,10 @@ class ZoomPollAnalyzer:
                 if student is None:
                     continue
 
-                if student not in student_attendances_checked:
+                if student not in checked_students:
+                    self.total_days += 1
                     student.attendance += 1
-                    student_attendances_checked.add(student)
+                    checked_students.add(student)
 
     def read_files_in_folder(self, folder_path, file_type):
         folder_path = "../../" + folder_path
@@ -205,16 +206,16 @@ class ZoomPollAnalyzer:
 
     def print_attendance_report(self, students_file):
         attendance_df = pd.read_excel(students_file, usecols='B,C')
-        attendance_df.insert(2, "Number Of Attendance Polls", self.total_attendance_polls)
+        attendance_df.insert(2, "Number Of Attendance Polls", self.total_days)
         attendance_df.insert(3, "Attendance Rate", ' ')
         attendance_df.insert(4, "Attendance Percentage", 0)
 
         for i in range(0, len(self.students.values())):
             current_student = self.students[attendance_df.at[i, 'Öğrenci No']]
             attendance_df.at[i, 'Attendance Rate'] = (
-                    str(current_student.attendance) + ' of ' + str(self.total_attendance_polls))
+                    str(current_student.attendance) + ' of ' + str(self.total_days))
             attendance_df.at[i, 'Attendance Percentage'] = (
-                                                                   current_student.attendance / self.total_attendance_polls) * 100
+                                                                   current_student.attendance / self.total_days) * 100
 
         attendance_df.to_excel("../../attendance.xlsx")
         logging.info("Attendances of the students printed to an excel file successfully.")
