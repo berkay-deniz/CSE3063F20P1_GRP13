@@ -7,6 +7,8 @@ from .Anomaly import *
 from .AnswerKey import *
 from .Poll import *
 from .Student import *
+from .Question import *
+from .Answer import *
 
 
 class ZoomPollAnalyzer:
@@ -49,16 +51,42 @@ class ZoomPollAnalyzer:
         counter = 0
         poll_id = 0
         poll_name = ''
+        question_id = 0
+        question_text = ''
+        correct_answers = []
         questions = []
+        is_first_question = True
         for line in lines:
             line = line.strip()
-            if line[0: 4] == 'Poll':
+            if line == '':
+                continue
+            elif line[0: 4] == 'Poll':
+                is_first_question = True
                 if counter != 0:
+                    questions.append(Question(question_id, question_text, correct_answers))
                     self.answer_key_list.append(AnswerKey(poll_id, poll_name, questions))
-                poll_id = 0
-                poll_name = ''
+                temp = line.split(":")
+                poll_id = temp[0].split()[1]
+                poll_name = ' '.join(temp[1].split()[:-3])
                 questions = []
+                correct_answers = []
+            else:
+                if line.split()[0] == 'Answer':
+                    temp = line.split(':', maxsplit=1)
+                    answer_id = temp[0].split()[1]
+                    answer_text = temp[1].strip()
+                    correct_answers.append(Answer(answer_id, answer_text))
+                else:
+                    if not is_first_question:
+                        questions.append(Question(question_id, question_text, correct_answers))
+                    is_first_question = False
+                    correct_answers = []
+                    temp = line.split('.', maxsplit=1)
+                    question_id = temp[0]
+                    question_text = temp[1].replace('( Multiple Choice)', '').replace('( Single Choice)', '').strip()
             counter += 1
+        questions.append(Question(question_id, question_text, correct_answers))
+        self.answer_key_list.append(AnswerKey(poll_id, poll_name, questions))
 
     def read_poll_report(self, file_path):
         df = pd.read_csv(file_path, header=None, skiprows=[0])
