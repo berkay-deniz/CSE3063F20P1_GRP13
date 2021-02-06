@@ -17,5 +17,6 @@ class Configuration:
         self.plots_dir_path = data["plots_dir_path"]
         self.global_analytics_file_path = data["global_analytics_file_path"]
         self.poll_results_dir_path = data["poll_results_dir_path"]
+        self.student_poll_results_dir_path = data["student_poll_results_dir_path"]
         self.absences_and_anomalies_dir_path = data["absences_and_anomalies_dir_path"]
         config_file.close()

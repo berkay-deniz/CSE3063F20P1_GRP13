@@ -11,5 +11,6 @@
   "plots_dir_path": "../../poll-plots",
   "global_analytics_file_path": "../../CSE3063_2020FALL_QuizGrading.xlsx",
   "poll_results_dir_path": "../../poll-results",
+  "student_poll_results_dir_path": "../../student-poll-results",
   "absences_and_anomalies_dir_path": "../../absences-anomalies"
 }
