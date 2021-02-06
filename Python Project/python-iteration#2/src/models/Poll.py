@@ -45,7 +45,7 @@ class Poll:
                 # Save correct answers to student poll file
                 correct_answers_string = ""
                 for correct_answer in correct_answers:
-                    correct_answers_string = correct_answers_string + correct_answer.text + ";"
+                    correct_answers_string = correct_answers_string + correct_answer + ";"
                 correct_answers_string = correct_answers_string[0: -1]
                 student_poll_df.at[ans_key_index + 1, "Correct Answers"] = correct_answers_string
 
@@ -57,7 +57,7 @@ class Poll:
                 # Save given answers to the student poll file
                 given_answers_string = ""
                 for given_answer in std_answers:
-                    given_answers_string = given_answers_string + given_answer.text + ";"
+                    given_answers_string = given_answers_string + given_answer + ";"
                 given_answers_string = given_answers_string[0: -1]
                 student_poll_df.at[ans_key_index + 1, "Given Answers"] = given_answers_string
 
@@ -88,13 +88,13 @@ class Poll:
             poll_result_df.at[student_index, "Correct Answers"] = num_of_correct_ans
             poll_result_df.at[student_index, "Wrong Answers"] = num_of_answered_questions - num_of_correct_ans
             poll_result_df.at[student_index, "Empty Answers"] = num_of_questions - num_of_answered_questions
-            poll_result_df.at[student_index, 'Success'] = (1.0 * num_of_correct_ans) / num_of_questions
-            poll_result_df.at[student_index, 'Success (%)'] = 100 * num_of_correct_ans / num_of_questions
+            poll_result_df.at[student_index, "Success"] = num_of_correct_ans / num_of_questions
+            poll_result_df.at[student_index, "Success (%)"] = 100 * num_of_correct_ans / num_of_questions
 
             student_poll_df.to_excel(configuration.student_poll_results_dir_path + "/"
                                      + "Poll_" + self.poll_id + "_" + self.name.replace(" ", "_") + "_"
-                                     + self.date.replace(" ", "_").replace("-", "_").replace(":", "_")
-                                     + student.name.replace(" ", "_") + "_" + student.student_id + ".xlsx")
+                                     + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + "_"
+                                     + student.name.replace(" ", "_") + "_" + str(student.student_id) + ".xlsx")
 
     def print_absences_and_anomalies(self, students, dir_path):
         if not os.path.exists(dir_path):
@@ -103,14 +103,15 @@ class Poll:
             if student not in self.student_answers.keys():
                 self.absents.append(student)
 
-        anomalies_json = json.dumps([anomaly.to_dict() for anomaly in self.anomalies], indent=4)
-        absents_json = json.dumps([student.to_dict() for student in self.absents], indent=4)
+        anomalies_json = json.dumps([anomaly.to_dict() for anomaly in self.anomalies], indent=4, ensure_ascii=False)
+        absents_json = json.dumps([student.to_dict() for student in self.absents], indent=4, ensure_ascii=False)
         f = open(dir_path + "/" + "Poll_" + self.poll_id + "_" + self.name.replace(" ", "_") + "_"
                  + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + ".json", "w")
 
-        data = {"zoom poll report name": self.name,
-                "Students in BYS list but don't exist in this poll report (Absence)": self.absents,
-                "Students in this poll report but don't exist in BYS Student List (Anomalies)":self.anomalies}
+        data = {"Zoom poll report name": self.name,
+                "Students in BYS list but don't exist in this poll report (Absence)": json.loads(absents_json),
+                "Students in this poll report but don't exist in BYS Student List (Anomalies)":
+                    json.loads(anomalies_json)}
 
-        f.write(json.dumps(data,indent=4))
+        f.write(json.dumps(data, indent=4, ensure_ascii=False))
         f.close()
