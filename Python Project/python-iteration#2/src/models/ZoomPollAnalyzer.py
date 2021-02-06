@@ -119,6 +119,7 @@ class ZoomPollAnalyzer:
         df = pd.read_csv(file_path, header=None)
 
         meeting = None
+        meeting_topic = df.iloc[3][0]
         meeting_id = df.iloc[3][1]
         date = df.iloc[3][2]
         for m in self.meetings:
@@ -126,8 +127,8 @@ class ZoomPollAnalyzer:
                 meeting = m
 
         if meeting is None:
-            logging.error("Meeting does not exist in the config file.")
-            return
+            meeting = Meeting(meeting_id, meeting_topic)
+            self.meetings.append(meeting)
 
         attendance_checked = False
         current_poll = None
@@ -357,7 +358,6 @@ class ZoomPollAnalyzer:
             poll.print_absences(self.students)
 
     def start_system(self):
-        # TODO: Put file name strings & etc. to config
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.INFO)
         handler = logging.FileHandler('../../logFile.log', 'a', 'utf-8')
@@ -370,8 +370,6 @@ class ZoomPollAnalyzer:
         ans_keys_path = input("Enter answer keys directory: ")
         self.read_files_in_folder(ans_keys_path, "Answer key")
 
-        self.meetings.append(Meeting("945 0207 3867", "CSE3063 OOSD Weekly Session 1 - Monday"))
-        self.meetings.append(Meeting("970 5665 5049", "CSE3063 OOSD Weekly Session 2 - Tuesday"))
         poll_reports_path = input("Enter poll reports directory: ")
         self.read_files_in_folder(poll_reports_path, "Poll report")
         self.print_attendance_report("../../StudentList.xlsx")
