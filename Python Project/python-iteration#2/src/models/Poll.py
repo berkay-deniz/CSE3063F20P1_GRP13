@@ -106,7 +106,7 @@ class Poll:
         anomalies_json = json.dumps([anomaly.to_dict() for anomaly in self.anomalies], indent=4, ensure_ascii=False)
         absents_json = json.dumps([student.to_dict() for student in self.absents], indent=4, ensure_ascii=False)
         f = open(dir_path + "/" + "Poll_" + self.poll_id + "_" + self.name.replace(" ", "_") + "_"
-                 + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + ".json", "w",encoding="utf8")
+                 + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + ".json", "w", encoding="utf8")
 
         data = {"Zoom poll report name": self.name,
                 "Students in BYS list but don't exist in this poll report (Absence)": json.loads(absents_json),

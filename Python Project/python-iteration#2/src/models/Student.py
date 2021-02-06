@@ -16,7 +16,7 @@ class Student:
     def to_dict(self):
         return {"student_no": self.student_id, "student_email": self.email, "student_name": self.name}
 
-    def match(self, student_name, exact_match_threshold, partial_match_threshold):
+    def match(self, student_name, configuration):
         translation_table1 = str.maketrans("ğĞıİöÖüÜşŞçÇ", "gGiIoOuUsScC")
         translation_table2 = str.maketrans("IİÖÜ", "ıiöü")
         numbers = "0123456789"
@@ -25,11 +25,11 @@ class Student:
         for char in temp:
             if char not in numbers:
                 student_name += char
-        if (similar(self.name.lower(), student_name.lower()) > exact_match_threshold) or \
+        if (similar(self.name.lower(), student_name.lower()) > configuration.exact_match_threshold) or \
                 (similar(self.name.translate(translation_table1).lower(),
-                         student_name.lower()) > exact_match_threshold) or \
+                         student_name.lower()) > configuration.exact_match_threshold) or \
                 (similar(self.name.translate(translation_table2).lower(),
-                         student_name.lower()) > exact_match_threshold):
+                         student_name.lower()) > configuration.exact_match_threshold):
             return True
         else:
             full_name = self.name.split()
@@ -40,11 +40,12 @@ class Student:
                     (student_last_name.lower() == last_name.translate(translation_table2).lower()) or \
                     (student_last_name.lower() == last_name.translate(translation_table1).lower()):
                 for name_element in full_name:
-                    if (similar(name_element.lower(), student_full_name[0].lower()) > partial_match_threshold) or \
+                    if (similar(name_element.lower(),
+                                student_full_name[0].lower()) > configuration.partial_match_threshold) or \
                             (similar(name_element.translate(translation_table1).lower(),
-                                     student_full_name[0].lower()) > partial_match_threshold) or \
+                                     student_full_name[0].lower()) > configuration.partial_match_threshold) or \
                             (similar(name_element.translate(translation_table2).lower(),
-                                     student_full_name[0].lower()) > partial_match_threshold):
+                                     student_full_name[0].lower()) > configuration.partial_match_threshold):
                         return True
             return False
 
