@@ -22,6 +22,7 @@ class ZoomPollAnalyzer:
         self.meetings = []
         self.total_days = 0
         self.answer_key_list = []
+        self.polls=[]
 
     # readStudents function takes name of a file which contains all students and their informations
     # then save them into students list
@@ -355,11 +356,10 @@ class ZoomPollAnalyzer:
             logging.info("Results of the poll named '" + poll.name + "' printed to an excel file successfully.")
 
         self.print_student_results(poll_dfs)
-
+    #TODO: Check if it is works.
     def print_absences_and_anomalies(self):
         for poll in self.polls:
-            poll.print_anomalies()
-            poll.print_absences(self.students)
+            poll.print_absences_and_anomalies(self.students, self.configuration.absences_and_anomalies_dir_path)
 
     def start_system(self):
         root_logger = logging.getLogger()

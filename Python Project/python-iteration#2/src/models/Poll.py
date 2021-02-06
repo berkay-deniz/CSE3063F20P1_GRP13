@@ -67,27 +67,23 @@ class Poll:
             poll_result_df.at[i, 'Success'] = (1.0 * num_of_correct_ans) / num_of_questions
             poll_result_df.at[i, 'Success (%)'] = 100 * num_of_correct_ans / num_of_questions
 
-    def print_anomalies(self):
-        # TODO: get from config.json
-        folder_path = "../../poll-anomalies"
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
-        json_str = json.dumps([anomaly.to_dict() for anomaly in self.anomalies], indent=4)
-        f = open(folder_path + "/" + self.name + ".json", "w")
-        f.write(json_str)
-        f.close()
 
-    def print_absences(self, students):
-        # TODO: get from config.json
-        folder_path = "../../poll-absences"
-        if not os.path.exists(folder_path):
-            os.makedirs(folder_path)
 
+    def print_absences_and_anomalies(self, students, dir_path):
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
         for student in students.values():
             if student not in self.student_answers.keys():
                 self.absents.append(student)
 
-        json_str = json.dumps([student.to_dict() for student in self.absents], indent=4)
-        f = open(folder_path + "/" + self.name + ".json", "w")
-        f.write(json_str)
+        anomalies_json = json.dumps([anomaly.to_dict() for anomaly in self.anomalies], indent=4)
+        absents_json = json.dumps([student.to_dict() for student in self.absents], indent=4)
+        f = open(dir_path + "/" + "Poll_" + self.poll_id + "_" + self.name.replace(" ", "_") + "_"
+                 + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + ".json", "w")
+
+        data = {"zoom poll report name": self.name,
+                "Students in BYS list but don't exist in this poll report (Absence)": self.absents,
+                "Students in this poll report but don't exist in BYS Student List (Anomalies)":self.anomalies}
+
+        f.write(json.dumps(data,indent=4))
         f.close()
