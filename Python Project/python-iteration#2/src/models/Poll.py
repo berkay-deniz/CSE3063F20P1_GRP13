@@ -68,6 +68,7 @@ class Poll:
             poll_result_df.at[i, 'Success (%)'] = 100 * num_of_correct_ans / num_of_questions
 
     def print_anomalies(self):
+        # TODO: get from config.json
         folder_path = "../../poll-anomalies"
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
@@ -77,6 +78,7 @@ class Poll:
         f.close()
 
     def print_absences(self, students):
+        # TODO: get from config.json
         folder_path = "../../poll-absences"
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)

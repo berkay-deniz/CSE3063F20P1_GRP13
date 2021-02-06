@@ -10,23 +10,27 @@ from .Student import *
 from .Question import *
 from .Answer import *
 from .Meeting import *
+from .Configuration import *
 
 
 class ZoomPollAnalyzer:
-    matched_students = {}
-    students = {}
-    meetings = []
-    total_days = 0
-    answer_key_list = []
+
+    def __init__(self):
+        self.configuration = Configuration()
+        self.matched_students = {}
+        self.students = {}
+        self.meetings = []
+        self.total_days = 0
+        self.answer_key_list = []
 
     # readStudents function takes name of a file which contains all students and their informations
     # then save them into students list
-    def read_students(self, students_file):
+    def read_students(self):
         pd.set_option('expand_frame_repr', False)
         pd.set_option("display.max_columns", 999)
         pd.set_option('display.max_rows', 999)
 
-        df = pd.read_excel(students_file, header=12, usecols='C,E,H')
+        df = pd.read_excel(self.configuration.student_list_file_path, header=12, usecols='C,E,H')
 
         df = df[(df['Öğrenci No'].notnull()) & (df['Öğrenci No'] != 'Öğrenci No')]
 
@@ -35,18 +39,15 @@ class ZoomPollAnalyzer:
         del df['Adı']
         del df['Soyadı']
 
-        # TODO: get from config.json
-        df.to_excel('../../StudentList.xlsx')
+        df.to_excel(self.configuration.organized_student_list_file_path)
 
-        student_df = pd.read_excel('../../StudentList.xlsx')
+        student_df = pd.read_excel(self.configuration.organized_student_list_file_path)
         student_df = student_df.drop(student_df.columns[0], axis=1)
         students_file = student_df.values.tolist()
         for s in students_file:
             self.students[s[0]] = Student(*s, None)
 
     def read_ans_key(self, file_path):
-        # TODO: get from config.json
-
         file = open(file_path, 'r')
         lines = file.readlines()[2:]
         counter = 0
@@ -97,14 +98,13 @@ class ZoomPollAnalyzer:
         # Otherwise, look up for all students and match the name.
         student = None
         for s in self.students.values():
-            if s.match(name):
+            if s.match(name, self.configuration.exact_match_threshold, self.configuration.partial_match_threshold):
                 student = s
                 student.email = email
                 logging.info(name + ' is matched with ' + s.name)
 
         if student is None:
-            # TODO: get from config.json
-            max_similarity = 0.63
+            max_similarity = self.configuration.max_similarity_threshold
             for s in self.students.values():
                 similarity = s.calculate_similarity(name)
                 if similarity > max_similarity:
@@ -216,7 +216,6 @@ class ZoomPollAnalyzer:
                     checked_students.add(student)
 
     def read_files_in_folder(self, folder_path, file_type):
-        folder_path = "../../" + folder_path
         if not os.path.exists(folder_path):
             logging.error(file_type + " path given does not exist.")
             exit(-1)
@@ -245,7 +244,7 @@ class ZoomPollAnalyzer:
             attendance_df.at[i, 'Attendance Percentage'] = (
                                                                    current_student.attendance / self.total_days) * 100
 
-        attendance_df.to_excel("../../attendance.xlsx")
+        attendance_df.to_excel(self.configuration.attendance_report_file_path)
         logging.info("Attendances of the students printed to an excel file successfully.")
 
     def make_autopct(self, values):
@@ -293,15 +292,15 @@ class ZoomPollAnalyzer:
             axs[i, 0].set_xlabel(label_str)
             axs[i, 1].set_xlabel(label_str)
             i += 1
-        folder_path = "../../poll-plots"
+        folder_path = self.configuration.plots_dir_path
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
         plotter.savefig(folder_path + "/" + poll.name + ".pdf")
         logging.info("Plots of the poll named '" + poll.name + "' printed to a pdf file successfully.")
 
-    def print_student_results(self, students_file, poll_dfs):
-        result_file = "../../StudentResults.xlsx"
-        file_name = result_file if os.path.exists(result_file) else students_file
+    def print_student_results(self, poll_dfs):
+        result_file = self.configuration.global_analytics_file_path
+        file_name = result_file if os.path.exists(result_file) else self.configuration.organized_student_list_file_path
         student_result_df = pd.read_excel(file_name)
         column = len(student_result_df.columns)
         for poll in self.polls:
@@ -323,10 +322,10 @@ class ZoomPollAnalyzer:
         student_result_df.to_excel(result_file, index=False)
         logging.info("Results of the students for each poll printed to an excel file successfully.")
 
-    def print_poll_results(self, students_file):
+    def print_poll_results(self):
         poll_dfs = {}
         for poll in self.polls:
-            poll_result_df = pd.read_excel(students_file, usecols='B, C')
+            poll_result_df = pd.read_excel(self.configuration.organized_student_list_file_path, usecols='B, C')
 
             question_no = 1
             # Insert one column for each question in the poll
@@ -347,13 +346,12 @@ class ZoomPollAnalyzer:
 
             poll_dfs[poll] = poll_result_df
 
-            folder_path = "../../poll-results"
-            if not os.path.exists(folder_path):
-                os.makedirs(folder_path)
-            poll_result_df.to_excel(folder_path + "/" + poll.name + ".xlsx")
+            if not os.path.exists(self.configuration.poll_results_dir_path):
+                os.makedirs(self.configuration.poll_results_dir_path)
+            poll_result_df.to_excel(self.configuration.poll_results_dir_path + "/" + poll.name + ".xlsx")
             logging.info("Results of the poll named '" + poll.name + "' printed to an excel file successfully.")
 
-        self.print_student_results(students_file, poll_dfs)
+        self.print_student_results(poll_dfs)
 
     def print_absences_and_anomalies(self):
         for poll in self.polls:
@@ -363,18 +361,14 @@ class ZoomPollAnalyzer:
     def start_system(self):
         root_logger = logging.getLogger()
         root_logger.setLevel(logging.INFO)
-        handler = logging.FileHandler('../../logFile.log', 'a', 'utf-8')
+        handler = logging.FileHandler(self.configuration.log_file_path, 'a', 'utf-8')
         formatter = logging.Formatter('%(name)s - %(asctime)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         root_logger.addHandler(handler)
 
-        students_file = input("Enter the student list file: ")
-        self.read_students("../../" + students_file)
-        ans_keys_path = input("Enter answer keys directory: ")
-        self.read_files_in_folder(ans_keys_path, "Answer key")
-
-        poll_reports_path = input("Enter poll reports directory: ")
-        self.read_files_in_folder(poll_reports_path, "Poll report")
-        self.print_attendance_report("../../StudentList.xlsx")
-        self.print_poll_results("../../StudentList.xlsx")
+        self.read_students()
+        self.read_files_in_folder(self.configuration.answer_keys_dir_path, "Answer key")
+        self.read_files_in_folder(self.configuration.poll_reports_dir_path, "Poll report")
+        self.print_attendance_report(self.configuration.attendance_report_file_path)
+        self.print_poll_results()
         self.print_absences_and_anomalies()
