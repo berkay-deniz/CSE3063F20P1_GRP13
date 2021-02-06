@@ -330,13 +330,16 @@ class ZoomPollAnalyzer:
 
             question_no = 1
             # Insert one column for each question in the poll
-            for j in range(0, len(poll.answer_key.q_and_a), 2):
-                poll_result_df.insert(question_no + 1, "Q" + str(question_no), 0)
+            for question in poll.answer_key.questions:
+                poll_result_df.insert(question_no + 1, question.text, 0)
                 question_no += 1
 
             poll_result_df.insert(question_no + 1, "Questions", question_no - 1)
-            poll_result_df.insert(question_no + 2, "Success", ' ')
-            poll_result_df.insert(question_no + 3, "Success (%)", 0)
+            poll_result_df.insert(question_no + 2, "Correct Answers", 0)
+            poll_result_df.insert(question_no + 3, "Wrong Answers", 0)
+            poll_result_df.insert(question_no + 4, "Empty Answers", 0)
+            poll_result_df.insert(question_no + 5, "Success", 0)
+            poll_result_df.insert(question_no + 6, "Success (%)", 0)
 
             answers_of_questions = {}
             poll.print_student_results(answers_of_questions, poll_result_df, self.students)
