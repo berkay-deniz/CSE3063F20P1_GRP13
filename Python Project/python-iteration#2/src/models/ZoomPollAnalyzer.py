@@ -120,7 +120,7 @@ class ZoomPollAnalyzer:
 
         checked_students = set()
 
-        file = open(file_path)
+        file = open(file_path,encoding="utf8")
         lines_to_read = [3, 3]
         for position, line in enumerate(file):
             if position in lines_to_read:
