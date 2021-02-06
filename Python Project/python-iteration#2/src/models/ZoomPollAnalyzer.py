@@ -22,7 +22,7 @@ class ZoomPollAnalyzer:
         self.meetings = []
         self.total_days = 0
         self.answer_key_list = []
-        self.polls=[]
+        self.polls = []
 
     # readStudents function takes name of a file which contains all students and their informations
     # then save them into students list
@@ -257,17 +257,17 @@ class ZoomPollAnalyzer:
         return my_autopct
 
     def is_answer_true(self, question, answer, poll):
-        for x in range(0, len(poll.answer_key.q_and_a), 2):
-            if question == poll.answer_key.q_and_a[x]:
-                if answer == poll.answer_key.q_and_a[x + 1]:
-                    return True
-                else:
-                    return False
+        for x in range(0, len(poll.answer_key.questions), 1):
+            if question == poll.answer_key.questions[x].text:
+                for correct_answer in poll.answer_key.questions[x].correct_answers:
+                    if answer == correct_answer:
+                        return True
+                return False
 
     def print_pie_charts(self, answers_of_questions, poll):
         question_list = []
 
-        fig, axs = plotter.subplots(int(len(poll.answer_key.q_and_a) / 2), 2, figsize=(30, 100))
+        fig, axs = plotter.subplots(int(len(poll.answer_key.questions)), 2, figsize=(30, 100))
         plotter.subplots_adjust(wspace=1, hspace=1)
         i = 0
         for question, answer_occurrences in answers_of_questions.items():
@@ -356,7 +356,8 @@ class ZoomPollAnalyzer:
             logging.info("Results of the poll named '" + poll.name + "' printed to an excel file successfully.")
 
         self.print_student_results(poll_dfs)
-    #TODO: Check if it is works.
+
+    # TODO: Check if it is works.
     def print_absences_and_anomalies(self):
         for poll in self.polls:
             poll.print_absences_and_anomalies(self.students, self.configuration.absences_and_anomalies_dir_path)
