@@ -176,8 +176,8 @@ class ZoomPollAnalyzer:
 
         for i in range(0, len(self.students.values())):
             current_student = self.students[attendance_df.at[i, 'Öğrenci No']]
-            attendance_df.at[i, 'Attendance Rate'] = (
-                    str(current_student.attendance) + ' of ' + str(self.total_attendance_polls))
+            attendance_df.at[i, 'Attendance Rate'] = (1.0 * current_student.attendance) / self.total_attendance_polls
+
             attendance_df.at[i, 'Attendance Percentage'] = (
                                                                    current_student.attendance / self.total_attendance_polls) * 100
 

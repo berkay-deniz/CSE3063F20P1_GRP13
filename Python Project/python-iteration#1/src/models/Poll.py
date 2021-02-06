@@ -48,7 +48,7 @@ class Poll:
                 if len(q_and_a) == ans_key_index:
                     break
 
-            poll_result_df.at[i, 'Success'] = str(num_of_correct_ans) + " of " + str(int(len(q_and_a) / 2))
+            poll_result_df.at[i, 'Success'] = (1.0 * num_of_correct_ans ) / int(len(q_and_a) / 2)
             poll_result_df.at[i, 'Success (%)'] = 100 * num_of_correct_ans / (len(q_and_a) / 2)
 
     def print_anomalies(self):
