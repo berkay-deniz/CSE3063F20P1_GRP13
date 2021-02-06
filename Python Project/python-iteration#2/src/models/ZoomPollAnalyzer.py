@@ -348,7 +348,10 @@ class ZoomPollAnalyzer:
 
             if not os.path.exists(self.configuration.poll_results_dir_path):
                 os.makedirs(self.configuration.poll_results_dir_path)
-            poll_result_df.to_excel(self.configuration.poll_results_dir_path + "/" + poll.name + ".xlsx")
+            # TODO: Change poll result file as .ods (not necessary)
+            poll_result_df.to_excel(self.configuration.poll_results_dir_path + "/"
+                                    + "Poll_" + poll.poll_id + "_" + poll.name.replace(" ", "_") + "_"
+                                    + poll.date.replace(" ", "_").replace("-", "_").replace(":", "_") + ".xlsx")
             logging.info("Results of the poll named '" + poll.name + "' printed to an excel file successfully.")
 
         self.print_student_results(poll_dfs)
