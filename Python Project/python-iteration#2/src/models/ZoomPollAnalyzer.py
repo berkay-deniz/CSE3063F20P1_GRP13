@@ -103,7 +103,6 @@ class ZoomPollAnalyzer:
                 logging.info(name + ' is matched with ' + s.name)
 
         if student is None:
-            # TODO: get from config.json
             max_similarity = 0.63
             for s in self.students.values():
                 similarity = s.calculate_similarity(name)
