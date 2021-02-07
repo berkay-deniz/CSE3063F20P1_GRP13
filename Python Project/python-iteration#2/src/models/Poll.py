@@ -96,7 +96,8 @@ class Poll:
             #                          + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + "_"
             #                          + student.name.replace(" ", "_") + "_" + str(student.student_id) + ".xlsx")
 
-    def print_absences_and_anomalies(self, students, dir_path):
+    def print_absences_and_anomalies(self, students, configuration):
+        dir_path = configuration.absences_and_anomalies_dir_path
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
         for student in students.values():

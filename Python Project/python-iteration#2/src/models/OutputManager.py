@@ -159,7 +159,7 @@ class OutputManager:
     def print_absences_and_anomalies(self, meetings, students):
         for meeting in meetings:
             for poll in meeting.polls:
-                poll.print_absences_and_anomalies(students, self.configuration.absences_and_anomalies_dir_path)
+                poll.print_absences_and_anomalies(students, self.configuration)
 
     def print_attendance_report(self, total_days, students):
         attendance_df = pd.read_excel(self.configuration.organized_student_list_file_path, usecols='B,C')
