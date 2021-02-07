@@ -104,7 +104,7 @@ class OutputManager:
                 occurrence_list.append(occurrence)
 
             explode = []
-            pie_chart_colors_lookup = ['#7158e2', '#ff9f1a', '#3ae374', '#c56cf0', '#d11b52', '#1dccc9']
+            pie_chart_colors_lookup = ['#3352FF', '#FF4C33', '#FFFF33', '#33FFF3', '#FF339F', '#FF9933']
             pie_chart_colors = []
             x = 0
             for answer in ans_list:
