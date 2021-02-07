@@ -30,7 +30,7 @@ class OutputManager:
                 poll_result_df.insert(question_no + 6, "Success (%)", 0)
 
                 answers_of_questions = {}
-                poll.print_student_results(answers_of_questions, poll_result_df, students)
+                poll.print_student_results(answers_of_questions, poll_result_df, students, self.configuration)
                 self.print_pie_charts(answers_of_questions, poll)
 
                 poll_dfs[poll] = poll_result_df
@@ -102,13 +102,29 @@ class OutputManager:
                 ans_labels.append(chr(current_label_unicode))
                 current_label_unicode += 1
                 occurrence_list.append(occurrence)
-            pie_location.pie(occurrence_list, labels=ans_labels, autopct=self.make_autopct(occurrence_list),
-                             shadow=True)
+
+            explode = []
+            pie_chart_colors_lookup = ['#7158e2', '#ff9f1a', '#3ae374', '#c56cf0', '#d11b52', '#1dccc9']
+            pie_chart_colors = []
+            x = 0
+            for answer in ans_list:
+                if self.is_answer_true(question, answer, poll):
+                    pie_chart_colors.append("#009900")
+                    explode.append(0.1)
+                else:
+                    pie_chart_colors.append(pie_chart_colors_lookup[x])
+                    explode.append(0)
+                    x += 1
+
+            pie_location.pie(occurrence_list, explode=explode, labels=ans_labels,
+                             autopct=self.make_autopct(occurrence_list),
+                             shadow=True, colors=pie_chart_colors)
             question_string = "Question: " + question if len(question) < 150 else question[:int(
                 len(question) / 2)] + "\n" + question[int(len(question) / 2):]
             pie_location.title.set_text(question_string)
             bar_location.bar(ans_labels, occurrence_list, width=0.8,
-                             color=["#009900" if self.is_answer_true(question, answer, poll) else "#b20000" for answer
+                             color=["#009900" if self.is_answer_true(question, answer, poll) else "#b20000" for
+                                    answer
                                     in ans_list], bottom=None, align='center', data=occurrence_list)
             bar_location.title.set_text(question_string)
             label_str = ""
@@ -117,6 +133,7 @@ class OutputManager:
             pie_location.set_xlabel(label_str)
             bar_location.set_xlabel(label_str)
             i += 1
+
         folder_path = self.configuration.plots_dir_path
         if not os.path.exists(folder_path):
             os.makedirs(folder_path)
