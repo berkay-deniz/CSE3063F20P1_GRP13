@@ -99,7 +99,7 @@ class ZoomPollAnalyzer:
         # Otherwise, look up for all students and match the name.
         student = None
         for s in self.students.values():
-            if s.match(name, self.configuration.exact_match_threshold, self.configuration.partial_match_threshold):
+            if s.match(name, self.configuration):
                 student = s
                 student.email = email
                 logging.info(name + ' is matched with ' + s.name)
@@ -121,7 +121,7 @@ class ZoomPollAnalyzer:
 
         checked_students = set()
 
-        file = open(file_path,encoding="utf8")
+        file = open(file_path, encoding="utf8")
         lines_to_read = [3, 3]
         for position, line in enumerate(file):
             if position in lines_to_read:
