@@ -91,10 +91,10 @@ class Poll:
             poll_result_df.at[student_index, "Success"] = num_of_correct_ans / num_of_questions
             poll_result_df.at[student_index, "Success (%)"] = 100 * num_of_correct_ans / num_of_questions
 
-            student_poll_df.to_excel(configuration.student_poll_results_dir_path + "/"
-                                     + "Poll_" + self.poll_id + "_" + self.name.replace(" ", "_") + "_"
-                                     + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + "_"
-                                     + student.name.replace(" ", "_") + "_" + str(student.student_id) + ".xlsx")
+            # student_poll_df.to_excel(configuration.student_poll_results_dir_path + "/"
+            #                          + "Poll_" + self.poll_id + "_" + self.name.replace(" ", "_") + "_"
+            #                          + self.date.replace(" ", "_").replace("-", "_").replace(":", "_") + "_"
+            #                          + student.name.replace(" ", "_") + "_" + str(student.student_id) + ".xlsx")
 
     def print_absences_and_anomalies(self, students, dir_path):
         if not os.path.exists(dir_path):
