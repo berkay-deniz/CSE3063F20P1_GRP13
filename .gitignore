@@ -84,8 +84,14 @@ nb-configuration.xml
 .DS_Store
 
 
-*.txt
-output.json
+*.JSON
 *.log
 outputs
 metrics
+*.XLS
+*.xls
+*.XLSX
+*.xlsx
+*.CSV
+*.csv
+*.pdf

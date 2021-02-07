@@ -22,7 +22,7 @@ public class Statistic {
         logger = Logger.getLogger(DataLabelingSystem.class);
     }
 
-    public void printMetrics(String fileName) {
+    public void printMetrics(String fileName){
         ObjectMapper mapper = new ObjectMapper();
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         try {
