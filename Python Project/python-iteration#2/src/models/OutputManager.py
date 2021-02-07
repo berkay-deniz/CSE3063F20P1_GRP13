@@ -114,7 +114,7 @@ class OutputManager:
                 else:
                     pie_chart_colors.append(pie_chart_colors_lookup[x])
                     explode.append(0)
-                    x += 1
+                    x = (x + 1) % len(pie_chart_colors_lookup)
 
             pie_location.pie(occurrence_list, explode=explode, labels=ans_labels,
                              autopct=self.make_autopct(occurrence_list),

@@ -8,7 +8,7 @@
   "max_similarity_threshold": 0.63,
   "organized_student_list_file_path": "../../StudentList.xlsx",
   "attendance_report_file_path": "../../attendance.xlsx",
-  "plots_dir_path": "../../poll-plots",
+  "plots_dir_path": "../../poll-charts",
   "global_analytics_file_path": "../../CSE3063_2020FALL_QuizGrading.xlsx",
   "poll_results_dir_path": "../../poll-results",
   "student_poll_results_dir_path": "../../student-poll-results",
